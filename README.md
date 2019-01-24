@@ -1,6 +1,6 @@
-#Sequential Collective Emotion Estimation Task
+# Sequential Collective Emotion Estimation Task
 
-The goal of this task is to examine how people evaluate the mean emotional response of groups after seeing 
+The goal of this task is to examine how people evaluate the mean emotional response of groups after seeing
 
 Participants see 16 faces that appear on the screen for 1 second. Faces are either all positive or negative. They are then asked to evaluate the mean emotional response of the faces on a scale.
 
