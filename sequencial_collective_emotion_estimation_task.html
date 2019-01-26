@@ -32,11 +32,10 @@
   function getFixationTime (){  //get randomized time of fixation by randomly choosing from 0.5, 1 and 1.5s
     Face.fixationTime = getRandomElement([500, 1000, 1500]);
     
-    //choose face_itive or negative valence
+    //choose face_itive or negative valence before displaying faces
     Face.emotionX = getRandomElement([50, 100]); //randomly choose from negative and face_tive emotion
-
     //choose the identity of the face
-    Face.personX = getRandomElement(['A','B','C','D']);//randomally choose from ['A','B','C','D'] -- select person
+    Face.personX = getRandomElement(['A','B','C','D']); //randomally choose from ['A','B','C','D'] -- select person
 
     return Face.fixationTime;
   }
@@ -73,7 +72,7 @@
   /* ************************************ */
 
   var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
-  Face.facePool = [0];  //define face_ition as a list in Face dictionary to input randomly selected numbers that represent 16 face_itions
+  Face.facePool = [];  //define face_ition as a list in Face dictionary to input randomly selected numbers that represent 16 faces
 
   var slideList = ['img/ins/Slide 1.png','img/ins/Slide 2.png','img/ins/Slide 3.png','img/ins/Slide 4.png',
                    'img/ins/Slide 5.png','img/ins/Slide 6.png','img/ins/Slide 7.png','img/ins/Slide 8.png'];//list of instructions slides
@@ -143,7 +142,9 @@
         return {
           Name: 'response',
           fixationTime: Face.fixationTime,
+          // record face's identity
           faceIdentity: Face.personX,
+          // record every face's index
           face_1:(Face.emotionX + Face.facePool[1]),   face_2:(Face.emotionX + Face.facePool[2]),
           face_3:(Face.emotionX + Face.facePool[3]),   face_4:(Face.emotionX + Face.facePool[4]),
           face_5:(Face.emotionX + Face.facePool[5]),   face_6:(Face.emotionX + Face.facePool[6]),
@@ -152,10 +153,11 @@
           face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12]),
           face_13:(Face.emotionX + Face.facePool[13]), face_14:(Face.emotionX + Face.facePool[14]),
           face_15:(Face.emotionX + Face.facePool[15]), face_16:(Face.emotionX + Face.facePool[16]),
+
          meanAgents: Face.emotionX +
-         (Face.facePool[1]+Face.facePool[2]+Face.facePool[3]+Face.facePool[4]+Face.facePool[5]+Face.facePool[6]
-           +Face.facePool[7]+Face.facePool[8]+Face.facePool[9]+Face.facePool[10]+Face.facePool[11]+Face.facePool[12]+
-           Face.facePool[13]+Face.facePool[14]+Face.facePool[15]+Face.facePool[16])/16
+         (Face.facePool[1]+Face.facePool[2]+Face.facePool[3]+Face.facePool[4]+Face.facePool[5]+Face.facePool[6]+
+          Face.facePool[7]+Face.facePool[8]+Face.facePool[9]+Face.facePool[10]+Face.facePool[11]+Face.facePool[12]+
+          Face.facePool[13]+Face.facePool[14]+Face.facePool[15]+Face.facePool[16])/16
         }},
       };
 
@@ -169,14 +171,14 @@
   /* create experiment definition array */
 
   var collective_emotion_estimation = []; //display instructions
-  //collective_emotion_estimation.push(participant_id)
+  collective_emotion_estimation.push(participant_id)
 
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)}
 
   var repeat = { //conduct the actual 50 tasks
       timeline: [fixation,face,face,face,face,face,face,face,face,face,
-  face,face,face,face,face,face,face,face,response],
+                face,face,face,face,face,face,face,face,response],
       repetitions: 1,
       randomize_order: true
   }
@@ -186,7 +188,7 @@
 
   var repeat = { //conduct the actual 50 tasks
       timeline: [fixation,face,face,face,face,face,face,face,face,face,
-  face,face,face,face,face,face,face,face,response],
+                face,face,face,face,face,face,face,face,response],
       repetitions: 1,
       randomize_order: true
   }
