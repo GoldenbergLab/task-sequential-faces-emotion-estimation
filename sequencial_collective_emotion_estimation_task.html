@@ -128,7 +128,7 @@
         };
 
 
-  var eachTrial = [];
+  var eachTrial = []; //Every set includes 1 fixation, 1-12 faces, 1 response
 
   var fixation = {
       type: 'html-keyboard-response',
@@ -137,7 +137,7 @@
       data: {Name:'fixation'},
       on_finish: function(){return 
         eachTrial.push(fixation);
-        eachTrial.concat(replicateArray(face,getRandomInt(1,12)));
+        eachTrial.concat(replicateArray(face,getRandomInt(1,12))); 
         eachTrial.push(response);},  
   };
 
@@ -160,6 +160,7 @@
         step:1,
         max:50,
         start: 0,
+        on_finish: function(){Face.facePool = [0]}, // empty face pool after each trial
         data: function(){
         return {
           Name: 'response',
@@ -172,14 +173,8 @@
           face_5:(Face.emotionX + Face.facePool[5]),   face_6:(Face.emotionX + Face.facePool[6]),
           face_7:(Face.emotionX + Face.facePool[7]),   face_8:(Face.emotionX + Face.facePool[8]),
           face_9:(Face.emotionX + Face.facePool[9]),   face_10:(Face.emotionX + Face.facePool[10]),
-          face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12]),
-
-         meanAgents: Face.emotionX +
-         (Face.facePool[1]+Face.facePool[2]+Face.facePool[3]+Face.facePool[4]+Face.facePool[5]+Face.facePool[6]+
-          Face.facePool[7]+Face.facePool[8]+Face.facePool[9]+Face.facePool[10]+Face.facePool[11]+Face.facePool[12])/12
-        }},
-
-        on_finish: function(){Face.facePool = [0]} // empty face pool after each trial
+          face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12])
+        }}
       };
 
   var connectSurvey = {
@@ -207,7 +202,7 @@
   var actualTask = { //conduct the actual 50 tasks
       
       timeline: eachTrial,
-      repetitions: 4,
+      repetitions: 4, //testing trial number
       randomize_order: true
   }
   //collective_emotion_estimation.push(actualTask);
