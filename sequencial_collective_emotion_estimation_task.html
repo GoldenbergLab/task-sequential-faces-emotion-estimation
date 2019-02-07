@@ -60,9 +60,6 @@
 
 
 
-
-
-
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in singleFace
     return ['img/'+
         Face.personX+(Face.emotionX + 3*0) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*1) + '.jpg', 'img/'+
@@ -188,7 +185,7 @@
 
   var collective_emotion_estimation = []; //display instructions
   
-  //collective_emotion_estimation.push(participant_id)
+  collective_emotion_estimation.push(participant_id)
 
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)} 
@@ -205,7 +202,7 @@
       repetitions: 4, //testing trial number
       randomize_order: true
   }
-  //collective_emotion_estimation.push(actualTask);
+  collective_emotion_estimation.push(actualTask);
   collective_emotion_estimation.push(connectSurvey);
 
   /* start the experiment */
