@@ -6,6 +6,7 @@
     <script src="jspsych-6.0.5/jspsych.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-call-function.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
@@ -28,15 +29,6 @@
     return list[Math.floor(Math.random()*list.length)];
   }
 
-  function replicateArray(array, n) {
-    // Create an array of size "n" with undefined values
-    var arrays = Array.apply(null, new Array(n)); 
-    // Replace each "undefined" with our array, resulting in an array of n copies of our array
-    arrays = arrays.map(function() { return array });
-    // Flatten our array of arrays
-    return [].concat.apply([], arrays);
-}
-
 
   function getFixationTime (){  //get randomized time of fixation by randomly choosing from 0.5, 1 and 1.5s
     Face.fixationTime = getRandomElement([500, 1000, 1500]);
@@ -52,9 +44,7 @@
 
 
   function getFaceSample (){  //get the sample of faces in each trial
-
     Face.singleFace = getRandomInt(1, 50);
-
     return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
   }
 
@@ -125,17 +115,11 @@
         };
 
 
-  var eachTrial = []; //Every set includes 1 fixation, 1-12 faces, 1 response
-
   var fixation = {
       type: 'html-keyboard-response',
       stimulus: '<p style="font-size: 48px;">+</p>',
       trial_duration:  getFixationTime,  //random select fixation time
-      data: {Name:'fixation'},
-      on_finish: function(){return 
-        eachTrial.push(fixation);
-        eachTrial.concat(replicateArray(face,getRandomInt(1,12))); 
-        eachTrial.push(response);},  
+      data: {Name:'fixation'}
   };
 
 
@@ -184,37 +168,37 @@
   /* create experiment definition array */
 
   var collective_emotion_estimation = []; //display instructions
-  
-  collective_emotion_estimation.push(participant_id)
+  var trial1 = []; var trial2 = []; var trial3 = []; var trial4 = []; var trial5 = [];
+
+
+  collective_emotion_estimation.push(participant_id);
 
   for (var i = 0; i < slideList.length-2; i++) {
-     collective_emotion_estimation.push(instructions)} 
+     collective_emotion_estimation.push(instructions)}; 
+
+  trial1.push(fixation);  for (var i = 0; i < getRandomInt(2,12); i++) {trial1.push(face)}; trial1.push(response);
+  trial2.push(fixation);  for (var i = 0; i < getRandomInt(2,12); i++) {trial2.push(face)}; trial2.push(response);
+  trial3.push(fixation);  for (var i = 0; i < getRandomInt(2,12); i++) {trial3.push(face)}; trial3.push(response);
+  trial4.push(fixation);  for (var i = 0; i < getRandomInt(2,12); i++) {trial4.push(face)}; trial4.push(response);
+  trial5.push(fixation);  for (var i = 0; i < getRandomInt(2,12); i++) {trial5.push(face)}; trial5.push(response);
+
+  var tr1 = { timeline: trial1 };  var tr2 = { timeline: trial2 };
+  var tr3 = { timeline: trial3 };  var tr4 = { timeline: trial4 };
+  var tr5 = { timeline: trial5 };
   
-
-  for (var i = 0; i < 3; i++) {
-     collective_emotion_estimation.concat(eachTrial)}
-
+  collective_emotion_estimation.push(tr1,tr2,tr3,tr4,tr5);
   collective_emotion_estimation.push(instructions); //diaplay last page of instruction
-
-  var actualTask = { //conduct the actual 50 tasks
-      
-      timeline: eachTrial,
-      repetitions: 4, //testing trial number
-      randomize_order: true
-  }
-  collective_emotion_estimation.push(actualTask);
   collective_emotion_estimation.push(connectSurvey);
 
   /* start the experiment */
   jsPsych.init({
   timeline: collective_emotion_estimation,
-    on_finish: function(data){
-      //saveData
+    on_finish: function(data){               //saveData
 		var final_submit = function() {
              jsPsych.turk.submitToTurk({"completion_time": (new Date().getTime())});
           };
 		  saveData("2019_first_pilot_amplification/" + Face.ID+ ".json",
-      jsPsych.data.get().json(), final_submit, final_submit);
+     jsPsych.data.get().json(), final_submit, final_submit);
     jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
     window.location = "https://stanforduniversity.qualtrics.com/jfe/form/SV_cBULlVQd3dVp3q5"
     }
