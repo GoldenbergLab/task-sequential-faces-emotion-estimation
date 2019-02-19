@@ -30,8 +30,8 @@
   }
 
 
-  function getFixationTime (){  //get randomized time of fixation by randomly choosing from 0.5, 1 and 1.5s
-    Face.fixationTime = getRandomElement([500, 1000, 1500]);
+  function getFixationTime (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
+    Face.fixationTime = getRandomElement([400, 500, 600]); 
     
     //choose face_itive or negative valence before displaying faces
     Face.emotionX = getRandomElement([50, 100]); //randomly choose from negative and face_tive emotion
@@ -126,7 +126,7 @@
   var face = {                //there is an array of randomly selected pictures//
         type: 'image-keyboard-response',
         stimulus:  getFaceSample,
-        trial_duration: 1000,
+        trial_duration: 500,  //display faces for 0.5 second
         choices: jsPsych.NO_KEYS,
         data: function(){Name:'singleFace',
        //add data of the single face to face pool
