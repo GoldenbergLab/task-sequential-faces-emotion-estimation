@@ -168,26 +168,32 @@
   /* create experiment definition array */
 
   var collective_emotion_estimation = []; //display instructions
-  var trial1 = []; var trial2 = []; var trial3 = []; var trial4 = []; var trial5 = [];
-
+  var practiceNumber = 1;
+  var taskNumber = 1;
 
   collective_emotion_estimation.push(participant_id);
 
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)}; 
 
-  trial1.push(fixation);  for (var i = 0; i < getRandomInt(1,12); i++) {trial1.push(face)}; trial1.push(response);
-  trial2.push(fixation);  for (var i = 0; i < getRandomInt(1,12); i++) {trial2.push(face)}; trial2.push(response);
-  trial3.push(fixation);  for (var i = 0; i < getRandomInt(1,12); i++) {trial3.push(face)}; trial3.push(response);
-  trial4.push(fixation);  for (var i = 0; i < getRandomInt(1,12); i++) {trial4.push(face)}; trial4.push(response);
-  trial5.push(fixation);  for (var i = 0; i < getRandomInt(1,12); i++) {trial5.push(face)}; trial5.push(response);
+  for (var i = 0; i < practiceNumber; i++) {     //practice trials
+    faceNumber = getRandomInt(1,12);
+    collective_emotion_estimation.push(fixation); 
+    for (var t = 0; t < faceNumber; t++) {
+      collective_emotion_estimation.push(face);}
+    collective_emotion_estimation.push(response);
+  };
 
-  var tr1 = { timeline: trial1 };  var tr2 = { timeline: trial2 };
-  var tr3 = { timeline: trial3 };  var tr4 = { timeline: trial4 };
-  var tr5 = { timeline: trial5 };
-  
-  collective_emotion_estimation.push(tr1,tr2,tr3,tr4,tr5);
-  collective_emotion_estimation.push(instructions); //diaplay last page of instruction
+  collective_emotion_estimation.push(instructions); //move on to real task
+
+  for (var i = 0; i < taskNumber; i++) {
+    faceNumber = getRandomInt(1,12);
+    collective_emotion_estimation.push(fixation); 
+    for (var t = 0; t < faceNumber; t++) {
+      collective_emotion_estimation.push(face);}
+    collective_emotion_estimation.push(response);
+  };
+
   collective_emotion_estimation.push(connectSurvey);
 
   /* start the experiment */
