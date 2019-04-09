@@ -11,11 +11,11 @@ Functions in Sequential Task
   }
 
   function loadFacePool(start,end) { //the start and ending index of the images
-    var list = [];
+    var pool = [];
     for(i = start; i < (end+1); i++){
-       list.push( 'img/A' + i + '.jpg'); list.push( 'img/B' + i + '.jpg');
-       list.push( 'img/C' + i + '.jpg'); list.push( 'img/D' + i + '.jpg');}
-    return list;
+       pool.push( 'img/A' + i + '.jpg'); pool.push( 'img/B' + i + '.jpg');
+       pool.push( 'img/C' + i + '.jpg'); pool.push( 'img/D' + i + '.jpg');}
+    return pool;
   }
 
   function createSlideList(start,end){
@@ -25,15 +25,29 @@ Functions in Sequential Task
     return list;
   }
 
+  function getNextSlide () {  //use to shift instruction slides
+    var currentSlide = slideList.shift();
+    return currentSlide
+  }
+
+  function loadStimulus(start,end) { //the start and ending index of the images
+    var list = [];
+    for(i = start; i < (end+1); i++){  
+      list.push( 'stimulus/' + i + '.jpg');}
+    return list;
+  }
+
+  function getStim (){
+    Face.stim =  Face.stims.shift();
+    return Face.stim; //get last stim of the stim list
+  }
   function check_consent (){
     if ($('#consent_checkbox').is(':checked')) {
       return true;
     }else {
       alert("If you wish to participate, you must check the box next to the statement 'I agree to participate in this study.'");
-      return false;
-    } return false;
+      return false;} 
   }
-
 
   function checkID (){
     var lasttrialdata = jsPsych.data.getLastTrialData().select('responses').values[0];
@@ -83,25 +97,6 @@ Functions in Sequential Task
     } else { return false;}
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   function getTimeAndFace (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
     Face.fixationTime = getRandomElement([400, 500, 600]); 
     
@@ -125,47 +120,14 @@ Functions in Sequential Task
 
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in singleFace
     return ['img/'+
-        Face.personX+(Face.emotionX + 3*0) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*1) + '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*2) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*3) + '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*4) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*5) + '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*6) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*7) + '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*8) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*9) + '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*10)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*11)+ '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*12)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*13)+ '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*14)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*15)+ '.jpg', 'img/'+
-        Face.personX+(Face.emotionX + 3*16)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 1*50)+ '.jpg']
+      Face.personX+(Face.emotionX + 3*0) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*1) + '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*2) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*3) + '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*4) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*5) + '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*6) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*7) + '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*8) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*9) + '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*10)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*11)+ '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*12)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*13)+ '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*14)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*15)+ '.jpg', 'img/'+
+      Face.personX+(Face.emotionX + 3*16)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 1*50)+ '.jpg']
   }
 
-  function getNextSlide () {  //use to shift instruction slides
-    var currentSlide = slideList.shift();
-    return currentSlide
-  }
-
-  function loadStimulus(type,start,end) { //the start and ending index of the images
-    var list = [];
-    for(i = start; i < (end+1); i++){
-      if (type == 'practice'){
-        list.push( 'stimuli/practice/' + '1_0' + ("0" + i).slice(-2) + '.png');
-      } else if (Face.emotionX == 50){
-      list.push( 'stimuli/positive/' + i + '.jpg');
-      } else {list.push( 'stimuli/negative/' + '1_0' + ('0' + i).slice(-2) + '.png');}}
-    return list;
-  }
-
-  function getStimList(min1,max1,min2,max2) {  //min1:first index of practice stim, min1:first index of task stim
-    var stims = [];
-    for(i = min2; i < (max2+1); i++){    //use loop to get a list of stimulus with sequential numbers in file names
-        if (Face.emotionX == 50){
-               stims.push( 'stimuli/positive/' + i + '.jpg');
-        } else { stims.push( 'stimuli/negative/' + '1_0' + ("0" + i).slice(-2) + '.png')}};//add task stims
-    var stims = jsPsych.randomization.shuffle(stims);
-
-    for(i = min1; i < (max1+1); i++){    //use loop to get a list of stimulus with sequential numbers in file names
-        stims.push( 'stimuli/practice/' + '1_0' + ("0" + i).slice(-2) + '.png')};//add practice stims
-    return stims;  //attention please! in the list, 4 practice stimulus are AT TGE END (for convenience of shuffling and ordering)
-  }
-
-  function getStim (){
-    Face.stim =  Face.stims.pop();
-    return Face.stim //get last stim of the stim list
-  }

@@ -23,28 +23,29 @@
   /* ************************************ */
 
 
-  var taskNumber = 6; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
-  var attentionCheckInterval = 3; // there will be an attention check every this number of trials
+  var taskNumber = 10; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var attentionCheckInterval = 5; // there will be an attention check every this number of trials
   var practiceNumber = 3;
-  var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
-  Face.pos = [ ];  //(3)record data of 12 faces' data in face array
-  Face.facePool = [ ];
-  var facesPool = loadFacePool(51,150);
-  var slideList = createSlideList (1,8);//list of instructions slides, which have index from 1 to 8
 
+  var facesPool = loadFacePool(51,150); //preload faces
+  var slideList = createSlideList (1,8);//list of instructions slides, which have index from 1 to 8
+  var attentionStimulus = loadStimulus(1,10); //preload 10 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
+  var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
+  Face.facePool = [ ]; //record data
+  Face.stims = attentionStimulus;
 
   /******************************************/
   /* Set up Instructions */
   /******************************************/
 
   var instructions = {
-      type: "image-button-response",
-      stimulus: getNextSlide,
-      choices: ['Continue'],
-      margin_vertical: '10px',
-      data: {Name:'instructions'}
-    };
+    type: "image-button-response",
+    stimulus: getNextSlide,
+    choices: ['Continue'],
+    margin_vertical: '10px',
+    data: {Name:'instructions'}
+  };
 
   /******************************************/
   /* Start Experiment - trial by trial */
@@ -99,57 +100,57 @@
 
 
   var fixationGetFace = { //getting new fixation time and face
-      type: 'html-keyboard-response',
-      stimulus: '<p style="font-size: 48px;">+</p>',
-      trial_duration:  getTimeAndFace,  //random select fixation time
-      data: {Name:'fixation'}
+    type: 'html-keyboard-response',
+    stimulus: '<p style="font-size: 48px;">+</p>',
+    trial_duration:  getTimeAndFace,  //random select fixation time
+    data: {Name:'fixation'}
   };
 
   var fixation = { //only get new fixation time without changing face - in one series of face, there're different fixation time
-      type: 'html-keyboard-response',
-      stimulus: '<p style="font-size: 48px;">+</p>',
-      trial_duration:  getFixationTime,  //random select fixation time
-      data: {Name:'fixation'}
+    type: 'html-keyboard-response',
+    stimulus: '<p style="font-size: 48px;">+</p>',
+    trial_duration:  getFixationTime,  //random select fixation time
+    data: {Name:'fixation'}
   };
 
 
   var face = {                //there is an array of randomly selected pictures//
-        type: 'image-keyboard-response',
-        stimulus:  getFaceSample,
-        trial_duration: 500,  //display faces for 0.5 second
-        choices: jsPsych.NO_KEYS,
-        data: function(){Name:'singleFace',
-       //add data of the single face to face pool
-        Face.facePool.push(Face.singleFace)},
+    type: 'image-keyboard-response',
+    stimulus:  getFaceSample,
+    trial_duration: 500,  //display faces for 0.5 second
+    choices: jsPsych.NO_KEYS,
+    data: function(){Name:'singleFace',
+    //add data of the single face to face pool
+    Face.facePool.push(Face.singleFace)},
   };
 
 
   var response = {
-        type: 'image-slider-response_noButton',
-        stimulus: getScale,
-        prompt: "<p>Estimate the average emotion of the faces you saw in the previous window </p>",
-        step:1,
-        max:50,
-        start: 0,
-        on_finish: function(){Face.facePool = [0]}, // empty face pool after each trial
-        data: function(){
-        return {
-          Name: 'response',
-          fixationTime: Face.fixationTime,
-          // record face's identity
-          faceIdentity: Face.personX,
-          // record every face's index
-          face_1:(Face.emotionX + Face.facePool[1]),   face_2:(Face.emotionX + Face.facePool[2]),
-          face_3:(Face.emotionX + Face.facePool[3]),   face_4:(Face.emotionX + Face.facePool[4]),
-          face_5:(Face.emotionX + Face.facePool[5]),   face_6:(Face.emotionX + Face.facePool[6]),
-          face_7:(Face.emotionX + Face.facePool[7]),   face_8:(Face.emotionX + Face.facePool[8]),
-          face_9:(Face.emotionX + Face.facePool[9]),   face_10:(Face.emotionX + Face.facePool[10]),
-          face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12])
-        }}
-      };
+    type: 'image-slider-response_noButton',
+    stimulus: getScale,
+    prompt: "<p>Estimate the average emotion of the faces you saw in the previous window </p>",
+    step:1,
+    max:50,
+    start: 0,
+    on_finish: function(){Face.facePool = [0]}, // empty face pool after each trial
+    data: function(){
+      return {
+        Name: 'response',
+        fixationTime: Face.fixationTime,
+        // record face's identity
+        faceIdentity: Face.personX,
+        // record every face's index
+        face_1:(Face.emotionX + Face.facePool[1]),   face_2:(Face.emotionX + Face.facePool[2]),
+        face_3:(Face.emotionX + Face.facePool[3]),   face_4:(Face.emotionX + Face.facePool[4]),
+        face_5:(Face.emotionX + Face.facePool[5]),   face_6:(Face.emotionX + Face.facePool[6]),
+        face_7:(Face.emotionX + Face.facePool[7]),   face_8:(Face.emotionX + Face.facePool[8]),
+        face_9:(Face.emotionX + Face.facePool[9]),   face_10:(Face.emotionX + Face.facePool[10]),
+        face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12])
+    }}
+  };
 
-  var stimulus = { //image for attention check
-    type: 'image-button-response',
+  var stimuli = { //image for attention check
+    type: 'image-keyboard-response',
     stimulus: getStim,
     choices: [],
     trial_duration : 5000,
@@ -158,7 +159,7 @@
   };
 
   var attention = {
-    on_start: saveData,
+    //on_start: saveData,
     type: 'survey-text',
     questions: [{prompt: 'Please describe, in your own words, the content of the image just displayed'}],
     on_finish: function(data){
@@ -182,28 +183,29 @@
 
   var collective_emotion_estimation = []; //display instructions
 
-  //collective_emotion_estimation.push(consent);
+  collective_emotion_estimation.push(consent);
   collective_emotion_estimation.push(checkCitizen,checkPhone);
   collective_emotion_estimation.push(participant_id);
 
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)}; 
 
-  for (var i = 0; i < practiceNumber; i++) {     //practice trials
+  collective_emotion_estimation.push(fixationGetFace,stimuli,checkAttention);//attention check before practice task
+  
+  for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber = getRandomInt(1,12);
-    collective_emotion_estimation.push(fixationGetFace,checkAttention); 
     for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation); 
       collective_emotion_estimation.push(face);}
     collective_emotion_estimation.push(response);
   };
-
+  
   collective_emotion_estimation.push(instructions); //move on to real task
-
-
+  
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
+    collective_emotion_estimation.push(fixation,face,response,stimuli,checkAttention); //attention check
 
-    for (var i = 0; i < taskNumber; i++) {
+    for (var i = 0; i < taskNumber; i++) { //one trail (different numbers of faces with one reponse)
       faceNumber = getRandomInt(1,12);
       collective_emotion_estimation.push(fixationGetFace);  
       for (var t = 0; t < faceNumber; t++) {
@@ -214,14 +216,16 @@
 
     var k = 0;
     while (k < (attentionCheckInterval - 1)){
-      collective_emotion_estimation.push(fixation,stimulus,response,facesSample,button);
-      k ++;}
-  }
+      collective_emotion_estimation.push(fixation,face,response);
+      k ++;
+    }
+  };
 
   collective_emotion_estimation.push(connectSurvey);
 
   /* start the experiment */
   jsPsych.init({
+  preload_images: slideList,facesPool,attentionStimulus,
   timeline: collective_emotion_estimation,
     on_finish: function(data){               //saveData
 		var final_submit = function() {
