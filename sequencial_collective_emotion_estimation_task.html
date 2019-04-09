@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html> 
+<html>
   <head>
     <title>sequenccollective_emotion_estimation_task</title>
     <script src="jspsych-6.0.5/jspsych.js"></script>
@@ -26,7 +26,6 @@
   var taskNumber = 10; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 3;
-
   var facesPool = loadFacePool(51,150); //preload faces
   var slideList = createSlideList (1,8);//list of instructions slides, which have index from 1 to 8
   var attentionStimulus = loadStimulus(1,10); //preload 10 images for attention check
@@ -47,10 +46,25 @@
     data: {Name:'instructions'}
   };
 
+  /* ****************************************************/
+  /* Define local functions (other than functions file) */
+  /* ****************************************************/
+
+  function saveData(){ //save data function
+    $.ajax({
+      type: 'post',
+      cache: false,
+      url: 'https://web.stanford.edu/~amitgold/cgi-bin/save_data.php',
+      data: {filename: "2019_sequencial_collective_emotion_estimation_april/" + Face.ID+ ".json",
+             filedata: jsPsych.data.get().json()}
+      //error: error_callback
+    });
+  }
+
   /******************************************/
   /* Start Experiment - trial by trial */
   /******************************************/
-  
+
   var consent = {
     type:'external-html',
     url: "external_page.html",
@@ -97,7 +111,6 @@
     loop_function: checkID,
     loop_function: checkUser
   };
-
 
   var fixationGetFace = { //getting new fixation time and face
     type: 'html-keyboard-response',
@@ -159,7 +172,7 @@
   };
 
   var attention = {
-    //on_start: saveData,
+    on_start: saveData,
     type: 'survey-text',
     questions: [{prompt: 'Please describe, in your own words, the content of the image just displayed'}],
     on_finish: function(data){
@@ -186,30 +199,25 @@
   //collective_emotion_estimation.push(consent);
   collective_emotion_estimation.push(checkCitizen,checkPhone);
   collective_emotion_estimation.push(participant_id);
-
   for (var i = 0; i < slideList.length-2; i++) {
-     collective_emotion_estimation.push(instructions)}; 
-
+     collective_emotion_estimation.push(instructions)};
   collective_emotion_estimation.push(fixationGetFace,stimuli,checkAttention);//attention check before practice task
-  
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber = getRandomInt(1,12);
     for (var t = 0; t < faceNumber; t++) {
-      collective_emotion_estimation.push(fixation); 
+      collective_emotion_estimation.push(fixation);
       collective_emotion_estimation.push(face);}
     collective_emotion_estimation.push(response);
   };
-  
   collective_emotion_estimation.push(instructions); //move on to real task
-  
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,stimuli,checkAttention); //attention check before real task
     var k = 0;
     while (k < attentionCheckInterval){
       faceNumber = getRandomInt(1,12);
-      collective_emotion_estimation.push(fixationGetFace);  
+      collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {//one trail (different numbers of faces with one reponse)
-      collective_emotion_estimation.push(fixation); 
+      collective_emotion_estimation.push(fixation);
       collective_emotion_estimation.push(face);}
       collective_emotion_estimation.push(response);
       k ++;
@@ -218,20 +226,23 @@
 
   collective_emotion_estimation.push(connectSurvey);
 
-  /* start the experiment */
-  jsPsych.init({
-  preload_images: slideList,facesPool,attentionStimulus,
-  timeline: collective_emotion_estimation,
-    on_finish: function(data){               //saveData
-		var final_submit = function() {
-             jsPsych.turk.submitToTurk({"completion_time": (new Date().getTime())});
-          };
-		  saveData("2019_first_pilot_amplification/" + Face.ID+ ".json",
-     jsPsych.data.get().json(), final_submit, final_submit);
-    jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
-    window.location = "https://stanforduniversity.qualtrics.com/jfe/form/SV_cBULlVQd3dVp3q5"
-    }
 
+  /******************************************/
+  /*           run the study                */
+  /******************************************/
+  jsPsych.init({
+    preload_images: slideList,facesPool,attentionStimulus,
+    timeline: collective_emotion_estimation,
+    on_finish: function(data){
+    //saveData
+    //var final_submit = function() {
+    //       jsPsych.turk.submitToTurk({"completion_time": (new Date().getTime())});
+    //};
+    //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
+    //jsPsych.data.get().json(), final_submit, final_submit);
+    //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
+    window.location = "https://stanforduniversity.qualtrics.com/jfe/form/SV_eWpjuIuQ4fupVYx" //redirect to Qualtrics survey
+    }
   })
 
   </script>
