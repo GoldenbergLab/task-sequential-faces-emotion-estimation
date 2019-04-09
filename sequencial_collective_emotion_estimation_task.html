@@ -24,7 +24,7 @@
 
 
   var taskNumber = 10; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
-  var attentionCheckInterval = 5; // there will be an attention check every this number of trials
+  var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 3;
 
   var facesPool = loadFacePool(51,150); //preload faces
@@ -32,7 +32,7 @@
   var attentionStimulus = loadStimulus(1,10); //preload 10 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
   var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
-  Face.facePool = [ ]; //record data
+  Face.facePool = [ ]; //record face data
   Face.stims = attentionStimulus;
 
   /******************************************/
@@ -183,7 +183,7 @@
 
   var collective_emotion_estimation = []; //display instructions
 
-  collective_emotion_estimation.push(consent);
+  //collective_emotion_estimation.push(consent);
   collective_emotion_estimation.push(checkCitizen,checkPhone);
   collective_emotion_estimation.push(participant_id);
 
@@ -203,20 +203,15 @@
   collective_emotion_estimation.push(instructions); //move on to real task
   
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
-    collective_emotion_estimation.push(fixation,face,response,stimuli,checkAttention); //attention check
-
-    for (var i = 0; i < taskNumber; i++) { //one trail (different numbers of faces with one reponse)
+    collective_emotion_estimation.push(fixation,stimuli,checkAttention); //attention check before real task
+    var k = 0;
+    while (k < attentionCheckInterval){
       faceNumber = getRandomInt(1,12);
       collective_emotion_estimation.push(fixationGetFace);  
-      for (var t = 0; t < faceNumber; t++) {
-        collective_emotion_estimation.push(fixation); 
-        collective_emotion_estimation.push(face);}
+      for (var t = 0; t < faceNumber; t++) {//one trail (different numbers of faces with one reponse)
+      collective_emotion_estimation.push(fixation); 
+      collective_emotion_estimation.push(face);}
       collective_emotion_estimation.push(response);
-    };
-
-    var k = 0;
-    while (k < (attentionCheckInterval - 1)){
-      collective_emotion_estimation.push(fixation,face,response);
       k ++;
     }
   };
