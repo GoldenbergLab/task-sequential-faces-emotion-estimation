@@ -11,7 +11,6 @@
     <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="sequential_task_functions.js"></script>
-    <script src="functions.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
   </head>
@@ -201,7 +200,7 @@
   /* create experiment definition array */
 
   var collective_emotion_estimation = []; //display instructions
-  collective_emotion_estimation.push(consent);
+  //collective_emotion_estimation.push(consent);
   collective_emotion_estimation.push(checkCitizen,checkPhone,imageDescription,participant_id);
 
   for (var i = 0; i < slideList.length-2; i++) {
