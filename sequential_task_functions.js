@@ -152,7 +152,7 @@ Functions in Sequential Task
 
   function checkResponse(data){ //check repeated response
     var trialNumber = jsPsych.data.get().last(1).select('trial_index')['values'][0];
-    if (trialNumber > 60) { //after practice trials and two real task trials, we begin to test whether choice is the same as previous two
+    if (trialNumber > 80) { //after practice trials and two real task trials, we begin to test whether choice is the same as previous two
     var lastRatings = jsPsych.data.get().last(60).filter({trial_type:'image-slider-response_noButton'}).values();//get ratings of past three trials
     var currentRating = Number(lastRatings[0].response); //get rating of this trial
     var last1Rating = Number(lastRatings[1].response); //get rating of last trial
