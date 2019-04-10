@@ -30,9 +30,9 @@ Functions in Sequential Task
     return currentSlide
   }
 
-  function loadStimulus(start,end) { //the start and ending index of the images
+  function loadStimulus(end) { //the start and ending index of the images
     var list = [];
-    for(i = start; i < (end+1); i++){  
+    for(i = 1; i < (end+1); i++){  
       list.push( 'stimulus/' + i + '.jpg');}
     return list;
   }
@@ -97,6 +97,25 @@ Functions in Sequential Task
     } else { return false;}
   }
 
+  function getWord (){ //get a word for attention check from the word list
+    Face.word = Face.wordList.shift();
+    return Face.word;
+  }
+
+  function checkTyping(){  //test if type correctly
+    var inputText = jsPsych.data.getLastTrialData().select('responses').values[0];
+    var text = JSON.parse(inputText).Q0;
+    if (Face.word !== text){
+      falseAnswer += 1;
+      alert("Attention! Please type the word correctly. If the alert shows up for 4 times, the experiment will be automatically terminated.");
+      Face.wordList.unshift(Face.word);
+      if (falseAnswer == falseAllowance){ //if participant gets alert this number of times
+        alert("Hi! You've made too much errors in typing the word suggesting that you are not paying attention to the task. The task will be Terminated");
+        window.close();
+      }else{return true;} }
+    else {falseAnswer = 0; return false} //reset falseAnswer
+  }
+
   function getTimeAndFace (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
     Face.fixationTime = getRandomElement([400, 500, 600]); 
     
@@ -129,5 +148,22 @@ Functions in Sequential Task
       Face.personX+(Face.emotionX + 3*12)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*13)+ '.jpg', 'img/'+
       Face.personX+(Face.emotionX + 3*14)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*15)+ '.jpg', 'img/'+
       Face.personX+(Face.emotionX + 3*16)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 1*50)+ '.jpg']
+  }
+
+  function checkResponse(data){ //check repeated response
+    var trialNumber = jsPsych.data.get().last(1).select('trial_index')['values'][0];
+    if (trialNumber > 60) { //after practice trials and two real task trials, we begin to test whether choice is the same as previous two
+    var lastRatings = jsPsych.data.get().last(60).filter({trial_type:'image-slider-response_noButton'}).values();//get ratings of past three trials
+    var currentRating = Number(lastRatings[0].response); //get rating of this trial
+    var last1Rating = Number(lastRatings[1].response); //get rating of last trial
+    var last2Rating = Number(lastRatings[2].response); //get rating of two trials before
+    if ((currentRating == last1Rating) && (currentRating == last2Rating)){ //if these three ratings are the same
+        alert('It seems that you were making the exact same rating as the one in the previous trial. Please make sure to change the scale to reflect your estimate of the mean group emotion. Getting this warning again would lead to a termination of the session.');
+        repeatAlert +=1;
+      if (repeatAlert == repeatAllowance){ //if participant gets alert this number of times
+          alert('You made too many repeated ratings that were exactly the same. The experiment will be terminated.');
+          window.close();
+        } else {return true;}
+      }else {return true;}}
   }
 
