@@ -150,20 +150,3 @@ Functions in Sequential Task
       Face.personX+(Face.emotionX + 3*16)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 1*50)+ '.jpg']
   }
 
-  function checkResponse(data){ //check repeated response
-    var trialNumber = jsPsych.data.get().last(1).select('trial_index')['values'][0];
-    if (trialNumber > 80) { //after practice trials and two real task trials, we begin to test whether choice is the same as previous two
-    var lastRatings = jsPsych.data.get().last(60).filter({trial_type:'image-slider-response_noButton'}).values();//get ratings of past three trials
-    var currentRating = Number(lastRatings[0].response); //get rating of this trial
-    var last1Rating = Number(lastRatings[1].response); //get rating of last trial
-    var last2Rating = Number(lastRatings[2].response); //get rating of two trials before
-    if ((currentRating == last1Rating) && (currentRating == last2Rating)){ //if these three ratings are the same
-        alert('It seems that you were making the exact same rating as the one in the previous trial. Please make sure to change the scale to reflect your estimate of the mean group emotion. Getting this warning again would lead to a termination of the session.');
-        repeatAlert +=1;
-      if (repeatAlert == repeatAllowance){ //if participant gets alert this number of times
-          alert('You made too many repeated ratings that were exactly the same. The experiment will be terminated.');
-          window.close();
-        } else {return true;}
-      }else {return true;}}
-  }
-
