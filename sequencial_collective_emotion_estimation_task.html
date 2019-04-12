@@ -174,11 +174,6 @@
     }}
   };
 
-  var check_response = { //check repeated responses and alert after three repeated responses
-    timeline: [response],
-    on_start: checkResponse,
-  };
-
   var askTypeWord = { //attention check - participants are asked to copy a word that appears on the screen
     type: 'survey-text',
     questions: function (){return [{prompt:'Please type the word: '+ getWord().bold() + '  (pay attention to capital letters)'}]},
@@ -212,7 +207,7 @@
     faceNumber = getRandomInt(1,12);
     for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
-    collective_emotion_estimation.push(check_response);
+    collective_emotion_estimation.push(response);
   };
   
   collective_emotion_estimation.push(instructions); //move on to real task
@@ -225,7 +220,7 @@
       collective_emotion_estimation.push(fixationGetFace);  
       for (var t = 0; t < faceNumber; t++) {//one trail (different numbers of faces with one reponse)
       collective_emotion_estimation.push(fixation,face);}
-      collective_emotion_estimation.push(check_response);
+      collective_emotion_estimation.push(response);
       k ++;
     }
   };
