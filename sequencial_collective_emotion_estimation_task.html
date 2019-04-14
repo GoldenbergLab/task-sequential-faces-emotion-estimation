@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html> 
+<html>
   <head>
     <title>sequenccollective_emotion_estimation_task</title>
     <script src="jspsych-6.0.5/jspsych.js"></script>
@@ -66,7 +66,7 @@
   /******************************************/
   /* Start Experiment - trial by trial */
   /******************************************/
-  
+
   var consent = {
     type:'external-html',
     url: "external_page.html",
@@ -199,25 +199,25 @@
   collective_emotion_estimation.push(checkCitizen,checkPhone,imageDescription,participant_id);
 
   for (var i = 0; i < slideList.length-2; i++) {
-     collective_emotion_estimation.push(instructions)}; 
+     collective_emotion_estimation.push(instructions)};
 
   collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
-  
+
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber = getRandomInt(1,12);
     for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
     collective_emotion_estimation.push(response);
   };
-  
+
   collective_emotion_estimation.push(instructions); //move on to real task
-  
+
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
     var k = 0;
     while (k < attentionCheckInterval){
       faceNumber = getRandomInt(1,12);
-      collective_emotion_estimation.push(fixationGetFace);  
+      collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {//one trail (different numbers of faces with one reponse)
       collective_emotion_estimation.push(fixation,face);}
       collective_emotion_estimation.push(response);
