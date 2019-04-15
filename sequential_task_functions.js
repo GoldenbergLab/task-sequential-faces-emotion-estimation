@@ -32,7 +32,7 @@ Functions in Sequential Task
 
   function loadStimulus(end) { //the start and ending index of the images
     var list = [];
-    for(i = 1; i < (end+1); i++){  
+    for(i = 1; i < (end+1); i++){
       list.push( 'stimulus/' + i + '.jpg');}
     return list;
   }
@@ -46,7 +46,7 @@ Functions in Sequential Task
       return true;
     }else {
       alert("If you wish to participate, you must check the box next to the statement 'I agree to participate in this study.'");
-      return false;} 
+      return false;}
   }
 
   function checkID (){
@@ -79,15 +79,6 @@ Functions in Sequential Task
     else{ return false;}
   }
 
-  function checkCitizen (){
-    var choice = jsPsych.data.getLastTrialData().select('button_pressed').values[0];
-    if(choice == 1){
-      alert('As mentioned in the study description, this study is limited to Americian participants. Your session will be terminated and the window will be closed.');
-      window.close();
-      return true;
-    } else { return false;}
-  }
-
   function checkPhone (){
     var choice = jsPsych.data.getLastTrialData().select('button_pressed').values[0];
     if(choice == 0){
@@ -117,8 +108,8 @@ Functions in Sequential Task
   }
 
   function getTimeAndFace (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
-    Face.fixationTime = getRandomElement([400, 500, 600]); 
-    
+    Face.fixationTime = getRandomElement([400, 500, 600]);
+
     //choose face_itive or negative valence before displaying faces
     Face.emotionX = getRandomElement([50, 100]); //randomly choose from negative and face_tive emotion
     //choose the identity of the face
@@ -128,7 +119,7 @@ Functions in Sequential Task
   }
 
   function getFixationTime (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
-    Face.fixationTime = getRandomElement([400, 500, 600]); 
+    Face.fixationTime = getRandomElement([400, 500, 600]);
     return Face.fixationTime;
   }
 
@@ -149,4 +140,3 @@ Functions in Sequential Task
       Face.personX+(Face.emotionX + 3*14)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*15)+ '.jpg', 'img/'+
       Face.personX+(Face.emotionX + 3*16)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 1*50)+ '.jpg']
   }
-

@@ -10,6 +10,7 @@
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
     <script src="sequential_task_functions.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
@@ -74,19 +75,6 @@
     check_fn: check_consent
   };
 
-  var citizenship = {
-    type: 'image-button-response',
-    stimulus: '',
-    choices: ['Yes','No'],
-    prompt: "Are you an American citizen?",
-    data: {Name:'citizenship'}
-  };
-
-  var checkCitizen = { //to check if participant is American citizen. If it's 'No', the experiment will be terminated
-    timeline: [citizenship],
-    loop_function: checkCitizen
-  };
-
   var phone = {
     type: 'image-button-response',
     stimulus: '',
@@ -102,7 +90,7 @@
 
   var enter_id = {
     type: 'survey-text',
-    questions: [{prompt: 'Please enter your student id (this is important for your validation). For Stanford students: eter your sunid (letters).'}],
+    questions: [{prompt: 'Please enter your student id (this is important for your validation).<br> For Stanford students: enter your sunid (letters not numbers).'}],
     on_finish: function(data){
       Face.ID = JSON.parse(data.responses).Q0; //save id as global variable
       jsPsych.data.addProperties({participant_id: Face.ID});} //record participant id
@@ -153,7 +141,7 @@
   var response = {
     type: 'image-slider-response_noButton',
     stimulus: getScale,
-    prompt: "<p>Estimate the average emotion of the faces you saw in the previous window </p>",
+    prompt: "<p>Estimate the average emotion of the sequence of faces you just saw </p>",
     step:1,
     max:50,
     start: 0,
@@ -197,7 +185,7 @@
 
   var collective_emotion_estimation = []; //display instructions
   collective_emotion_estimation.push(consent);
-  collective_emotion_estimation.push(checkCitizen,checkPhone,imageDescription,participant_id);
+  collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
 
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)};
