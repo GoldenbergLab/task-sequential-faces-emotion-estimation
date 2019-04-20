@@ -131,7 +131,7 @@
   var face = {                //there is an array of randomly selected pictures//
     type: 'image-keyboard-response',
     stimulus:  getFaceSample,
-    trial_duration: 500,  //display faces for 0.5 second
+    trial_duration: 5000,  //display faces for 0.5 second
     choices: jsPsych.NO_KEYS,
     data: function(){Name:'singleFace',
     //add data of the single face to face pool
@@ -203,11 +203,18 @@
 
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
+      
+      faceNumber = getRandomInt(1,12); //trial out of attention check loop
+      collective_emotion_estimation.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {
+      collective_emotion_estimation.push(fixation,face);}
+      collective_emotion_estimation.push(response);
+
     var k = 0;
-    while (k < attentionCheckInterval){
+    while (k < (attentionCheckInterval-1)){
       faceNumber = getRandomInt(1,12);
       collective_emotion_estimation.push(fixationGetFace);
-      for (var t = 0; t < faceNumber; t++) {//one trail (different numbers of faces with one reponse)
+      for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
       collective_emotion_estimation.push(fixation,face);}
       collective_emotion_estimation.push(response);
       k ++;
