@@ -176,6 +176,7 @@
   };
 
   var connectSurvey = {
+    on_start: saveData
     type: 'image-button-response',
     stimulus: getNextSlide,
     choices: ['Begin Survey']
@@ -204,7 +205,7 @@
 
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
-      
+
       faceNumber = getRandomInt(1,12); //trial out of attention check loop
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
