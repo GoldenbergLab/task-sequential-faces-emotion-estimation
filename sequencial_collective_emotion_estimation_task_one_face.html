@@ -11,6 +11,7 @@
     <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-vsl-grid-scene1.js"></script>
     <script src="sequential_task_functions_one_face.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
@@ -131,14 +132,21 @@
   var face = {                //there is an array of randomly selected pictures//
     type: 'image-keyboard-response',
     stimulus:  getFaceSample,
-    trial_duration: 500,  //display faces for 0.5 second
+    trial_duration: 1000,  //display faces for 0.5 second
     choices: jsPsych.NO_KEYS,
     data: function(){Name:'singleFace',
     //add data of the single face to face pool
     Face.facePool.push(Face.singleFace)},
   };
 
-  var response = {
+  var response = { //present an array of faces, each face is uniformly selected from a list of 1-50 faces. positive or negative
+    type: 'vsl-grid-scene1',
+    stimuli:  getFaceSample,
+    trial_duration: 1000,
+    data: {Name:'faceArray'}
+  };
+
+  var response1 = {
     type: 'image-slider-response_noButton',
     stimulus: getScale,
     prompt: "<p>Estimate the emotion expressed by face you just saw</p>",
@@ -186,13 +194,13 @@
   /* create experiment definition array */
 
   var collective_emotion_estimation = []; //display instructions
-  collective_emotion_estimation.push(consent);
-  collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
+  //collective_emotion_estimation.push(consent);
+  //collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
 
-  for (var i = 0; i < slideList.length-2; i++) {
-     collective_emotion_estimation.push(instructions)};
+  //for (var i = 0; i < slideList.length-2; i++) {
+  //   collective_emotion_estimation.push(instructions)};
 
-  collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
+  //collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
 
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber =  1; //getRandomInt(1,12);
