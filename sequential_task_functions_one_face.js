@@ -122,6 +122,8 @@ Functions in Sequential Task
     Face.fixationTime = getRandomElement([400, 500, 600]);
     return Face.fixationTime;
   }
+
+/*
   //trying out this getFaceSample
   function getFaceSample (){  //get the sample of faces in each trial
     //choose positive or negative valence
@@ -129,9 +131,8 @@ Functions in Sequential Task
     //choose the identity of the face
     Face.personX = getRandomElement(['A','B','C','D']);//randomally choose from ['A','B','C','D'] -- select person
     //define 16 faces in the face array
-    for (i = 1; i < 17; i++) {
+    for (i = 1; i < 30; i++) {
       Face.pos[i] = getRandomInt(1,50)}; //randomly select 16 faces
-  //ee
     return [
     ['img/'+ Face.personX +(Face.emotionX + Face.pos[1]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[2]) + '.jpg',
      'img/'+ Face.personX +(Face.emotionX + Face.pos[3]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[4]) + '.jpg'],
@@ -140,14 +141,22 @@ Functions in Sequential Task
     ['img/'+ Face.personX +(Face.emotionX + Face.pos[9]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[10])+ '.jpg',
      'img/'+ Face.personX +(Face.emotionX + Face.pos[11])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[12])+ '.jpg'],
     ['img/'+ Face.personX +(Face.emotionX + Face.pos[13])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[14])+ '.jpg',
-     'img/'+ Face.personX +(Face.emotionX + Face.pos[15])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[16])+ '.jpg']
+     'img/'+ Face.personX +(Face.emotionX + Face.pos[15])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[16])+ '.jpg'],
+     'img/'+ Face.personX +(Face.emotionX + Face.pos[1]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[2]) + '.jpg',
+      'img/'+ Face.personX +(Face.emotionX + Face.pos[3]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[4]) + '.jpg'],
+     ['img/'+ Face.personX +(Face.emotionX + Face.pos[5]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[6]) + '.jpg',
+      'img/'+ Face.personX +(Face.emotionX + Face.pos[7]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[8]) + '.jpg'],
+     ['img/'+ Face.personX +(Face.emotionX + Face.pos[9]) + '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[10])+ '.jpg',
+      'img/'+ Face.personX +(Face.emotionX + Face.pos[11])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[12])+ '.jpg'],
+     ['img/'+ Face.personX +(Face.emotionX + Face.pos[13])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[14])+ '.jpg',
+      'img/'+ Face.personX +(Face.emotionX + Face.pos[15])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[16])+ '.jpg'
     ];
   }
-
-  //function getFaceSample (){  //get the sample of faces in each trial
-  //  Face.singleFace = getRandomInt(1, 50);
-  //  return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
-  //}
+*/
+  function getFaceSample (){  //get the sample of faces in each trial
+    Face.singleFace = getRandomInt(1, 50);
+    return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
+  }
 
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in singleFace
     return ['img/'+
