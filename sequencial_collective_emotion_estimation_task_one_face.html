@@ -11,7 +11,6 @@
     <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
-    <script src="jspsych-6.0.5/plugins/jspsych-vsl-grid-scene1.js"></script>
     <script src="sequential_task_functions_one_face.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
@@ -32,7 +31,6 @@
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
   var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
-  Face.pos = [ ];
   Face.facePool = [ ]; //record face data
   Face.wordList = ['but','rock','sky','our','course','we','table','house','here','mouth','tree', 'hello']; //word list for attention check
   var imageTestDescription = attentionStimulus; //designed for the image test
@@ -133,22 +131,13 @@
   var face = {                //there is an array of randomly selected pictures//
     type: 'image-keyboard-response',
     stimulus:  getFaceSample,
-    trial_duration: 1000,  //display faces for 0.5 second
+    trial_duration: 500,  //display faces for 0.5 second
     choices: jsPsych.NO_KEYS,
     data: function(){Name:'singleFace',
     //add data of the single face to face pool
     Face.facePool.push(Face.singleFace)},
   };
 
-  var response = { //present an array of faces, each face is uniformly selected from a list of 1-50 faces. positive or negative
-    type: 'vsl-grid-scene1',
-    stimuli:  getFaceSample,
-    trial_duration: 1000,
-    data: {Name:'faceArray'}
-  };
-
-//trying out a new response
-/*
   var response = {
     type: 'image-slider-response_noButton',
     stimulus: getScale,
@@ -174,7 +163,7 @@
         face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12])
     }}
   };
-*/
+
   var askTypeWord = { //attention check - participants are asked to copy a word that appears on the screen
     type: 'survey-text',
     questions: function (){return [{prompt:'Please type the word: '+ getWord().bold() + '  (pay attention to capital letters)'}]},
@@ -198,12 +187,12 @@
 
   var collective_emotion_estimation = []; //display instructions
   //collective_emotion_estimation.push(consent);
-  //collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
+  collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
 
-  //for (var i = 0; i < slideList.length-2; i++) {
-  //   collective_emotion_estimation.push(instructions)};
+  for (var i = 0; i < slideList.length-2; i++) {
+     collective_emotion_estimation.push(instructions)};
 
-  //collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
+  collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
 
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber =  1; //getRandomInt(1,12);
