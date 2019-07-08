@@ -32,7 +32,7 @@
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
   var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
-  //Face.pos = [ ];
+  Face.pos = [ ];
   Face.facePool = [ ]; //record face data
   Face.wordList = ['but','rock','sky','our','course','we','table','house','here','mouth','tree', 'hello']; //word list for attention check
   var imageTestDescription = attentionStimulus; //designed for the image test
@@ -139,16 +139,16 @@
     //add data of the single face to face pool
     Face.facePool.push(Face.singleFace)},
   };
-/*
+
   var response = { //present an array of faces, each face is uniformly selected from a list of 1-50 faces. positive or negative
     type: 'vsl-grid-scene1',
     stimuli:  getFaceSample,
     trial_duration: 1000,
     data: {Name:'faceArray'}
   };
-*/
-//trying out a new response
 
+//trying out a new response
+/*
   var response = {
     type: 'image-slider-response_noButton',
     stimulus: getScale,
@@ -174,7 +174,7 @@
         face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12])
     }}
   };
-
+*/
   var askTypeWord = { //attention check - participants are asked to copy a word that appears on the screen
     type: 'survey-text',
     questions: function (){return [{prompt:'Please type the word: '+ getWord().bold() + '  (pay attention to capital letters)'}]},

@@ -123,7 +123,6 @@ Functions in Sequential Task
     return Face.fixationTime;
   }
 
-/*
   //trying out this getFaceSample
   function getFaceSample (){  //get the sample of faces in each trial
     //choose positive or negative valence
@@ -152,12 +151,13 @@ Functions in Sequential Task
       'img/'+ Face.personX +(Face.emotionX + Face.pos[15])+ '.jpg', 'img/'+ Face.personX +(Face.emotionX + Face.pos[16])+ '.jpg'
     ];
   }
-*/
+
+/*
   function getFaceSample (){  //get the sample of faces in each trial
     Face.singleFace = getRandomInt(1, 50);
     return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
   }
-
+*/
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in singleFace
     return ['img/'+
       Face.personX+(Face.emotionX + 3*0) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*1) + '.jpg', 'img/'+
