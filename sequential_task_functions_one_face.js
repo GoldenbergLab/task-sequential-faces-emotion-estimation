@@ -128,15 +128,32 @@ Functions in Sequential Task
     return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
   }
 
-  function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in singleFace
-    return ['img/'+
-      Face.personX+(Face.emotionX + 3*0) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*1) + '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*2) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*3) + '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*4) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*5) + '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*6) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*7) + '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*8) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*9) + '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*10)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*11)+ '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*12)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*13)+ '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*14)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 3*15)+ '.jpg', 'img/'+
-      Face.personX+(Face.emotionX + 3*16)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 1*50)+ '.jpg']
-  }
+
+  function getScale (){  //get the sample of faces in each trial
+    //choose positive or negative valence
+    Face.emotionX = getRandomElement([50, 100]); //randomly choose from negative and postive emotion
+    //choose the identity of the face
+    //Face.personX = getRandomElement(['A','B','C','D']);//randomally choose from ['A','B','C','D'] -- select person
+    //define 16 faces in the face array
+    //for (i = 1; i < 17; i++) {
+    //  Face.pos[i] = getRandomInt(1,50)}; //randomly select 16 faces
+  //ee
+    return[
+      ['img/'+ Face.personX+(Face.emotionX + 0) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 2) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 4) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 6) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 8) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 10) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 12) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 14) + '.jpg'],
+      ['img/'+ Face.personX+(Face.emotionX + 16) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 18) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 20) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 22) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 24) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 26) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 28) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 30) + '.jpg'],
+      ['img/'+ Face.personX+(Face.emotionX + 32) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 32) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 36)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 36)+ '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 40) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 40) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 42) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 44) + '.jpg'],
+      ['img/'+ Face.personX+(Face.emotionX + 46)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 48)+ '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 50)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 50)+ '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 50) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 50) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 50) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 50) + '.jpg']
+    ]
+  };
