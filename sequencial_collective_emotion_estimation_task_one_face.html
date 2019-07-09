@@ -144,7 +144,7 @@
     prompt: "<p>Estimate the emotion expressed by face you just saw</p>",
     step:1,
     max:50,
-    start: 0,
+    start: 50,
     on_finish: function(){Face.facePool = [0]}, // empty face pool after each trial
     data: function(){
       return {
