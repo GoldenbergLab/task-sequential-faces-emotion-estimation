@@ -139,21 +139,20 @@ Functions in Sequential Task
     //  Face.pos[i] = getRandomInt(1,50)}; //randomly select 16 faces
   //ee
     return[
-      ['img/'+ Face.personX+(Face.emotionX + 0) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 2) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 4) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 6) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 8) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 10) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 12) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 14) + '.jpg'],
-      ['img/'+ Face.personX+(Face.emotionX + 16) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 18) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 20) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 22) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 24) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 26) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 28) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 30) + '.jpg'],
-      ['img/'+ Face.personX+(Face.emotionX + 32) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 32) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 36)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 36)+ '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 40) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 40) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 42) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 44) + '.jpg'],
-      ['img/'+ Face.personX+(Face.emotionX + 46)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 48)+ '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 50)+ '.jpg', 'img/'+Face.personX+(Face.emotionX + 50)+ '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 50) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 50) + '.jpg',
-      'img/'+ Face.personX+(Face.emotionX + 50) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 50) + '.jpg']
+      ['img/'+ Face.personX+(Face.emotionX + 1) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 3) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 5) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 7) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 9) + '.jpg'],
+      ['img/'+Face.personX+(Face.emotionX + 11) + '.jpg','img/'+ Face.personX+(Face.emotionX + 13) + '.jpg',
+      'img/'+Face.personX+(Face.emotionX + 15) + '.jpg','img/'+ Face.personX+(Face.emotionX + 17) + '.jpg',
+      'img/'+Face.personX+(Face.emotionX + 19) + '.jpg'],
+      ['img/'+ Face.personX+(Face.emotionX + 21) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 23) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 25) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 27) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 31) + '.jpg'],
+      ['img/'+Face.personX+(Face.emotionX + 33) + '.jpg','img/'+ Face.personX+(Face.emotionX + 35) + '.jpg',
+      'img/'+Face.personX+(Face.emotionX + 37) + '.jpg','img/'+ Face.personX+(Face.emotionX + 39)+ '.jpg',
+      'img/'+Face.personX+(Face.emotionX + 36)+ '.jpg'],
+      ['img/'+ Face.personX+(Face.emotionX + 41) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 43) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 45) + '.jpg', 'img/'+Face.personX+(Face.emotionX + 47) + '.jpg',
+      'img/'+ Face.personX+(Face.emotionX + 49)+ '.jpg']
     ]
   };

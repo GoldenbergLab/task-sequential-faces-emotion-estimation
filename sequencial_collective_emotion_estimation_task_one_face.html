@@ -139,10 +139,12 @@
     Face.facePool.push(Face.singleFace)},
   };
 
+  var size = [0.1,0.1];
   var response = { //present an array of faces, each face is uniformly selected from a list of 1-50 faces. positive or negative
     type: 'vsl-grid-scene1',
     stimuli:  getScale,
-    trial_duration: 1000,
+    image_zize: size,
+    trial_duration: 5000,
     data: {Name:'faceArray'}
   };
 
