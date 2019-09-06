@@ -47,7 +47,7 @@
       type: 'post',
       cache: false,
       url: 'https://web.stanford.edu/~amitgold/cgi-bin/save_data.php',
-      data: {filename: "amplification/2019_first_pilot_amplification_single_face_June2019/" + Face.ID+ ".json",
+      data: {filename: "amplification/2019_amplification_single_face_morphed_scale/" + Face.ID+ ".json",
              filedata: jsPsych.data.get().json()}
       //error: error_callback
     });
@@ -183,7 +183,7 @@
 
   /* create experiment definition array */
   var collective_emotion_estimation = []; //display instructions
-  //collective_emotion_estimation.push(consent);
+  collective_emotion_estimation.push(consent);
   collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)};
@@ -230,7 +230,7 @@
     //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
     //jsPsych.data.get().json(), final_submit, final_submit);
     //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
-    window.location = "https://stanforduniversity.qualtrics.com/jfe/form/SV_bKuyc4LlfVQf5EF" //redirect to Qualtrics survey
+    window.location = "https://hbs.qualtrics.com/jfe/form/SV_8pF73nBAlh4fHlH" //redirect to Qualtrics survey
     }
   })
 
