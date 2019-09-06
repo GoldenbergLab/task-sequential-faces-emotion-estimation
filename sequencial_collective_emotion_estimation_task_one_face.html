@@ -91,7 +91,7 @@
 
   var enter_id = {
     type: 'survey-text',
-    questions: [{prompt: 'Please enter your mTurk id (this is important for your validation)'}],
+    questions: [{prompt: 'Please enter your prolific id (this is important for your validation)'}],
     on_finish: function(data){
       Face.ID = JSON.parse(data.responses).Q0; //save id as global variable
       jsPsych.data.addProperties({participant_id: Face.ID});} //record participant id
@@ -142,7 +142,7 @@
   var response = { //participants see a slider and asked to estimate the mean group emotion
     type: 'image-slider-response_noButton',
     stimulus: getScale,
-    prompt: "<p>Estimate the average emotion of the faces you saw in the previous window</p>",
+    prompt: "<p>Estimate the emotion expressed by the face you saw in the previous window</p>",
     step:1,
     max:50,
     start: 0,
