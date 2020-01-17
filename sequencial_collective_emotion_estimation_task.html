@@ -12,22 +12,23 @@
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
     <script src="sequential_task_functions.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-vsl-grid-scene1.js"></script>
     <script src="jquery-3.3.1.min.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
   </head>
   <body bgcolor="#AAAAAA"></body>
   <script>
 
-  /* ************************************ */
+  /* ************************************* */
   /* Set up jsPsych blocks - static */
   /* ************************************ */
 
 
-  var taskNumber = 50; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var taskNumber = 5; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 3;
   var facesPool = loadFacePool(51,150); //preload faces
-  var slideList = createSlideList (1,8);//list of instructions slides, which have index from 1 to 8
+  var slideList = createSlideList (1,9);//list of instructions slides, which have index from 1 to 8
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
   var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
@@ -46,7 +47,7 @@
       type: 'post',
       cache: false,
       url: 'https://web.stanford.edu/~amitgold/cgi-bin/save_data.php',
-      data: {filename: "2019_sequencial_collective_emotion_estimation_april/" + Face.ID+ ".json",
+      data: {filename: "sequencial/2020_sequencial_winter_continous_scale/" + Face.ID+ ".json",
              filedata: jsPsych.data.get().json()}
       //error: error_callback
     });
@@ -90,7 +91,7 @@
 
   var enter_id = {
     type: 'survey-text',
-    questions: [{prompt: 'Please enter your student id (this is important for your validation).<br> For Stanford students: enter your sunid (letters not numbers).'}],
+    questions: [{prompt: 'Please enter your prolific id (this is important for your validation)'}],
     on_finish: function(data){
       Face.ID = JSON.parse(data.responses).Q0; //save id as global variable
       jsPsych.data.addProperties({participant_id: Face.ID});} //record participant id
@@ -131,37 +132,29 @@
   var face = {                //there is an array of randomly selected pictures//
     type: 'image-keyboard-response',
     stimulus:  getFaceSample,
-    trial_duration: 500,  //display faces for 0.5 second
+    trial_duration: 1000,  //display faces for 0.5 second
     choices: jsPsych.NO_KEYS,
     data: function(){Name:'singleFace',
     //add data of the single face to face pool
     Face.facePool.push(Face.singleFace)},
   };
 
-  var response = {
+  var response = { //participants see a slider and asked to estimate the mean group emotion
     type: 'image-slider-response_noButton',
     stimulus: getScale,
-    prompt: "<p>Estimate the average emotion of the sequence of faces you just saw </p>",
+    prompt: "<p>Estimate the average emotion expressed by the sequence of faces you saw in the previous window</p>",
     step:1,
     max:50,
     start: 0,
-    on_finish: function(){Face.facePool = [0]}, // empty face pool after each trial
-    data: function(){
-      return {
-        Name: 'response',
-        trailNumber: (taskNumber + practiceNumber),
-        fixationTime: Face.fixationTime,
-        // record face's identity
-        faceIdentity: Face.personX,
-        discription: Face.description,
-        // record every face's index
-        face_1:(Face.emotionX + Face.facePool[1]),   face_2:(Face.emotionX + Face.facePool[2]),
-        face_3:(Face.emotionX + Face.facePool[3]),   face_4:(Face.emotionX + Face.facePool[4]),
-        face_5:(Face.emotionX + Face.facePool[5]),   face_6:(Face.emotionX + Face.facePool[6]),
-        face_7:(Face.emotionX + Face.facePool[7]),   face_8:(Face.emotionX + Face.facePool[8]),
-        face_9:(Face.emotionX + Face.facePool[9]),   face_10:(Face.emotionX + Face.facePool[10]),
-        face_11:(Face.emotionX + Face.facePool[11]), face_12:(Face.emotionX + Face.facePool[12])
-    }}
+    on_load: morphedScale,
+    data: function(){ //we save all the data here to make it easy to analyze and process the data.
+    return {
+      Name: 'response',
+      fixationTime: Face.fixationTime,
+      faceIdentity: Face.personX,
+      description: Face.description,
+      face_1:(Face.emotionX + Face.singleFace)
+      }}
   };
 
   var askTypeWord = { //attention check - participants are asked to copy a word that appears on the screen
@@ -184,34 +177,27 @@
 
 
   /* create experiment definition array */
-
   var collective_emotion_estimation = []; //display instructions
   collective_emotion_estimation.push(consent);
   collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
-
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)};
-
   collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
-
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
-    faceNumber = getRandomInt(1,12);
+    faceNumber =  getRandomInt(1,12);
     for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
     collective_emotion_estimation.push(response);
   };
-
   collective_emotion_estimation.push(instructions); //move on to real task
-
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
 
-      faceNumber = getRandomInt(1,12); //trial out of attention check loop
+      faceNumber = 1;//getRandomInt(1,12); //trial out of attention check loop
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
       collective_emotion_estimation.push(response);
-
     var k = 0;
     while (k < (attentionCheckInterval-1)){
       faceNumber = getRandomInt(1,12);
@@ -239,7 +225,7 @@
     //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
     //jsPsych.data.get().json(), final_submit, final_submit);
     //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
-    window.location = "https://stanforduniversity.qualtrics.com/jfe/form/SV_6ikB6IUNqS3y4dL" //redirect to Qualtrics survey
+    window.location = "https://hbs.qualtrics.com/jfe/form/SV_0OkYSqJ6k02BDyl" //redirect to Qualtrics survey
     }
   })
 
