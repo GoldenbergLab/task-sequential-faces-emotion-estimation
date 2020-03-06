@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>sequenccollective_emotion_estimation_task</title>
+    <script src="jspsych-6.0.5/jspsych.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
+    <script src="sequential_task_MEMORY_functions.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-vsl-grid-scene1.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+  </head>
+  <body bgcolor="#AAAAAA"></body>
+  <script>
+
+  /* ************************************* */
+  /* Set up jsPsych blocks - static */
+  /* ************************************ */
+
+  var taskNumber = 50; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var attentionCheckInterval = 5; //there will be an attention check every this number of trials
+  var practiceNumber = 3;
+  var facesPool = loadFacePool(51,150); //preload faces
+  var slideList = createSlideList (1,9);//list of instructions slides, which have index from 1 to 8
+  var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
+  var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
+  var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
+  Face.facePool = [ ]; //record face data
+  Face.wordList = ['but','rock','sky','our','course','we','table','house','here','mouth','tree', 'hello']; //word list for attention check
+  var imageTestDescription = attentionStimulus; //designed for the image test
+  var falseAnswer = 0; var falseAllowance = 4;  //attention check - the amount of time participants rate the same picture before they get an alert
+  var repeatAlert = 0; var repeatAllowance = 2; //how many times they can get alerts before they are cicked out
+
+  /* ****************************************************/
+  /* Define local functions (other than functions file) */
+  /* ****************************************************/
+
+  function saveData(){ //save data function
+    $.ajax({
+      type: 'post',
+      cache: false,
+      url: 'https://web.stanford.edu/~amitgold/cgi-bin/save_data.php',
+      data: {filename: "sequencial/2020_sequencial_winter_continous_scale/" + Face.ID+ ".json",
+             filedata: jsPsych.data.get().json()}
+      //error: error_callback
+    });
+  }
+
+  /******************************************/
+  /* Set up Instructions */
+  /******************************************/
+
+  var instructions = {
+    type: "image-button-response",
+    stimulus: getNextSlide,
+    choices: ['Continue'],
+    margin_vertical: '10px',
+    data: {Name:'instructions'}
+  };
+
+  /******************************************/
+  /* Start Experiment - trial by trial */
+  /******************************************/
+
+  var consent = {
+    type:'external-html',
+    url: "external_page.html",
+    cont_btn: "start",
+    check_fn: check_consent
+  };
+
+  var phone = {
+    type: 'image-button-response',
+    stimulus: '',
+    choices: ['Phone','Computer'],
+    prompt: "Are you using a mobile phone or computer to conduct the experiment?",
+    data: {Name:'phone'}
+  };
+
+  var checkPhone = { //to check if participant is using phone. If it's 'No', the experiment will be terminated
+    timeline: [phone],
+    loop_function: checkPhone
+  };
+
+  var enter_id = {
+    type: 'survey-text',
+    questions: [{prompt: 'Please enter your prolific id (this is important for your validation)'}],
+    on_finish: function(data){
+      Face.ID = JSON.parse(data.responses).Q0; //save id as global variable
+      jsPsych.data.addProperties({participant_id: Face.ID});} //record participant id
+  };
+
+  var participant_id = { //to check if participants have entered ID (number/character, no punctuation allowed)
+    timeline: [enter_id],
+    loop_function: checkID,
+    loop_function: checkUser
+  };
+
+  var imageDescription = {
+    type: 'survey-text',
+    questions: [{prompt: "Please describe the picture in your own words"}],
+    preamble: function() {
+      var curr_stim = imageTestDescription.shift()
+      return '<img src='+curr_stim+'></img>';
+    },
+    on_finish: function(data){
+      Face.description = JSON.parse(data.responses).Q0; } //save description
+  };
+
+  var fixationGetFace = { //getting new fixation time and face
+    type: 'html-keyboard-response',
+    stimulus: '<p style="font-size: 48px;">+</p>',
+    trial_duration:  getTimeAndFace,  //random select fixation time
+    data: {Name:'fixation'}
+  };
+
+  var fixation = { //only get new fixation time without changing face - in one series of face, there're different fixation time
+    type: 'html-keyboard-response',
+    stimulus: '<p style="font-size: 48px;">+</p>',
+    trial_duration:  getFixationTime,  //random select fixation time
+    data: {Name:'fixation'}
+  };
+
+
+  var face = {                //there is an array of randomly selected pictures//
+    type: 'image-keyboard-response',
+    stimulus:  getFaceSample,
+    trial_duration: 1000,  //display faces for 0.5 second
+    choices: jsPsych.NO_KEYS,
+    data: function(){Name:'singleFace',
+    //add data of the single face to face pool
+    Face.facePool.push(Face.singleFace)},
+  };
+
+  var response = { //participants see a slider and asked to estimate the mean group emotion
+    type: 'image-slider-response_noButton',
+    stimulus: getScale,
+    prompt: "<p>Estimate the average emotion expressed by the sequence of faces you saw in the previous window</p>",
+    step:1,
+    max:50,
+    start: 0,
+    on_load: morphedScale,
+    data: function(){ //we save all the data here to make it easy to analyze and process the data.
+    return {
+      Name: 'response',
+      fixationTime: Face.fixationTime,
+      faceIdentity: Face.personX,
+      description: Face.description,
+      face_1:(Face.emotionX + Face.singleFace)
+      }}
+  };
+
+  var askTypeWord = { //attention check - participants are asked to copy a word that appears on the screen
+    type: 'survey-text',
+    questions: function (){return [{prompt:'Please type the word: '+ getWord().bold() + '  (pay attention to capital letters)'}]},
+  };
+
+  var attentionCheck = { //function for the attention check
+    timeline: [askTypeWord],
+    loop_function: checkTyping,
+    on_finish: saveData
+  };
+
+  var connectSurvey = {
+    on_start: saveData,
+    type: 'image-button-response',
+    stimulus: getNextSlide,
+    choices: ['Begin Survey']
+  };
+
+
+  /* create experiment definition array */
+  var collective_emotion_estimation = []; //display instructions
+  collective_emotion_estimation.push(consent);
+  collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
+  for (var i = 0; i < slideList.length-2; i++) {
+     collective_emotion_estimation.push(instructions)};
+  collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
+  for (var i = 0; i < practiceNumber; i++) {   //practice trials
+    faceNumber =  getRandomInt(1,12);
+    for (var t = 0; t < faceNumber; t++) {
+      collective_emotion_estimation.push(fixation,face);}
+    collective_emotion_estimation.push(response);
+  };
+  collective_emotion_estimation.push(instructions); //move on to real task
+  for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
+    collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
+
+      faceNumber = getRandomInt(1,12); //trial out of attention check loop
+      collective_emotion_estimation.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {
+      collective_emotion_estimation.push(fixation,face);}
+      collective_emotion_estimation.push(response);
+    var k = 0;
+    while (k < (attentionCheckInterval-1)){
+      faceNumber = getRandomInt(1,12);
+      collective_emotion_estimation.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
+      collective_emotion_estimation.push(fixation,face);}
+      collective_emotion_estimation.push(response);
+      k ++;
+    }
+  };
+
+  collective_emotion_estimation.push(imageDescription,connectSurvey);
+
+  /******************************************/
+  /*           run the study                */
+  /******************************************/
+  jsPsych.init({
+    preload_images: slideList,facesPool,attentionStimulus,
+    timeline: collective_emotion_estimation,
+    on_finish: function(data){
+    //saveData
+    //var final_submit = function() {
+    //       jsPsych.turk.submitToTurk({"completion_time": (new Date().getTime())});
+    //};
+    //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
+    //jsPsych.data.get().json(), final_submit, final_submit);
+    //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
+    window.location = "https://hbs.qualtrics.com/jfe/form/SV_0OkYSqJ6k02BDyl" //redirect to Qualtrics survey
+    }
+  })
+
+
+  </script>
+  </html>

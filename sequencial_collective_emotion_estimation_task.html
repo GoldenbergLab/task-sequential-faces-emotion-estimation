@@ -23,7 +23,7 @@
   /* Set up jsPsych blocks - static */
   /* ************************************ */
 
-  var taskNumber = 5; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var taskNumber = 50; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 3;
   var facesPool = loadFacePool(51,150); //preload faces
@@ -192,7 +192,7 @@
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
 
-      faceNumber = 1;//getRandomInt(1,12); //trial out of attention check loop
+      faceNumber = getRandomInt(1,12); //trial out of attention check loop
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
