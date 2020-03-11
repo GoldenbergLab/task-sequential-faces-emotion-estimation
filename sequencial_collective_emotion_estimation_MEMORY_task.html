@@ -42,7 +42,7 @@
   /* Define local functions (other than functions file) */
   /* ****************************************************/
 
-  function saveData1(){ //save data function
+  function saveData(){ //save data function
     $.ajax({
       type: 'post',
       cache: false,
@@ -53,6 +53,9 @@
     });
   }
 
+  function saveData(){ //save data function
+    jsPsych.data.get()
+  }
   /******************************************/
   /* Set up Instructions */
   /******************************************/
@@ -146,7 +149,7 @@
   var memory = {
     type: 'image-keyboard-response',
     stimulus: memoryFace,
-    prompt: "<p>Press <strong>J</strong> if you think this face was in the sequence before, if you dont think so please press <strong>F</strong></p>",
+    prompt: "<p> If you dont think this picture was in the previous sequence please press <strong>F</strong>,  if you think it was shown in the sequence press <strong>J</strong> <p>",
     choices: ['f', 'j'],
     data: function(){ //we save all the data here to make it easy to analyze and process the data.
     return {
