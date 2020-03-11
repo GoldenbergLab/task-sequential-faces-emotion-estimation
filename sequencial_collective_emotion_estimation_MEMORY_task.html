@@ -30,7 +30,7 @@
   var slideList = createSlideList (1,9);//list of instructions slides, which have index from 1 to 8
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
-  var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
+  var Face = {}; //create Face dictionary to (1) record fixation time, (2)make face sample and scale have the same person and valence in every trial
   Face.facePool = [ ]; //record face data
   Face.wordList = ['but','rock','sky','our','course','we','table','house','here','mouth','tree', 'hello']; //word list for attention check
   var imageTestDescription = attentionStimulus; //designed for the image test
@@ -41,7 +41,7 @@
   /* Define local functions (other than functions file) */
   /* ****************************************************/
 
-  function saveData(){ //save data function
+  function saveData1(){ //save data function
     $.ajax({
       type: 'post',
       cache: false,
@@ -51,6 +51,10 @@
       //error: error_callback
     });
   }
+
+  function saveData(){ //save data function                #### CHANGE BACK AFTER MODIFYING
+    jsPsych.data.displayData();
+    };
 
   /******************************************/
   /* Set up Instructions */
@@ -133,10 +137,26 @@
     stimulus:  getFaceSample,
     trial_duration: 1000,  //display faces for 0.5 second
     choices: jsPsych.NO_KEYS,
-    data: function(){Name:'singleFace',
+    data: function(){
     //add data of the single face to face pool
-    Face.facePool.push(Face.singleFace)},
+    if (Face.facePool.length == 8){
+      Face.facePool = [ ]
+    } else {
+      Face.facePool.push(Face.image)
+    }}
   };
+
+  var memory = {
+    type: 'image-keyboard-response',
+    stimulus: memoryFace,
+    prompt: "<p>Press <strong>J</strong> if you think this face was in the sequence before, if you dont think so please press <strong>F</strong></p>",
+    choices: ['f', 'j'],
+    data: function(){ //we save all the data here to make it easy to analyze and process the data.
+    return {
+      Name: 'memory',
+      CorrectFaces: Face.facePool,
+      }}
+  }
 
   var response = { //participants see a slider and asked to estimate the mean group emotion
     type: 'image-slider-response_noButton',
@@ -152,6 +172,7 @@
       fixationTime: Face.fixationTime,
       faceIdentity: Face.personX,
       description: Face.description,
+      faceShown: Face.facePool,
       face_1:(Face.emotionX + Face.singleFace)
       }}
   };
@@ -177,29 +198,29 @@
 
   /* create experiment definition array */
   var collective_emotion_estimation = []; //display instructions
-  collective_emotion_estimation.push(consent);
+  /*collective_emotion_estimation.push(consent);*/
   collective_emotion_estimation.push(checkPhone,imageDescription,participant_id);
   for (var i = 0; i < slideList.length-2; i++) {
      collective_emotion_estimation.push(instructions)};
   collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
-    faceNumber =  getRandomInt(1,12);
+    faceNumber =  8;
     for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
-    collective_emotion_estimation.push(response);
+    collective_emotion_estimation.push(response, memory);
   };
   collective_emotion_estimation.push(instructions); //move on to real task
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
 
-      faceNumber = getRandomInt(1,12); //trial out of attention check loop
+      faceNumber = 8; //trial out of attention check loop
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
       collective_emotion_estimation.push(response);
     var k = 0;
     while (k < (attentionCheckInterval-1)){
-      faceNumber = getRandomInt(1,12);
+      faceNumber = 8;
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
       collective_emotion_estimation.push(fixation,face);}
@@ -223,7 +244,7 @@
     //};
     //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
     //jsPsych.data.get().json(), final_submit, final_submit);
-    //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
+    jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
     window.location = "https://hbs.qualtrics.com/jfe/form/SV_0OkYSqJ6k02BDyl" //redirect to Qualtrics survey
     }
   })

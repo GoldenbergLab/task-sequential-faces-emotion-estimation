@@ -126,7 +126,8 @@ function checkPhone (){
 
   function getFaceSample (){  //get the sample of faces in each trial
     Face.singleFace = getRandomInt(1, 50);
-    return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
+    Face.image = ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg')
+    return Face.image;
   }
 
 
@@ -136,6 +137,68 @@ function checkPhone (){
        scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')}
     return scale;
   }
+
+  function memoryFace(){ //Select face for memory task
+    var correctFace = getRandomElement(Face.facePool);
+    var wrongFace = ImageToNumber(Face.facePool);
+    wrongFace = falseFace(wrongFace);
+    var RightWrong = [];
+    RightWrong.push(correctFace, wrongFace);
+    Face.mem = getRandomElement(RightWrong);
+    return Face.mem;
+  }
+
+  function ImageToNumber (facePool) {
+    var imageToNumb = facePool;
+    imageNumb = imageToNumb.toString().replace(/[^0-9,]/g, '');
+    imageNumb = imageNumb.split(',');
+    imageNumb = imageNumb.sort(function(a, b){return a-b});
+    return imageNumb;
+  }
+
+  function falseFace(imageNumb){
+    var imageDiff = diff(imageNumb);
+    var middle = Math.round(imageDiff/2);
+    var index = PicHighestIndex(imageNumb);
+    var PictureBase = imageNumb[index];
+    var FalsePicture = ('img/' +Face.personX+ (+PictureBase + +middle)+'.jpg');
+    return FalsePicture;
+  }
+
+  function diff(ary) {
+    var newA = [];
+    for (var i = 1; i < ary.length; i++)
+        newA.push(ary[i] - ary[i - 1]);
+    newA = Math.max.apply(null, newA)
+    return newA;
+}
+
+function PicHighestIndex(ary) {
+  var newB = [];
+  for (var i = 1; i < ary.length; i++)
+      newB.push(ary[i] - ary[i - 1]);
+  var highestDiffIndex = indexOfMax(newB);
+  return highestDiffIndex;
+
+}
+
+function indexOfMax(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+
+    var max = arr[0];
+    var maxIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            maxIndex = i;
+            max = arr[i];
+        }
+    }
+    return maxIndex;
+}
+
 
   function morphedScale (){ //generate the rating scale depending on the person and valence randomly chosen in faceArray
     // defining a few helper functions
