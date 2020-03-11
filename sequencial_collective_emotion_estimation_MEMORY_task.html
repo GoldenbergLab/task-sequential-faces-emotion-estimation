@@ -36,6 +36,7 @@
   var imageTestDescription = attentionStimulus; //designed for the image test
   var falseAnswer = 0; var falseAllowance = 4;  //attention check - the amount of time participants rate the same picture before they get an alert
   var repeatAlert = 0; var repeatAllowance = 2; //how many times they can get alerts before they are cicked out
+  var facesPerSequence = 8;
 
   /* ****************************************************/
   /* Define local functions (other than functions file) */
@@ -52,10 +53,6 @@
     });
   }
 
-  function saveData(){ //save data function                #### CHANGE BACK AFTER MODIFYING
-    jsPsych.data.displayData();
-    };
-
   /******************************************/
   /* Set up Instructions */
   /******************************************/
@@ -69,7 +66,7 @@
   };
 
   /******************************************/
-  /* Start Experiment - trial by trial */
+  /* Start Experiment - trial by trial      */
   /******************************************/
 
   var consent = {
@@ -139,10 +136,10 @@
     choices: jsPsych.NO_KEYS,
     data: function(){
     //add data of the single face to face pool
-    if (Face.facePool.length == 8){
+    if (Face.facePool.length == facesPerSequence){ //Controls that facepool only represents one trial, when the number of faces in the pool is already the number of expected trials it resets the list, because we are in a new trial
       Face.facePool = [ ]
     } else {
-      Face.facePool.push(Face.image)
+      Face.facePool.push(Face.image) //pushes the image that was just presented into a list so we can keep track of what people saw. This list is also important for the memory task. Because this facepool is the reference for which picture has been seen.
     }}
   };
 
@@ -154,7 +151,7 @@
     data: function(){ //we save all the data here to make it easy to analyze and process the data.
     return {
       Name: 'memory',
-      CorrectFaces: Face.facePool,
+      CorrectFaces: Face.facePool, //this variable will later be used to determin correct responses to the memory task.
       }}
   }
 
@@ -204,23 +201,23 @@
      collective_emotion_estimation.push(instructions)};
   collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
-    faceNumber =  8;
+    faceNumber =  facesPerSequence;
     for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
-    collective_emotion_estimation.push(response, memory);
+    collective_emotion_estimation.push(response, memory); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
   };
   collective_emotion_estimation.push(instructions); //move on to real task
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
 
-      faceNumber = 8; //trial out of attention check loop
+      faceNumber = facesPerSequence; //trial out of attention check loop
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
       collective_emotion_estimation.push(response);
     var k = 0;
     while (k < (attentionCheckInterval-1)){
-      faceNumber = 8;
+      faceNumber = facesPerSequence;
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
       collective_emotion_estimation.push(fixation,face);}

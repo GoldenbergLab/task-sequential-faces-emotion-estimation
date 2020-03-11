@@ -139,16 +139,16 @@ function checkPhone (){
   }
 
   function memoryFace(){ //Select face for memory task
-    var correctFace = getRandomElement(Face.facePool);
-    var wrongFace = ImageToNumber(Face.facePool);
-    wrongFace = falseFace(wrongFace);
-    var RightWrong = [];
+    var correctFace = getRandomElement(Face.facePool); //selects a random picture of the ones that have been shown in the trial
+    var wrongFace = ImageToNumber(Face.facePool); //Before we can get a false picture, we need to transform picture array into number array (which starts from lowest number)
+    wrongFace = falseFace(wrongFace); // getting a false picture. That is located between the real pictures that had the biggest distance to each other.
+    var RightWrong = []; // an array that will contain 1 wrong and 1 right picture
     RightWrong.push(correctFace, wrongFace);
-    Face.mem = getRandomElement(RightWrong);
+    Face.mem = getRandomElement(RightWrong); // selecting either a right or a wrong picture with a 50% chance
     return Face.mem;
   }
 
-  function ImageToNumber (facePool) {
+  function ImageToNumber (facePool) { // This function transforms the image array into a number array that starts from the lowest number for further processing
     var imageToNumb = facePool;
     imageNumb = imageToNumb.toString().replace(/[^0-9,]/g, '');
     imageNumb = imageNumb.split(',');
@@ -156,41 +156,41 @@ function checkPhone (){
     return imageNumb;
   }
 
-  function falseFace(imageNumb){
-    var imageDiff = diff(imageNumb);
-    var middle = Math.round(imageDiff/2);
-    var index = PicHighestIndex(imageNumb);
-    var PictureBase = imageNumb[index];
-    var FalsePicture = ('img/' +Face.personX+ (+PictureBase + +middle)+'.jpg');
+  function falseFace(imageNumb){ //This function returnes a fasle picture that is in the middle of 2 real images that have the biggest distance between them.
+    var imageDiff = diff(imageNumb); //this line returnes an array representing the distances between two real pictures
+    var middle = Math.round(imageDiff/2); // variable that will be used to construct the false picture. This is the distance to the middle between two real pictures, where we want to create the wrong picture.
+    var index = PicHighestIndex(imageNumb); // This function locates the position of the lower real face that has the highest distance to the next real face, which we will use to construct the wrong picture.
+    var PictureBase = imageNumb[index]; // Selects the value of  of the lower real face. By adding the middle variable we will have the correct valence for the wrong picture
+    var FalsePicture = ('img/' +Face.personX+ (+PictureBase + +middle)+'.jpg'); // creating the picture name with correct valence etc.
     return FalsePicture;
   }
 
-  function diff(ary) {
-    var newA = [];
-    for (var i = 1; i < ary.length; i++)
+  function diff(ary) { //This function returns the biggest difference between neighboors of right (presented in sequence) pictures
+    var newA = []; // temp array
+    for (var i = 1; i < ary.length; i++) // calculates the difference between the neighbours and returns this into the temp variable
         newA.push(ary[i] - ary[i - 1]);
-    newA = Math.max.apply(null, newA)
+    newA = Math.max.apply(null, newA) // selects the biggest difference value
     return newA;
 }
 
-function PicHighestIndex(ary) {
-  var newB = [];
+function PicHighestIndex(ary) { //This function finds index of array that has the biggest distance to its neigbour
+  var newB = []; // the first 2 lines are identical to the diff(), and return an array of difference scores
   for (var i = 1; i < ary.length; i++)
       newB.push(ary[i] - ary[i - 1]);
-  var highestDiffIndex = indexOfMax(newB);
+  var highestDiffIndex = indexOfMax(newB); // calls a function that finds the index biggest value in an arrays
   return highestDiffIndex;
 
 }
 
-function indexOfMax(arr) {
-    if (arr.length === 0) {
+function indexOfMax(arr) { //This function finds the index of the value in an array that has the higest value
+    if (arr.length === 0) { // In case for some reason an array is 0, which shouldnt happen
         return -1;
     }
 
-    var max = arr[0];
-    var maxIndex = 0;
+    var max = arr[0]; // starts by selecting the first element in an array
+    var maxIndex = 0; // this variable will rememeber the index of the highest index
 
-    for (var i = 1; i < arr.length; i++) {
+    for (var i = 1; i < arr.length; i++) { // loops through the array and checks if the current highest value and its index is smaller than its neigbhour. If so the index and its value shifts to the next element in the array.
         if (arr[i] > max) {
             maxIndex = i;
             max = arr[i];
