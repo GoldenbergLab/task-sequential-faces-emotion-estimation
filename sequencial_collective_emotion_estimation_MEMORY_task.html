@@ -53,9 +53,6 @@
     });
   }
 
-  function saveData(){ //save data function
-    jsPsych.data.get()
-  }
   /******************************************/
   /* Set up Instructions */
   /******************************************/
@@ -141,6 +138,7 @@
     //add data of the single face to face pool
     if (Face.facePool.length == facesPerSequence){ //Controls that facepool only represents one trial, when the number of faces in the pool is already the number of expected trials it resets the list, because we are in a new trial
       Face.facePool = [ ]
+      Face.facePool.push(Face.image)
     } else {
       Face.facePool.push(Face.image) //pushes the image that was just presented into a list so we can keep track of what people saw. This list is also important for the memory task. Because this facepool is the reference for which picture has been seen.
     }}
@@ -149,7 +147,7 @@
   var memory = {
     type: 'image-keyboard-response',
     stimulus: memoryFace,
-    prompt: "<p> If you dont think this picture was in the previous sequence please press <strong>F</strong>,  if you think it was shown in the sequence press <strong>J</strong> <p>",
+    prompt: "<p> <strong>J<strong> - this face was in the sequence <strong>F<strong> - this wasn't.<p>",
     choices: ['f', 'j'],
     data: function(){ //we save all the data here to make it easy to analyze and process the data.
     return {
@@ -217,14 +215,14 @@
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
       collective_emotion_estimation.push(fixation,face);}
-      collective_emotion_estimation.push(response);
+      collective_emotion_estimation.push(response, memory);
     var k = 0;
     while (k < (attentionCheckInterval-1)){
       faceNumber = facesPerSequence;
       collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
       collective_emotion_estimation.push(fixation,face);}
-      collective_emotion_estimation.push(response);
+      collective_emotion_estimation.push(response, memory);
       k ++;
     }
   };
@@ -244,7 +242,7 @@
     //};
     //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
     //jsPsych.data.get().json(), final_submit, final_submit);
-    jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
+    //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
     window.location = "https://hbs.qualtrics.com/jfe/form/SV_0OkYSqJ6k02BDyl" //redirect to Qualtrics survey
     }
   })
