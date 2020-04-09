@@ -25,7 +25,7 @@
 
   var taskNumber = 15; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
-  var practiceNumber = 3;
+  var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
   var slideListGeneral = createSlideListGeneral (1,2);//list of general instructions slides, which have index from 1 to 3
   var slideListSequence = createSlideListSequence (1,7); //list of sequence instructions slides, which have index from 1 to 3
@@ -177,7 +177,7 @@
   var response = { //participants see a slider and asked to estimate the mean group emotion
     type: 'image-slider-response_noButton',
     stimulus: getScale,
-    prompt: "<p>Estimate the average emotion expressed by the sequence of faces you saw in the previous window</p>",
+    prompt: "<p>Estimate the average emotion expressed by the sequence of faces you just saw</p>",
     step:1,
     max:50,
     start: 0,
