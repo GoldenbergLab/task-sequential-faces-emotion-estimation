@@ -23,7 +23,7 @@
   /* Set up jsPsych blocks - static */
   /* ************************************ */
 
-  var taskNumber = 5; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var taskNumber = 15; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
@@ -168,6 +168,7 @@
       stimulus: memoryFace,
       choices: ['It was','It was NOT'],
       prompt: "<p>Decide whether you think this picture <strong> was </strong> in the sequence or <strong>was not </strong> </p>",
+      button_html: '<button class="jspsych-btn-jonas">%choice%</button>',
       data: function(){ //we save all the data here to make it easy to analyze and process the data.
       return {
         Name: 'memory',
