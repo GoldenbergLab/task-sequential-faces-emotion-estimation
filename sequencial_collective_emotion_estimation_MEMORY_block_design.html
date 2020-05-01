@@ -27,6 +27,7 @@
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
+  var TargetFacePool = loadTargetFacePool(51,150); //preload faces
   var slideListGeneral = createSlideListGeneral (1,2);//list of general instructions slides, which have index from 1 to 3
   var slideListSequence = createSlideListSequence (1,7); //list of sequence instructions slides, which have index from 1 to 3
   var slideListMemory = createSlideListMemory (1,6); //list of sequence instructions slides, which have index from 1 to 3
@@ -162,18 +163,17 @@
     }}
   };
 
-  var memory = {
-    type: 'image-keyboard-response',
-    stimulus: memoryFace,
-    prompt: "<p> <strong>J<strong> - this face was in the sequence <p>" +
-    "<p> <strong>F<strong> - this wasn't.<p>",
-    choices: ['f', 'j'],
-    data: function(){ //we save all the data here to make it easy to analyze and process the data.
-    return {
-      Name: 'memory',
-      CorrectFaces: Face.facePool, //this variable will later be used to determin correct responses to the memory task.
-      }}
-  }
+    var memory = {
+      type: 'image-button-response',
+      stimulus: memoryFace,
+      choices: ['It was','It was NOT'],
+      prompt: "<p>Decide whether you think this picture <strong> was </strong> in the sequence or <strong>was not </strong> </p>",
+      data: function(){ //we save all the data here to make it easy to analyze and process the data.
+      return {
+        Name: 'memory',
+        CorrectFaces: Face.facePool,
+    }}
+  };
 
   var response = { //participants see a slider and asked to estimate the mean group emotion
     type: 'image-slider-response_noButton',
@@ -280,7 +280,7 @@
 
       /*Order of main task. In the commented part is the option to randomize */
       var main_tasks = [];
-      var order = 1;                   //order = shuffle(); If we want to randomize
+      var order = 2;                   //order = shuffle(); If we want to randomize
       if (order == 1){
         main_tasks = collective_emotion_estimation.concat(memory_task);
       } else {
@@ -300,7 +300,7 @@
   /*           run the study                */
   /******************************************/
   jsPsych.init({
-    preload_images: slideListGeneral,slideListMemory,slideListSequence,facesPool,attentionStimulus,
+    preload_images: slideListGeneral,slideListMemory,slideListSequence,facesPool,TargetFacePool,attentionStimulus,
     timeline: experiment,
     on_finish: function(data){
     //saveData

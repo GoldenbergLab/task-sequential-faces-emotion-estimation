@@ -18,6 +18,14 @@ function loadFacePool(start,end) { //the start and ending index of the images
   return pool;
 }
 
+function loadTargetFacePool(start,end) { //the start and ending index of the images
+  var pool = [];
+  for(i = start; i < (end+1); i++){
+     pool.push( 'img/target_faces/A' + i + '.jpg'); pool.push( 'img/target_faces/B' + i + '.jpg');
+     pool.push( 'img/target_faces/C' + i + '.jpg'); pool.push( 'img/target_faces/D' + i + '.jpg');}
+  return pool;
+}
+
 function createSlideListGeneral(start,end){
   var list = [];
   for (i = start; i < (end+1); i++){
