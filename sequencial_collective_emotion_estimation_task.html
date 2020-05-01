@@ -27,7 +27,7 @@
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 3;
   var facesPool = loadFacePool(51,150); //preload faces
-  var slideList = createSlideList (1,9);//list of instructions slides, which have index from 1 to 8
+  var slideList = createSlideList (1,8);//list of instructions slides, which have index from 1 to 8
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
   var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial

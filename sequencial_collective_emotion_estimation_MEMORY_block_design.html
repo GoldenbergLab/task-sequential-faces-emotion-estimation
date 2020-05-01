@@ -23,7 +23,7 @@
   /* Set up jsPsych blocks - static */
   /* ************************************ */
 
-  var taskNumber = 15; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var taskNumber = 5; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
@@ -165,7 +165,8 @@
   var memory = {
     type: 'image-keyboard-response',
     stimulus: memoryFace,
-    prompt: "<p> <strong>J<strong> - this face was in the sequence <strong>F<strong> - this wasn't in the sequence.<p>",
+    prompt: "<p> <strong>J<strong> - this face was in the sequence <p>" +
+    "<p> <strong>F<strong> - this wasn't.<p>",
     choices: ['f', 'j'],
     data: function(){ //we save all the data here to make it easy to analyze and process the data.
     return {
@@ -277,9 +278,9 @@
         k ++;
       }
 
-      /* Randomize two main tasks */
+      /*Order of main task. In the commented part is the option to randomize */
       var main_tasks = [];
-      order = shuffle();
+      var order = 1;                   //order = shuffle(); If we want to randomize
       if (order == 1){
         main_tasks = collective_emotion_estimation.concat(memory_task);
       } else {
@@ -291,7 +292,6 @@
       var experiment = general_instruction_start;
       experiment = experiment.concat(main_tasks, imageDescription,connectSurvey);
     }
-
 
   };
 

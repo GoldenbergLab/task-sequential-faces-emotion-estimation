@@ -21,21 +21,21 @@ function loadFacePool(start,end) { //the start and ending index of the images
 function createSlideListGeneral(start,end){
   var list = [];
   for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/general/Slide ' + i + '.png');}
+     list.push( 'img/ins/memory_seperate/general/Slide ' + i + '.png');}
   return list;
 }
 
 function createSlideListSequence(start,end){
   var list = [];
   for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/sequential/Slide ' + i + '.png');}
+     list.push( 'img/ins/memory_seperate/sequential/Slide ' + i + '.png');}
   return list;
 }
 
 function createSlideListMemory(start,end){
   var list = [];
   for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/memory/Slide ' + i + '.png');}
+     list.push( 'img/ins/memory_seperate/memory/Slide ' + i + '.png');}
   return list;
 }
 
@@ -164,6 +164,8 @@ function checkPhone (){
 
   function memoryFace(){ //Select face for memory task
     var correctFace = getRandomElement(Face.facePool); //selects a random picture of the ones that have been shown in the trial
+    correctFace = correctFace.substr(4); // we need to remove the image/ directory prefix to get into another folder
+    correctFace = ('img/' + 'target_faces/' + correctFace);
     var wrongFace = ImageToNumber(Face.facePool); //Before we can get a false picture, we need to transform picture array into number array (which starts from lowest number)
     wrongFace = falseFace(wrongFace); // getting a false picture. That is located between the real pictures that had the biggest distance to each other.
     var RightWrong = []; // an array that will contain 1 wrong and 1 right picture
@@ -171,6 +173,12 @@ function checkPhone (){
     Face.mem = getRandomElement(RightWrong); // selecting either a right or a wrong picture with a 50% chance
     return Face.mem;
   }
+
+  function rectangle(){
+    rect = ('img/'+ 'target' +'.png');
+    return rect;
+  }
+
 
   function ImageToNumber (facePool) { // This function transforms the image array into a number array that starts from the lowest number for further processing
     var imageToNumb = facePool;
@@ -185,7 +193,7 @@ function checkPhone (){
     var middle = Math.round(imageDiff/2); // variable that will be used to construct the false picture. This is the distance to the middle between two real pictures, where we want to create the wrong picture.
     var index = PicHighestIndex(imageNumb); // This function locates the position of the lower real face that has the highest distance to the next real face, which we will use to construct the wrong picture.
     var PictureBase = imageNumb[index]; // Selects the value of  of the lower real face. By adding the middle variable we will have the correct valence for the wrong picture
-    var FalsePicture = ('img/' +Face.personX+ (+PictureBase + +middle)+'.jpg'); // creating the picture name with correct valence etc.
+    var FalsePicture = ('img/' + 'target_faces/' +Face.personX+ (+PictureBase + +middle)+'.jpg'); // creating the picture name with correct valence etc.
     return FalsePicture;
   }
 
