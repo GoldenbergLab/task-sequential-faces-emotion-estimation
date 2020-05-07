@@ -247,46 +247,47 @@
       collective_emotion_estimation.push(response);
       k ++;
     }
+  }
 
-    /* create memory task definition array */
-    var memory_task = []; //display instructions
-    /*memory_task.push(consent);*/
-    for (var i = 0; i < slideListMemory.length - 1; i++) {
-       memory_task.push(memoryInstructions)};
-    memory_task.push(fixationGetFace,attentionCheck);//attention check before practice task
-    for (var i = 0; i < practiceNumber; i++) {   //practice trials
-      faceNumber =  facesPerSequence;
+  /* create memory task definition array */
+  var memory_task = []; //display instructions
+  /*memory_task.push(consent);*/
+  for (var i = 0; i < slideListMemory.length - 1; i++) {
+     memory_task.push(memoryInstructions)};
+  memory_task.push(fixationGetFace,attentionCheck);//attention check before practice task
+  for (var i = 0; i < practiceNumber; i++) {   //practice trials
+    faceNumber =  facesPerSequence;
+    for (var t = 0; t < faceNumber; t++) {
+      memory_task.push(fixation,face);}
+    memory_task.push(memory); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+  };
+  memory_task.push(memoryInstructions); //move on to real task
+  for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
+    memory_task.push(fixation,attentionCheck); //attention check before real task
+
+      faceNumber = facesPerSequence; //trial out of attention check loop
+      memory_task.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
-        memory_task.push(fixation,face);}
-      memory_task.push(memory); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
-    };
-    memory_task.push(memoryInstructions); //move on to real task
-    for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
-      memory_task.push(fixation,attentionCheck); //attention check before real task
+      memory_task.push(fixation,face);}
+      memory_task.push(memory);
+    var k = 0;
+    while (k < (attentionCheckInterval-1)){
+      faceNumber = facesPerSequence;
+      memory_task.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
+      memory_task.push(fixation,face);}
+      memory_task.push(memory);
+      k ++;
+    }
 
-        faceNumber = facesPerSequence; //trial out of attention check loop
-        memory_task.push(fixationGetFace);
-        for (var t = 0; t < faceNumber; t++) {
-        memory_task.push(fixation,face);}
-        memory_task.push(memory);
-      var k = 0;
-      while (k < (attentionCheckInterval-1)){
-        faceNumber = facesPerSequence;
-        memory_task.push(fixationGetFace);
-        for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
-        memory_task.push(fixation,face);}
-        memory_task.push(memory);
-        k ++;
-      }
-
-      /*Order of main task. In the commented part is the option to randomize */
-      var main_tasks = [];
-      var order = 1;                   //order = shuffle(); If we want to randomize
-      if (order == 1){
-        main_tasks = collective_emotion_estimation.concat(memory_task);
-      } else {
-        main_tasks = memory_task.concat(collective_emotion_estimation);
-      }
+    /*Order of main task. In the commented part is the option to randomize */
+    var main_tasks = [];
+    var order = 1;                   //order = shuffle(); If we want to randomize
+    if (order == 1){
+      main_tasks = collective_emotion_estimation.concat(memory_task);
+    } else {
+      main_tasks = memory_task.concat(collective_emotion_estimation);
+    }
 
 
       /* Create the full experiment definition array */
@@ -294,7 +295,6 @@
       experiment = experiment.concat(main_tasks, imageDescription,connectSurvey);
     }
 
-  };
 
 
   /******************************************/
