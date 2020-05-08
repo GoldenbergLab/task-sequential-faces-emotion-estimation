@@ -26,39 +26,15 @@ function loadTargetFacePool(start,end) { //the start and ending index of the ima
   return pool;
 }
 
-function createSlideListGeneral(start,end){
+function createSlideList(start,end){
   var list = [];
   for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/memory_seperate/general/Slide ' + i + '.png');}
+     list.push( 'img/ins/memory_seperate/Slide ' + i + '.png');}
   return list;
 }
 
-function createSlideListSequence(start,end){
-  var list = [];
-  for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/memory_seperate/sequential/Slide ' + i + '.png');}
-  return list;
-}
-
-function createSlideListMemory(start,end){
-  var list = [];
-  for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/memory_seperate/memory/Slide ' + i + '.png');}
-  return list;
-}
-
-function getNextGeneralSlide () {  //use to shift instruction slides
-  var currentSlide = slideListGeneral.shift();
-  return currentSlide
-}
-
-function getNextSequenceSlide () {  //use to shift instruction slides
-  var currentSlide = slideListSequence.shift();
-  return currentSlide
-}
-
-function getNextMemorySlide () {  //use to shift instruction slides
-  var currentSlide = slideListMemory.shift();
+function getNextSlide () {  //use to shift instruction slides
+  var currentSlide = slideList.shift();
   return currentSlide
 }
 
