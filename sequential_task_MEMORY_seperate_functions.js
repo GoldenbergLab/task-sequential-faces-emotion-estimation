@@ -18,14 +18,6 @@ function loadFacePool(start,end) { //the start and ending index of the images
   return pool;
 }
 
-function loadTargetFacePool(start,end) { //the start and ending index of the images
-  var pool = [];
-  for(i = start; i < (end+1); i++){
-     pool.push( 'img/target_faces/A' + i + '.jpg'); pool.push( 'img/target_faces/B' + i + '.jpg');
-     pool.push( 'img/target_faces/C' + i + '.jpg'); pool.push( 'img/target_faces/D' + i + '.jpg');}
-  return pool;
-}
-
 function createSlideList(start,end){
   var list = [];
   for (i = start; i < (end+1); i++){
@@ -149,7 +141,7 @@ function checkPhone (){
   function memoryFace(){ //Select face for memory task
     var correctFace = getRandomElement(Face.facePool); //selects a random picture of the ones that have been shown in the trial
     correctFace = correctFace.substr(4); // we need to remove the image/ directory prefix to get into another folder
-    correctFace = ('img/' + 'target_faces/' + correctFace);
+    correctFace = ('img/' + correctFace);
     var wrongFace = ImageToNumber(Face.facePool); //Before we can get a false picture, we need to transform picture array into number array (which starts from lowest number)
     wrongFace = falseFace(wrongFace); // getting a false picture. That is located between the real pictures that had the biggest distance to each other.
     var RightWrong = []; // an array that will contain 1 wrong and 1 right picture
@@ -159,8 +151,8 @@ function checkPhone (){
   }
 
   function rectangle(){
-    rect = ('img/'+ 'target' +'.png');
-    return rect;
+    var rect = '<style> img { display: block; margin-left: auto; margin-right: auto; border: 3px solid red;} </style>'
+    $(".jspsych-content").prepend(rect);
   }
 
 
@@ -177,7 +169,7 @@ function checkPhone (){
     var middle = Math.round(imageDiff/2); // variable that will be used to construct the false picture. This is the distance to the middle between two real pictures, where we want to create the wrong picture.
     var index = PicHighestIndex(imageNumb); // This function locates the position of the lower real face that has the highest distance to the next real face, which we will use to construct the wrong picture.
     var PictureBase = imageNumb[index]; // Selects the value of  of the lower real face. By adding the middle variable we will have the correct valence for the wrong picture
-    var FalsePicture = ('img/' + 'target_faces/' +Face.personX+ (+PictureBase + +middle)+'.jpg'); // creating the picture name with correct valence etc.
+    var FalsePicture = ('img/' + Face.personX+ (+PictureBase + +middle)+'.jpg'); // creating the picture name with correct valence etc.
     return FalsePicture;
   }
 

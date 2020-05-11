@@ -27,7 +27,6 @@
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
-  var TargetFacePool = loadTargetFacePool(51,150); //preload faces
   var slideList = createSlideList (1,15);//list of general instructions slides, which have index from 1 to 3
   var NumSeqInstructionSlides = 6 //number of slides that explain the task
   var NumMemInstructionSlides = 5 //number of slides that explain the task
@@ -153,6 +152,7 @@
       choices: ['It was','It was NOT'],
       prompt: "<p>Decide whether you think this picture <strong> was </strong> in the sequence or <strong>was not </strong> </p>",
       button_html: '<button class="jspsych-btn-jonas">%choice%</button>',
+      on_load: rectangle,
       data: function(){ //we save all the data here to make it easy to analyze and process the data.
       return {
         Name: 'memory',
@@ -285,7 +285,7 @@
   /*           run the study                */
   /******************************************/
   jsPsych.init({
-    preload_images: slideList,facesPool,TargetFacePool,attentionStimulus,
+    preload_images: slideList,facesPool,attentionStimulus,
     timeline: experiment,
     on_finish: function(data){
     //saveData
