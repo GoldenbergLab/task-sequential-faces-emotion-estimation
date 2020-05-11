@@ -28,9 +28,9 @@
   var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
   var TargetFacePool = loadTargetFacePool(51,150); //preload faces
-  var slideListGeneral = createSlideListGeneral (1,2);//list of general instructions slides, which have index from 1 to 3
-  var slideListSequence = createSlideListSequence (1,7); //list of sequence instructions slides, which have index from 1 to 3
-  var slideListMemory = createSlideListMemory (1,6); //list of sequence instructions slides, which have index from 1 to 3
+  var slideList = createSlideList (1,15);//list of general instructions slides, which have index from 1 to 3
+  var NumSeqInstructionSlides = 6 //number of slides that explain the task
+  var NumMemInstructionSlides = 5 //number of slides that explain the task
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
   var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
   var Face = {}; //create Face dictionary to (1) record fixation time, (2)make face sample and scale have the same person and valence in every trial
@@ -60,25 +60,9 @@
   /* Set up Instructions */
   /******************************************/
 
-  var generalInstructions = {
+  var Instructions = {
     type: "image-button-response",
-    stimulus: getNextGeneralSlide,
-    choices: ['Continue'],
-    margin_vertical: '10px',
-    data: {Name:'instructions'}
-  };
-
-  var sequenceInstructions = {
-    type: "image-button-response",
-    stimulus: getNextSequenceSlide,
-    choices: ['Continue'],
-    margin_vertical: '10px',
-    data: {Name:'instructions'}
-  };
-
-  var memoryInstructions = {
-    type: "image-button-response",
-    stimulus: getNextMemorySlide,
+    stimulus: getNextSlide,
     choices: ['Continue'],
     margin_vertical: '10px',
     data: {Name:'instructions'}
@@ -209,19 +193,19 @@
   var connectSurvey = {
     on_start: saveData,
     type: 'image-button-response',
-    stimulus: getNextGeneralSlide,
+    stimulus: getNextSlide,
     choices: ['Begin Survey']
   };
 
   /* create general instruction definition array */
   var general_instruction_start = [];
-  general_instruction_start.push(checkPhone,imageDescription,participant_id, generalInstructions);
+  general_instruction_start.push(checkPhone,imageDescription,participant_id, Instructions);
 
   /* create face average task definition array */
   var collective_emotion_estimation = []; //display instructions
   /*collective_emotion_estimation.push(consent);*/
-  for (var i = 0; i < slideListSequence.length - 1; i++) {
-     collective_emotion_estimation.push(sequenceInstructions)};
+  for (var i = 0; i < NumSeqInstructionSlides; i++) { // number of slides explaining the sequential task
+     collective_emotion_estimation.push(Instructions)};
   collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber =  facesPerSequence;
@@ -229,7 +213,7 @@
       collective_emotion_estimation.push(fixation,face);}
     collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
   };
-  collective_emotion_estimation.push(sequenceInstructions); //move on to real task
+  collective_emotion_estimation.push(Instructions); //move on to real task
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
 
@@ -252,8 +236,8 @@
   /* create memory task definition array */
   var memory_task = []; //display instructions
   /*memory_task.push(consent);*/
-  for (var i = 0; i < slideListMemory.length - 1; i++) {
-     memory_task.push(memoryInstructions)};
+  for (var i = 0; i < NumMemInstructionSlides; i++) {
+     memory_task.push(Instructions)};
   memory_task.push(fixationGetFace,attentionCheck);//attention check before practice task
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber =  facesPerSequence;
@@ -261,7 +245,7 @@
       memory_task.push(fixation,face);}
     memory_task.push(memory); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
   };
-  memory_task.push(memoryInstructions); //move on to real task
+  memory_task.push(Instructions); //move on to real task
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
     memory_task.push(fixation,attentionCheck); //attention check before real task
 
@@ -301,7 +285,7 @@
   /*           run the study                */
   /******************************************/
   jsPsych.init({
-    preload_images: slideListGeneral,slideListMemory,slideListSequence,facesPool,TargetFacePool,attentionStimulus,
+    preload_images: slideList,facesPool,TargetFacePool,attentionStimulus,
     timeline: experiment,
     on_finish: function(data){
     //saveData
