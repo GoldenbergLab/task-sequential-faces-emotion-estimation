@@ -29,7 +29,6 @@
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
-  var slideList = createSlideList (1,15);//list of general instructions slides, which have index from 1 to 3
   var NumSeqInstructionSlides = 6 //number of slides that explain the task
   var NumMemInstructionSlides = 5 //number of slides that explain the task
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
@@ -56,18 +55,6 @@
       //error: error_callback
     });
   }
-
-  /******************************************/
-  /* Set up Instructions */
-  /******************************************/
-
-  var Instructions = {
-    type: "image-button-response",
-    stimulus: getNextSlide,
-    choices: ['Continue'],
-    margin_vertical: '10px',
-    data: {Name:'instructions'}
-  };
 
   /******************************************/
   /* Start Experiment - trial by trial      */
@@ -285,7 +272,7 @@
   /*           run the study                */
   /******************************************/
   jsPsych.init({
-    preload_images: slideList,facesPool,attentionStimulus,
+    preload_images: facesPool,attentionStimulus,
     timeline: experiment,
     on_finish: function(data){
     //saveData
