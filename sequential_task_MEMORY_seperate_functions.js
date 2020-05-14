@@ -18,18 +18,6 @@ function loadFacePool(start,end) { //the start and ending index of the images
   return pool;
 }
 
-function createSlideList(start,end){
-  var list = [];
-  for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/memory_seperate/Slide ' + i + '.jpg');}
-  return list;
-}
-
-function getNextSlide () {  //use to shift instruction slides
-  var currentSlide = slideList.shift();
-  return currentSlide
-}
-
 function loadStimulus(end) { //the start and ending index of the images
   var list = [];
   for(i = 1; i < (end+1); i++){
