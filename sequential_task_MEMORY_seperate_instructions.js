@@ -75,7 +75,7 @@ var  instruction_seq_MainTaskTransition = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p align='left'> Thank you for completing the practice stage. </p>"+
-  "<p align='left'> Remember the goal was to ESTIMATE THE <span style='color: red;'> AVERAGE EMOTIONAL RESPONSE of the face sequence you just saw. </span></p>"+
+  "<p align='left'> Remember, the goal was to ESTIMATE THE <span style='color: red;'> AVERAGE EMOTIONAL RESPONSE of the face sequence you just saw. </span></p>"+
   "<p align='left'> In the following section you will complete the actual session, which consists of 15 trials. This part of the study should take 7 minutes, more or less. </p>" +
   "<p align='left'> Click <strong>Continue</strong> to begin the actual task. </p>",
   on_load: textbox
@@ -96,8 +96,7 @@ var  instruction_mem2 = {
   choices: ['Continue'],
   stimulus: "<p align='left'> As in the previous session, a series of faces expressing various degrees of emotions will appear on the screen. The face sequence may either be expressing positive or negative emotions. </p>"+
    "<img src = img/A75.jpg></img>"+
-   "<p align='left'> The goal of this session is to examine whether people can <span style='color: red;'> remember the emotional facial expressions </span> of a face in the sequence. </p>"+
-   "<p align='left'> The face sequence will be on the screen for a brief moment. In order to take all the expressions in, try to focus your attention on it as much as possible. </p>",
+   "<p align='left'> The goal of this session is to examine whether people can <span style='color: red;'> remember the emotional facial expressions </span> of a face in the sequence. </p>",
    on_load: textbox
 };
 
