@@ -44,10 +44,10 @@ var  instruction_seq2 = {
 var  instruction_seq3 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p> A face will then appear on the screen. When you move your mouse, the face will change from being neutral to expressing emotion </p>"+
-   "<p> By adjusting your mouse, <strong> you are asked to estimate the </strong> <span style='color: red;'> average emotional response of the face sequence you just saw. </span></p>" +
+  stimulus:  "<p align='left'> A face will then appear on the screen. When you move your mouse, the face will change from being neutral to expressing emotion </p>"+
+   "<p p align='left'> By adjusting your mouse, <strong> you are asked to estimate the </strong> <span style='color: red;'> average emotional response of the face sequence you just saw. </span></p>" +
    "<img src = img/A75.jpg></img>",
-   on_load: remover
+   on_load: remover_textbox
 };
 
 var  instruction_seq4 = {
@@ -148,10 +148,17 @@ function line () {
   //$(".jspsych-content-wrapper").prepend(instrLine);
 };
 
-function remover () {
+function remover_textbox () {
   $("#vertLine").remove();
   $("#linePrompt").remove();
+  var textbox = '<style> p { display: block; margin-top: 1em; margin-bottom: 1em; margin-left: 400px; margin-right: 400px;} </style>';
+  $(".jspsych-content").prepend(textbox);
 };
+
+function textbox(){
+  var textbox = '<style> p { display: block; margin-top: 1em; margin-bottom: 1em; margin-left: 400px; margin-right: 400px;} </style>'
+  $(".jspsych-content").prepend(textbox);
+}
 
 
 
