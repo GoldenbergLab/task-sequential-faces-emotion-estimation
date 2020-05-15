@@ -328,3 +328,8 @@ function indexOfMax(arr) { //This function finds the index of the value in an ar
     order = getRandomElement([1, 2]);
     return order;
   }
+
+  function textbox(){
+    var textbox = '<style> p { display: block; margin-top: 1em; margin-bottom: 1em; margin-left: 400px; margin-right: 400px;} </style>'
+    $(".jspsych-content").prepend(textbox);
+  }

@@ -1,0 +1,2 @@
+In order to be able to see the generated htmls locally, you first have to allow chrome to pull local files.
+CDM: "chrome.exe" "--allow-file-access-from-files" or "C:\Program Files (x86)\Google\Chrome\Application\Chrome.exe" --allow-file-access-from-files
