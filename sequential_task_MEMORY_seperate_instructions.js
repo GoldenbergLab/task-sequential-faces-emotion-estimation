@@ -103,8 +103,7 @@ var  instruction_mem2 = {
 var  instruction_mem3 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p align='left'> After the sequence, a target face will be presented to you. We ask you to <strong> recall </strong>, if the the presented face was in the sequence that you just have seen.   </p>"+
-   "<p align='left'> As in the previous session, a series of faces expressing various degrees of emotions will appear on the screen. The face sequence may either be expressing positive or negative emotions. </p>"+
+  stimulus:  "<p align='left'> After the sequence of faces you observed, a target face will be presented to you. We ask you to <strong> recall </strong>, if the the presented face was in the sequence that you just have seen.   </p>"+
    "<img src = img/A75Target.jpg></img>"+
    "<p align='left'> If you think that the target face <span style='color: red;'> DID </span> appear in the sequence press the button: <span style='color: red;'> IT WAS </span>  </p>" +
    "<p align='left'> If you think that the target face <span style='color: red;'> DID NOT </span> appear in the sequence you just saw press the button: <span style='color: red;'> IT WAS NOT</span> </p>",
@@ -114,10 +113,9 @@ var  instruction_mem3 = {
 var  instruction_mem4 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p> Remember, the goal here is to provide </p>"+
-   "<p> YOUR JUDGEMENT WHETHER </p>"+
-   "<p> <strong> THE PRESENTED TARGET FACE (presented in red square) <span style='color: red;'> WAS </span> OR <span style='color: red;'> WAS NOT </span> </strong></p>" +
-   "<p> one of the faces in the sequence you just saw. </p>" +
+  stimulus:  "<p> Remember, the goal here is to provide YOUR JUDGEMENT WHETHER </p>"+
+   "<p> <strong> THE PRESENTED TARGET FACE (presented in red square) </p>" +
+   "<p> <span style='color: red;'> WAS </span> OR <span style='color: red;'> WAS NOT </span> </strong> one of the faces in the sequence you just saw. </p>" +
    "<p> Once you make the choice, the page will switch to the next trial. </p>",
 };
 
