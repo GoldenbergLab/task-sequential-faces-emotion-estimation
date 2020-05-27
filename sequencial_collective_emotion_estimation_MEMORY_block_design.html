@@ -40,6 +40,9 @@
   var falseAnswer = 0; var falseAllowance = 4;  //attention check - the amount of time participants rate the same picture before they get an alert
   var repeatAlert = 0; var repeatAllowance = 2; //how many times they can get alerts before they are cicked out
   var facesPerSequence = 8;
+  var trial = 0; //Trial Counter
+  var trial_memory = 0; //Trial Counter
+  var trial_sequential = 0; //Trial Counter
 
   /* ****************************************************/
   /* Define local functions (other than functions file) */
@@ -143,9 +146,13 @@
       button_html: '<button class="jspsych-btn-jonas">%choice%</button>',
       on_load: rectangle,
       data: function(){ //we save all the data here to make it easy to analyze and process the data.
+        trial = trial + 1;
+        trial_memory = trial_memory + 1;
       return {
         Name: 'memory',
         CorrectFaces: Face.facePool,
+        trial: trial,
+        trial_memory: trial_memory,
     }}
   };
 
@@ -158,13 +165,17 @@
     start: 0,
     on_load: morphedScale,
     data: function(){ //we save all the data here to make it easy to analyze and process the data.
+      trial = trial + 1;
+      trial_sequential = trial_sequential + 1;
     return {
       Name: 'response',
       fixationTime: Face.fixationTime,
       faceIdentity: Face.personX,
       description: Face.description,
       faceShown: Face.facePool,
-      face_1:(Face.emotionX + Face.singleFace)
+      face_1:(Face.emotionX + Face.singleFace),
+      trial: trial,
+      trial_sequential: trial_sequential,
       }}
   };
 
