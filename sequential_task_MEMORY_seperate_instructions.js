@@ -96,17 +96,17 @@ var  instruction_mem2 = {
   choices: ['Continue'],
   stimulus: "<p align='left'> As in the previous session, a series of faces expressing various degrees of emotions will appear on the screen. The face sequence may either be expressing positive or negative emotions. </p>"+
    "<img src = img/A75.jpg></img>"+
-   "<p align='left'> The goal of this session is to examine whether people can <span style='color: red;'> remember the emotional facial expressions </span> of a face in the sequence. </p>",
+   "<p align='left'> The goal of this session is to examine whether people can <span style='color: red;'> remember the emotional facial expressions </span> of the faces in the sequence. </p>",
    on_load: textbox
 };
 
 var  instruction_mem3 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p align='left'> After the sequence of faces you observed, a target face will be presented to you. We ask you to <strong> recall </strong>, if the the presented face was in the sequence that you just have seen.   </p>"+
+  stimulus:  "<p align='left'> After the sequence of faces you observed, a target face will be presented to you. This target face will be the  <span style='color: red;'> same person </span> as the faces in the sequence. We ask you to <strong> recall </strong>, if <span style='color: red;'> this particular emotional expression of the presented face </span> was also in the sequence that you just have seen.   </p>"+
    "<img src = img/A75Target.jpg></img>"+
-   "<p align='left'> If you think that the target face <span style='color: red;'> DID </span> appear in the sequence press the button: <span style='color: red;'> IT WAS </span>  </p>" +
-   "<p align='left'> If you think that the target face <span style='color: red;'> DID NOT </span> appear in the sequence you just saw press the button: <span style='color: red;'> IT WAS NOT</span> </p>",
+   "<p align='left'> If you think that the target face's expression <span style='color: red;'> DID </span> appear in the sequence press the button: <span style='color: red;'> IT WAS </span>  </p>" +
+   "<p align='left'> If you think that the target face's expression <span style='color: red;'> DID NOT </span> appear in the sequence you just saw press the button: <span style='color: red;'> IT WAS NOT</span> </p>",
    on_load: textbox
 };
 
@@ -114,8 +114,8 @@ var  instruction_mem4 = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p> Remember, the goal here is to provide YOUR JUDGEMENT WHETHER </p>"+
-   "<p> <strong> THE PRESENTED TARGET FACE (presented in red square) </p>" +
-   "<p> <span style='color: red;'> WAS </span> OR <span style='color: red;'> WAS NOT </span> </strong> one of the faces in the sequence you just saw. </p>" +
+   "<p> <strong> THE PRESENTED TARGET FACE'S EMOTIONAL EXPRESSION (presented in red square) </p>" +
+   "<p> <span style='color: red;'> WAS </span> OR <span style='color: red;'> WAS NOT </span> </strong> one of the emotional expressions in the sequence you just saw. </p>" +
    "<p> Once you make the choice, the page will switch to the next trial. </p>",
 };
 
@@ -123,14 +123,14 @@ var  instruction_mem5 = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p> At the next stage, you will conduct a short practice run to make sure that the task is clear. </p>"+
-  "<p> Remember the goal here is to provide YOUR JUDGEMENT WHETHER THE PRESENTED PICTURE WAS OR WAS NOT of the of the face sequence you just saw </p>",
+  "<p> Remember the goal here is to provide YOUR JUDGEMENT WHETHER THE PRESENTED EMOTIONAL EXPRESSION WAS OR WAS NOT of the of the emotional expressions in the sequence you just saw </p>",
 };
 
 var  instruction_mem_MainTaskTransition = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p align='left'> Thank you for completing the practice stage. </p>"+
-  "<p align='left'> Remember the goal here is to provide YOUR JUDGEMENT <span style='color: red;'> WHETHER THE PRESENTED PICTURE WAS OR WAS NOT </span> of the face sequence you just saw.</p>"+
+  "<p align='left'> Remember the goal here is to provide YOUR JUDGEMENT <span style='color: red;'> WHETHER THE PRESENTED TARGET FACE'S EMOTIONAL EXPRESSION WAS OR WAS NOT </span> one of the emotional expressions in the sequence you just saw.</p>"+
   "<p align='left'> In the following section you will complete the actual session, which consists of 15 trials. This part of the study should take 7 minutes, more or less. </p>" +
   "<p align='left'> Click <strong>Continue</strong> to begin the actual task. </p>",
   on_load: textbox
