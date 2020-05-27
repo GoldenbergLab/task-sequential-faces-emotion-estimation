@@ -88,7 +88,7 @@ var  instruction_mem1 = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p> You completed the first session! </p>"+
-   "<p> The next session will be slightly different so please read the next instructions carefully </p>",
+   "<p><b>The next session will be slightly different so please read the next instructions carefully</b>  </p>",
 };
 
 var  instruction_mem2 = {
@@ -96,14 +96,14 @@ var  instruction_mem2 = {
   choices: ['Continue'],
   stimulus: "<p align='left'> As in the previous session, a series of faces expressing various degrees of emotions will appear on the screen. The face sequence may either be expressing positive or negative emotions. </p>"+
    "<img src = img/A75.jpg></img>"+
-   "<p align='left'> The goal of this session is to examine whether people can <span style='color: red;'> remember the emotional facial expressions </span> of the faces in the sequence. </p>",
+   "<p align='left'> <b>The goal of this session is to examine whether people can remember the emotional facial expressions of the faces in the sequence.</b> </p>",
    on_load: textbox
 };
 
 var  instruction_mem3 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p align='left'> After the sequence of faces you observed, a target face will be presented to you. This target face will be the  <span style='color: red;'> same person </span> as the faces in the sequence. We ask you to <strong> recall </strong>, if <span style='color: red;'> this particular emotional expression of the presented face </span> was also in the sequence that you just have seen.   </p>"+
+  stimulus:  "<p align='left'> After the sequence of faces you observed, a target face will be presented to you. This target face will be the  <span style='color: red;'><b> same person </b></span> as the faces in the sequence. We ask you to <strong> recall </strong>, if<b> this particular emotional expression of the presented face </span> was also in the sequence that you just have seen. </b>  </p>"+
    "<img src = img/A75Target.jpg></img>"+
    "<p align='left'> If you think that the target face's expression <span style='color: red;'> DID </span> appear in the sequence press the button: <span style='color: red;'> IT WAS </span>  </p>" +
    "<p align='left'> If you think that the target face's expression <span style='color: red;'> DID NOT </span> appear in the sequence you just saw press the button: <span style='color: red;'> IT WAS NOT</span> </p>",
@@ -123,7 +123,8 @@ var  instruction_mem5 = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p> At the next stage, you will conduct a short practice run to make sure that the task is clear. </p>"+
-  "<p> Remember the goal here is to provide YOUR JUDGEMENT WHETHER THE PRESENTED EMOTIONAL EXPRESSION WAS OR WAS NOT of the of the emotional expressions in the sequence you just saw </p>",
+  "<p> Remember the goal here is to provide your judgemnt </P>"+
+  " WHETHER THE TARGET EMOTIONAL EXPRESSION WAS OR WAS NOT one of the of the emotional expressions in the sequence you just saw </p>",
 };
 
 var  instruction_mem_MainTaskTransition = {
