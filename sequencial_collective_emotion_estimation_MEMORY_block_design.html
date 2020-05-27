@@ -139,7 +139,7 @@
       type: 'image-button-response',
       stimulus: memoryFace,
       choices: ['It was','It was NOT'],
-      prompt: "<p> Decide whether you think this picture <strong> was </strong> in the sequence or <strong>was not </strong> </p>",
+      prompt: "<p> Decide whether you think that the target face's expression <strong> was </strong> in the sequence or <strong>was not</strong> </p>",
       button_html: '<button class="jspsych-btn-jonas">%choice%</button>',
       on_load: rectangle,
       data: function(){ //we save all the data here to make it easy to analyze and process the data.
@@ -225,7 +225,7 @@
 
   /* create memory task definition array */
   var memory_task = instruction_memory; //display instructions
-  /*memory_task.push(consent);*/
+  memory_task.push(consent);
   memory_task.push(fixationGetFace,attentionCheck);//attention check before practice task
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber =  facesPerSequence;
@@ -254,7 +254,7 @@
 
     /*Order of main task. In the commented part is the option to randomize */
     var main_tasks = [];
-    var order = 2;                   //order = shuffle(); If we want to randomize
+    var order = 1;                   //order = shuffle(); If we want to randomize
     if (order == 1){
       main_tasks = collective_emotion_estimation.concat(memory_task);
     } else {
@@ -283,7 +283,7 @@
     //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
     //jsPsych.data.get().json(), final_submit, final_submit);
     //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
-    window.location = "https://oxfordxpsy.az1.qualtrics.com/jfe/form/SV_dnbAnbEl4xDAITP" //redirect to Qualtrics survey
+    window.location = "https://oxfordxpsy.az1.qualtrics.com/jfe/form/SV_8tVpK0xtqOjQldr" //redirect to Qualtrics survey
     }
   })
 
