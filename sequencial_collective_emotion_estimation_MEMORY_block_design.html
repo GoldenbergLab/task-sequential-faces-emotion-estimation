@@ -9,6 +9,7 @@
     <script src="jspsych-6.0.5/plugins/jspsych-call-function.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-slider-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
@@ -39,7 +40,7 @@
   var imageTestDescription = attentionStimulus; //designed for the image test
   var falseAnswer = 0; var falseAllowance = 4;  //attention check - the amount of time participants rate the same picture before they get an alert
   var repeatAlert = 0; var repeatAllowance = 2; //how many times they can get alerts before they are cicked out
-  var facesPerSequence = 8;
+  var facesPerSequence = 2;
   var trial = 0; //Trial Counter
   var trial_memory = 0; //Trial Counter
   var trial_sequential = 0; //Trial Counter
@@ -139,10 +140,10 @@
   };
 
     var memory = {
-      type: 'image-button-response',
+      type: 'html-button-response',
       stimulus: memoryFace,
-      choices: ['It was','It was NOT'],
-      prompt: "<p> Decide whether you think that the target face's expression <strong> was </strong> in the sequence or <strong>was not</strong> </p>",
+      choices: ['left picture','right picture'],
+      prompt: "<p> Decide which of the target faces had the <strong> same expression </strong> as one in the sequence </p>",
       button_html: '<button class="jspsych-btn-jonas">%choice%</button>',
       on_load: rectangle,
       data: function(){ //we save all the data here to make it easy to analyze and process the data.
@@ -153,7 +154,30 @@
         CorrectFaces: Face.facePool,
         trial: trial,
         trial_memory: trial_memory,
+        order: order,
     }}
+  };
+
+  var memory2 = {
+      type: 'html-slider-response',
+      require_movement: true,
+      stimulus: memoryFace1,
+      labels: ['Certain that it is the left picture', 'Certain that it is the right picture'],
+      data: function(){ //we save all the data here to make it easy to analyze and process the data.
+      return {
+        Name: 'certainty',
+        CorrectFaces: Face.facePool,
+        trial: trial,
+        trial_memory: trial_memory,
+        order: order,
+    }}
+  };
+
+  var certainty = {
+      type: 'html-slider-response',
+      require_movement: true,
+      stimulus: '<p> How certain are you that you selected the correct target picture from the sequence?</p>',
+      labels: ['I just guessed', 'I know this picture was in the sequence'],
   };
 
   var response = { //participants see a slider and asked to estimate the mean group emotion
@@ -201,7 +225,7 @@
 
   /* create general instruction definition array */
   var general_instruction_start = [];
-  general_instruction_start.push(consent);
+  //general_instruction_start.push(consent);
   general_instruction_start.push(checkPhone, imageDescription, participant_id, instruction_welcome_page);
 
   /* create face average task definition array */
@@ -242,7 +266,7 @@
     faceNumber =  facesPerSequence;
     for (var t = 0; t < faceNumber; t++) {
       memory_task.push(fixation,face);}
-    memory_task.push(memory); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+    memory_task.push(memory, certainty, memory2); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
   };
   memory_task.push(instruction_mem_MainTaskTransition); //move on to real task
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {
@@ -252,20 +276,20 @@
       memory_task.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
       memory_task.push(fixation,face);}
-      memory_task.push(memory);
+      memory_task.push(memory, certainty);
     var k = 0;
     while (k < (attentionCheckInterval-1)){
       faceNumber = facesPerSequence;
       memory_task.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
       memory_task.push(fixation,face);}
-      memory_task.push(memory);
+      memory_task.push(memory, certainty);
       k ++;
     }
 
     /*Order of main task. In the commented part is the option to randomize */
     var main_tasks = [];
-    var order = 1;                   //order = shuffle(); If we want to randomize
+    var order = 2;                   //order = shuffle(); If we want to randomize
     if (order == 1){
       main_tasks = collective_emotion_estimation.concat(memory_task);
     } else {

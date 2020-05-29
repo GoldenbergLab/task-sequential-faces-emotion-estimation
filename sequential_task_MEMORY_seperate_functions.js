@@ -132,11 +132,40 @@ function checkPhone (){
     correctFace = ('img/' + correctFace);
     var wrongFace = ImageToNumber(Face.facePool); //Before we can get a false picture, we need to transform picture array into number array (which starts from lowest number)
     wrongFace = falseFace(wrongFace); // getting a false picture. That is located between the real pictures that had the biggest distance to each other.
-    var RightWrong = []; // an array that will contain 1 wrong and 1 right picture
-    RightWrong.push(correctFace, wrongFace);
-    Face.mem = getRandomElement(RightWrong); // selecting either a right or a wrong picture with a 50% chance
-    return Face.mem;
+    var leftPicture = []; //
+    var rightPicture = [];
+    order = shuffle();
+    if (order == 1){
+      leftPicture = correctFace;
+      rightPicture = wrongFace;
+    } else {
+      leftPicture = wrongFace;
+      rightPicture = correctFace;
+    }
+    var stimulus_iamages = "<div id='myDiv' style='height: 200px; width: 560px'>" + "<div style='float: left;'><img src=" + "'" + leftPicture + "'" +  "></img>" + "</div>" + "<div style='float: right;'><img src=" + "'" + rightPicture + "'" + "></img>" + "</div>"; //if you want to change the left pictures position go to jspsych css and change #myDiv to change right position picture change widht of first div
+    return stimulus_iamages;
   }
+
+  function memoryFace1(){ //Select face for memory task
+    var correctFace = getRandomElement(Face.facePool); //selects a random picture of the ones that have been shown in the trial
+    correctFace = correctFace.substr(4); // we need to remove the image/ directory prefix to get into another folder
+    correctFace = ('img/' + correctFace);
+    var wrongFace = ImageToNumber(Face.facePool); //Before we can get a false picture, we need to transform picture array into number array (which starts from lowest number)
+    wrongFace = falseFace(wrongFace); // getting a false picture. That is located between the real pictures that had the biggest distance to each other.
+    var leftPicture = []; //
+    var rightPicture = [];
+    order = shuffle();
+    if (order == 1){
+      leftPicture = correctFace;
+      rightPicture = wrongFace;
+    } else {
+      leftPicture = wrongFace;
+      rightPicture = correctFace;
+    }
+    var stimulus_iamages = "<p> Decide which of the target faces had the <strong> same expression </strong> as one in the sequence </p>" + "<div style='height: 200px; width: 700px'>" + "<div style='float: left;'><img src=" + "'" + leftPicture + "'" +  "></img>" + "</div>" + "<div style='float: right;'><img src=" + "'" + rightPicture + "'" + "></img>" + "</div>"; //if you want to change the left pictures position go to jspsych css and change #myDiv to change right position picture change widht of first div
+    return stimulus_iamages;
+  }
+
 
   function rectangle(){
     var rect = '<style> img { display: block; margin-left: auto; margin-right: auto; border: 3px solid red;} </style>'

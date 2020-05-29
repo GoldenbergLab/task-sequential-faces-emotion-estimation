@@ -92,7 +92,7 @@
 .jspsych-btn-jonas {
   display: inline-block;
   padding: 6px 12px;
-  margin: 0px 8px;
+  margin: 0px 150px;
   font-size: 14px;
   font-weight: 400;
   font-family: 'Open Sans', 'Arial', sans-serif;
@@ -149,4 +149,10 @@
 /* Control appearance of jsPsych.data.displayData() */
 #jspsych-data-display {
   text-align: left;
+}
+
+/* JONAS EXTRA STYLE */
+
+#myDiv {
+  margin-left: 135px;
 }
