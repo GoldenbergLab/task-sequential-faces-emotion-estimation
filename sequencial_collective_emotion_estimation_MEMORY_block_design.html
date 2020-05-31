@@ -10,6 +10,7 @@
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-button-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-survey-likert.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
@@ -143,9 +144,8 @@
       type: 'html-button-response',
       stimulus: memoryFace,
       choices: ['left picture','right picture'],
-      prompt: "<p> Decide which of the target faces had the <strong> same expression </strong> as one in the sequence </p>",
+      prompt: "<p> Decide which of the following faces <strong> was presented in the sequence </strong></p>",
       button_html: '<button class="jspsych-btn-jonas">%choice%</button>',
-      on_load: rectangle,
       data: function(){ //we save all the data here to make it easy to analyze and process the data.
         trial = trial + 1;
         trial_memory = trial_memory + 1;
@@ -158,26 +158,25 @@
     }}
   };
 
-  var memory2 = {
-      type: 'html-slider-response',
-      require_movement: true,
-      stimulus: memoryFace1,
-      labels: ['Certain that it is the left picture', 'Certain that it is the right picture'],
-      data: function(){ //we save all the data here to make it easy to analyze and process the data.
-      return {
-        Name: 'certainty',
-        CorrectFaces: Face.facePool,
-        trial: trial,
-        trial_memory: trial_memory,
-        order: order,
-    }}
-  };
+  var scale_1 = [ // Scale for ERQ
+  "1 - Completely Uncertain",
+  "2 - Uncertain",
+  "3 - Neutral",
+  "4 - Certain",
+  "5 - Completely Certain",
+];
 
-  var certainty = {
-      type: 'html-slider-response',
-      require_movement: true,
-      stimulus: '<p> How certain are you that you selected the correct target picture from the sequence?</p>',
-      labels: ['I just guessed', 'I know this picture was in the sequence'],
+var certainty = {
+  type: 'survey-likert',
+  questions: [
+    {prompt: "How certain are you that you chose the right face in the memory test you just did?", labels: scale_1, required:true}], //Q0
+  data: function(){ //we save all the data here to make it easy to analyze and process the data.
+  return {
+    Name: 'certainty',
+    trial: trial,
+    trial_memory: trial_memory,
+    order: order,
+  }}
   };
 
   var response = { //participants see a slider and asked to estimate the mean group emotion
@@ -266,7 +265,7 @@
     faceNumber =  facesPerSequence;
     for (var t = 0; t < faceNumber; t++) {
       memory_task.push(fixation,face);}
-    memory_task.push(memory, certainty, memory2); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+    memory_task.push(memory, certainty); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
   };
   memory_task.push(instruction_mem_MainTaskTransition); //move on to real task
   for (var i = 0; i < taskNumber/attentionCheckInterval; i++) {

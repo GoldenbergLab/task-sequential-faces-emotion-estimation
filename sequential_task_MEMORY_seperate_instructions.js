@@ -103,42 +103,50 @@ var  instruction_mem2 = {
 var  instruction_mem3 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p align='left'> After the sequence of faces you observed, a target face will be presented to you. This target face will be the  <span style='color: red;'><b> same person </b></span> as the faces in the sequence. We ask you to <strong> recall </strong>, if<b> this particular emotional expression of the presented face </span> was also in the sequence that you just have seen. </b>  </p>"+
-   "<img src = img/A75Target.jpg></img>"+
-   "<p align='left'> If you think that the target face's expression <span style='color: red;'> DID </span> appear in the sequence press the button: <span style='color: red;'> IT WAS </span>  </p>" +
-   "<p align='left'> If you think that the target face's expression <span style='color: red;'> DID NOT </span> appear in the sequence you just saw press the button: <span style='color: red;'> IT WAS NOT</span> </p>",
+  stimulus:  "<p align='left'> After the sequence of faces you observed, two faces will be presented to you. One of the faces <strong> WAS </strong> in the sequence and the other one <strong> WAS NOT </strong>. We ask you to <strong> recall </strong>,<b> which one was the correct face that appeared in the sequence.</b>  </p>"+
+   "<div id='introPics' style='height: 200px; width: 550px'>" + "<div style='float: left;'><img src= 'img/A55.jpg'></img>" + "</div>" + "<div style='float: right;'><img src='img/A99.jpg'></img>" + "</div>" + "</div>" +
+   '<div id="introPics" style="float: center; height: 50px; width: 500px"><button class="jspsych-btn-intro" style="float: left;">left picture</button><button class="jspsych-btn-intro" style="float: right;">right picture</button></div></div>' +
+   "<p> Your task is to click on the botton below the face that you thought was in the sequence.</p>",
    on_load: textbox
 };
 
 var  instruction_mem4 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p> Remember, the goal here is to provide YOUR JUDGEMENT WHETHER </p>"+
-   "<p> <strong> THE PRESENTED TARGET FACE'S EMOTIONAL EXPRESSION (presented in red square) </p>" +
-   "<p> <span style='color: red;'> WAS </span> OR <span style='color: red;'> WAS NOT </span> </strong> one of the emotional expressions in the sequence you just saw. </p>" +
-   "<p> Once you make the choice, the page will switch to the next trial. </p>",
+  stimulus:  "<p align='left'> After you made your decision. You will be asked how certain you were that you selected the correct picture. </p>"+
+  '<form id="jspsych-survey-likert-form"><label class="jspsych-survey-likert-statement">How certain are you that you chose the right face in the memory test you just did?</label><ul class="jspsych-survey-likert-opts" data-radio-group="Q0"><li style="width:20%"><input type="radio" name="Q0" value="0" required=""><label class="jspsych-survey-likert-opt-label">1 - Completely Uncertain</label></li><li style="width:20%"><input type="radio" name="Q0" value="1" required=""><label class="jspsych-survey-likert-opt-label">2 - Uncertain</label></li><li style="width:20%"><input type="radio" name="Q0" value="2" required=""><label class="jspsych-survey-likert-opt-label">3 - Neutral</label></li><li style="width:20%"><input type="radio" name="Q0" value="3" required=""><label class="jspsych-survey-likert-opt-label">4 - Certain</label></li><li style="width:20%"><input type="radio" name="Q0" value="4" required=""><label class="jspsych-survey-likert-opt-label">5 - Completely Certain</label></li></ul></form>'+
+  "<p> Once you make the choice and click continue, the page will switch to the next trial. </p>",
+   on_load: textbox
 };
 
 var  instruction_mem5 = {
   type: "html-button-response",
   choices: ['Continue'],
+  stimulus:  "<p> Remember, the goal here is to provide YOUR JUDGEMENT WHICH </p>"+
+   "<p> <strong> OF THE TWO PRESENTED FACES <span style='color: red;'> WAS </span> </strong></p>" +
+   "<p> one of the faces in the sequence you just saw. </p>",
+};
+
+var  instruction_mem6 = {
+  type: "html-button-response",
+  choices: ['Continue'],
   stimulus:  "<p> At the next stage, you will conduct a short practice run to make sure that the task is clear. </p>"+
-  "<p> Remember the goal here is to provide your judgemnt </P>"+
-  " WHETHER THE TARGET EMOTIONAL EXPRESSION WAS OR WAS NOT one of the of the emotional expressions in the sequence you just saw </p>",
+  "<p> Remember the goal here is to provide your judgement </P>"+
+  "<p> WHICH OF THE TWO PRESENTED FACES WAS one of the faces in the sequence you just saw.</p>",
 };
 
 var  instruction_mem_MainTaskTransition = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p align='left'> Thank you for completing the practice stage. </p>"+
-  "<p align='left'> Remember the goal here is to provide YOUR JUDGEMENT <span style='color: red;'> WHETHER THE PRESENTED TARGET FACE'S EMOTIONAL EXPRESSION WAS OR WAS NOT </span> one of the emotional expressions in the sequence you just saw.</p>"+
-  "<p align='left'> In the following section you will complete the actual session, which consists of 15 trials. This part of the study should take 7 minutes, more or less. </p>" +
+  "<p align='left'> Remember the goal here is to provide YOUR JUDGEMENT <span style='color: red;'> WHICH OF THE TWO PRESENTED FACES WAS </span> one of the faces in the sequence you just saw.</p>"+
+  "<p align='left'> In the following section you will complete the actual session, which consists of 15 trials. This part of the study should take 10 minutes, more or less. </p>" +
   "<p align='left'> Click <strong>Continue</strong> to begin the actual task. </p>",
   on_load: textbox
 };
 
 var instruction_memory = [];
-instruction_memory = instruction_memory.concat(instruction_mem1, instruction_mem2, instruction_mem3, instruction_mem4, instruction_mem5);
+instruction_memory = instruction_memory.concat(instruction_mem1, instruction_mem2, instruction_mem3, instruction_mem4, instruction_mem5, instruction_mem6);
 
 function line () {
   var vertLine = `<div style="border-left:black;border-style:solid;margin-left:${lineSlice}px; height:${vHeight}px;width:0px;position:absolute;" id="vertLine"></div>`;
@@ -158,7 +166,11 @@ function remover_textbox () {
 
 function textbox(){
   var textbox = '<style> p { display: block; margin-top: 1em; margin-bottom: 1em; margin-left: 400px; margin-right: 400px;} </style>'
+  var imagebox = '<style> #introPics { margin: auto;} </style>'
+  var scale = '<style id="jspsych-survey-likert-css">.jspsych-survey-likert-statement { display:block; font-size: 16px; padding-top: 40px; margin-bottom:10px; }.jspsych-survey-likert-opts { list-style:none; width:100%; margin:0; padding:0 0 35px; display:block; font-size: 14px; line-height:1.1em; }.jspsych-survey-likert-opt-label { line-height: 1.1em; color: #444; }.jspsych-survey-likert-opts:before { content: ""; position:relative; top:11px; /*left:9.5%;*/ display:block; background-color:#efefef; height:4px; width:100%; }.jspsych-survey-likert-opts:last-of-type { border-bottom: 0; }.jspsych-survey-likert-opts li { display:inline-block; /*width:19%;*/ text-align:center; vertical-align: top; }.jspsych-survey-likert-opts li input[type=radio] { display:block; position:relative; top:0; left:50%; margin-left:-6px; }</style>'
   $(".jspsych-content").prepend(textbox);
+  $(".jspsych-content").prepend(imagebox);
+  $(".jspsych-content").prepend(scale);
 }
 
 
