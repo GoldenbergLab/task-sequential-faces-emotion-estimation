@@ -21,7 +21,7 @@ function loadFacePool(start,end) { //the start and ending index of the images
 function createSlideList(start,end){
   var list = [];
   for (i = start; i < (end+1); i++){
-     list.push( 'img/ins_single_face/Slide ' + i + '.png');}
+     list.push( 'img/ins/ins_single_face/Slide ' + i + '.png');}
   return list;
 }
 
