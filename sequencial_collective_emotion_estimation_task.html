@@ -30,7 +30,7 @@
   var slideList = createSlideList (1,8);//list of instructions slides, which have index from 1 to 8
   var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
   var trial = 0; //Trial Counter
-  var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
+  var userList =jQuery.get('https://web.stanford.edu/~amitgold/sequencial_collective_emotion_estimation/previousUsersID.txt', function(data) {});
   var Face = {}; //create Face dictionary to (1)record fixation time, (2)make face sample and scale have the same person and valence in every trial
   Face.facePool = [ ]; //record face data
   Face.wordList = ['but','rock','sky','our','course','we','table','house','here','mouth','tree', 'hello']; //word list for attention check
