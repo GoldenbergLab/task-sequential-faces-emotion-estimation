@@ -103,7 +103,7 @@ var  instruction_mem2 = {
 var  instruction_mem3 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p align='left'> After the sequence of faces you observed, two faces will be presented to you. One of the faces <strong> WAS </strong> in the sequence and the other one <strong> WAS NOT </strong>. We ask you to <strong> recall </strong>,<b> which one was the correct face that appeared in the sequence.</b>  </p>"+
+  stimulus:  "<p align='left'> After the sequence of faces you observed, two faces will be presented to you. One of the faces <strong> APPEARED </strong> in the sequence and the other one <strong> DID NOT APPEAR </strong>. <strong>Recall </strong>,<b> which of the two faces was the one that appeared in the sequence.</b>  </p>"+
    "<div id='introPics' style='height: 200px; width: 550px'>" + "<div style='float: left;'><img src= 'img/A55.jpg'></img>" + "</div>" + "<div style='float: right;'><img src='img/A99.jpg'></img>" + "</div>" + "</div>" +
    '<div id="introPics" style="float: center; height: 50px; width: 500px"><button class="jspsych-btn-intro" style="float: left;">left picture</button><button class="jspsych-btn-intro" style="float: right;">right picture</button></div></div>' +
    "<p> Your task is to click on the botton below the face that you thought was in the sequence.</p>",
@@ -123,16 +123,14 @@ var  instruction_mem5 = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p> Remember, the goal here is to provide YOUR JUDGEMENT WHICH </p>"+
-   "<p> <strong> OF THE TWO PRESENTED FACES <span style='color: red;'> WAS </span> </strong></p>" +
+   "<p> <strong> OF THE TWO PRESENTED FACES WAS</strong></p>" +
    "<p> one of the faces in the sequence you just saw. </p>",
 };
 
 var  instruction_mem6 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p> At the next stage, you will conduct a short practice run to make sure that the task is clear. </p>"+
-  "<p> Remember the goal here is to provide your judgement </P>"+
-  "<p> WHICH OF THE TWO PRESENTED FACES WAS one of the faces in the sequence you just saw.</p>",
+  stimulus:  "<p> At the next stage, you will conduct a short practice run to make sure that the task is clear. </p>"
 };
 
 var  instruction_mem_MainTaskTransition = {
