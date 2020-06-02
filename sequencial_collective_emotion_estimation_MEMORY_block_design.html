@@ -224,7 +224,7 @@ var certainty = {
 
   /* create general instruction definition array */
   var general_instruction_start = [];
-  //general_instruction_start.push(consent);
+  general_instruction_start.push(consent);
   general_instruction_start.push(checkPhone, imageDescription, participant_id, instruction_welcome_page);
 
   /* create face average task definition array */
@@ -288,7 +288,7 @@ var certainty = {
 
     /*Order of main task. In the commented part is the option to randomize */
     var main_tasks = [];
-    var order = 2;                   //order = shuffle(); If we want to randomize
+    var order = 1;                   //order = shuffle(); If we want to randomize
     if (order == 1){
       main_tasks = collective_emotion_estimation.concat(memory_task);
     } else {
