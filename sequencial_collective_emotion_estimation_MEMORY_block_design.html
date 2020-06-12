@@ -229,7 +229,6 @@ var certainty = {
 
   /* create face average task definition array */
   var collective_emotion_estimation = instruction_sequence; //display instructions
-  /*collective_emotion_estimation.push(consent);*/
   collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber =  facesPerSequence;
@@ -317,7 +316,7 @@ var certainty = {
     //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
     //jsPsych.data.get().json(), final_submit, final_submit);
     //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
-    window.location = "https://oxfordxpsy.az1.qualtrics.com/jfe/form/SV_79UHG7aXORMr1dP" //redirect to Qualtrics survey
+    window.location = "https://oxfordxpsy.az1.qualtrics.com/jfe/form/SV_dmTyKhLTreB3Qyx" //redirect to Qualtrics survey
     }
   })
 
