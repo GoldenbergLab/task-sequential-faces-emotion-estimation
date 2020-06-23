@@ -76,7 +76,7 @@ var  instruction_seq_MainTaskTransition = {
   choices: ['Continue'],
   stimulus:  "<p align='left'> Thank you for completing the practice stage. </p>"+
   "<p align='left'> Remember, the goal was to ESTIMATE THE <span style='color: red;'> AVERAGE EMOTIONAL RESPONSE of the face sequence you just saw. </span></p>"+
-  "<p align='left'> In the following section you will complete the actual session, which consists of 15 trials. This part of the study should take 7 minutes, more or less. </p>" +
+  "<p align='left'> In the following section you will complete the actual session, which consists of 30 trials. This part of the study should take 10 minutes, more or less. </p>" +
   "<p align='left'> Click <strong>Continue</strong> to begin the actual task. </p>",
   on_load: textbox
 };
