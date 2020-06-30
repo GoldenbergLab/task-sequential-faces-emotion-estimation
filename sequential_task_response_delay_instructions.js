@@ -6,8 +6,9 @@ var instruction_welcome_page = {
   type: 'html-button-response',
   choices: ['Continue'],
   stimulus:  "<p align='left'> Dear participant,</p>"+
-   "<p align='left'> You are about to participate in a study that was designed to examine how people summarize multiple emotional responses. You will go through two sessions in which <strong> you will be asked to complete two slightly different tasks. </strong></p>"+
-   "<p align='left'> Please carefully read the instructions before each session. </p>",
+   "<p align='left'> You are about to participate in a study that was designed to examine your ability to evaluate the emotional response of faces expressing emotion.</p>"+
+   "<p align='left'> You will first go through a short instructions session, then complete a short practice round, and then participate in the actual experiment.</p>"+
+   "<p align='left'> Please follow the instructions carefully. </p>",
    on_load: textbox
 };
 
@@ -26,7 +27,7 @@ instruction_general = instruction_general.concat(instruction_welcome_page, instr
 var  instruction_seq1 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p align='left'> The goal of this session is to examine whether people can <span style='color: red;'>estimate</span> the <span style='color: red;'>average emotional expression of face sequences.</span>   </p>"+
+  stimulus:  "<p align='left'> The goal of this study is to examine whether people can <span style='color: red;'>estimate</span> the <span style='color: red;'>average emotional expression of face sequences.</span>   </p>"+
    "<p align='left'> In each trial, a series of faces expressing various degrees of emotions will appear on the screen. The face sequence may either be expressing positive or negative emotions. </p>"+
    "<img src = img/A75.jpg></img>"+
    "<p align='left'> The face sequence will be on the screen for a brief moment. In order to take all the ratings in, try to focus your attention on it as much as possible. </p>",
