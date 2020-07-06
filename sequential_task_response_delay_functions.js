@@ -108,7 +108,7 @@ function checkPhone (){
   }
 
   function getResponseDelay (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
-    Face.ResponseDelay = getRandomElement([1000, 2000, 3000]);
+    Face.ResponseDelay = getRandomElement([1, 2500, 5000]);
     return Face.ResponseDelay;
   }
 
