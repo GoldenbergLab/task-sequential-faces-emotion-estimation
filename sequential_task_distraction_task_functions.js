@@ -123,6 +123,15 @@ function checkPhone (){
     return Face.distraction_task;
   }
 
+  function randomized_order (taskNumber_sequential) {
+    var array = ["Normal","Distraction"];
+    for (var i = 0; i < taskNumber_sequential; i++) { //three practice trials
+      temp = getRandomElement(["Distraction", "Normal"]);
+      array.push(temp)
+    }
+    return array
+  }
+
   function getFixationTime (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
     Face.fixationTime = getRandomElement([400, 500, 600]);
     return Face.fixationTime;
