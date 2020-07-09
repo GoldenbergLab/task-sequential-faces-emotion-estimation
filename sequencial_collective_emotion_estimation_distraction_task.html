@@ -258,32 +258,23 @@ var start = 0
     if (current_trial == "Normal"){
       faceNumber =  getRandomInt(1,12);
       for (var t = 0; t < faceNumber; t++) {
-        collective_emotion_estimation.push(fixation,face);}
+        collective_emotion_estimation.push(fixation, attentionCheck,face);}
         collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
     }
     if (current_trial == "Distraction"){
       faceNumber =  getRandomInt(1,12);;
       for (var t = 0; t < faceNumber; t++) {
-        collective_emotion_estimation.push(fixation,face);}
+        collective_emotion_estimation.push(fixation, attentionCheck,face);}
         collective_emotion_estimation.push(distraction_task,distraction_response, distraction_response_alternative,response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
       }
-      start += 1;
+    start += 1;
     var k = 0;
     while (k < (attentionCheckInterval-1)){
-      current_trial = Face.TrialType[start];
-      if (current_trial == "Normal"){
-        faceNumber =  getRandomInt(1,12);
-        for (var t = 0; t < faceNumber; t++) {
-          collective_emotion_estimation.push(fixation,face);}
-          collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
-      }
-      if (current_trial == "Distraction"){
-        faceNumber =  getRandomInt(1,12);;
-        for (var t = 0; t < faceNumber; t++) {
-          collective_emotion_estimation.push(fixation,face);}
-          collective_emotion_estimation.push(distraction_task,distraction_response, distraction_response_alternative,response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
-        }
-        start += 1;
+      faceNumber = getRandomInt(1,12);;
+      collective_emotion_estimation.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
+      collective_emotion_estimation.push(fixation,face);}
+      collective_emotion_estimation.push(response);
       k ++;
     }
   }
