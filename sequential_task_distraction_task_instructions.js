@@ -82,8 +82,19 @@ var  instruction_seq_MainTaskTransition = {
   on_load: textbox
 };
 
+var  instruction_seq_distractiontask = {
+  type: "html-button-response",
+  choices: ['Continue'],
+  stimulus:  "<p align='left'> In some trials you will also have a short attention check task. </p>"+
+  "<p align='left'> We will ask you to do this task randomly in some trials before giving your final response about the average emotion of the sequence.<strong> Estimationg the sequences average emotion is still your main task during the trial. </strong> </p>"+
+  "<p align='left'> In this task you will see an array of 1 - 5 stars like the following ones:</p>"+
+  "<img src = img/star_intro.png></img>" +
+  "<p align='left'> Following the presentation of the slide we will ask you how many stars have been presented to you. After that you will give your estimation about the average emotion expressed by the sequence.</p>",
+  on_load: textbox
+};
+
 var instruction_sequence = [];
-instruction_sequence = instruction_sequence.concat(instruction_seq1, instruction_seq2, instruction_seq3, instruction_seq4, instruction_seq5, instruction_seq6);
+instruction_sequence = instruction_sequence.concat(instruction_seq1, instruction_seq2, instruction_seq3, instruction_seq4, instruction_seq5, instruction_seq6, instruction_seq_distractiontask);
 
 //////////////////////// FUNCTIONS FOR INSTRUCTIONS
 
