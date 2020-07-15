@@ -175,9 +175,11 @@
       {prompt: "Please select the number of stars you just saw.", name: 'Q0', labels: scale_2, required:false, horizontal: true}, //q1 -
     ],
     on_finish: function(data){
-      distraction_star_num = Face.NumStars,
-      distraction_response = JSON.parse(data.responses).Q0 //save id as global variable
-    }
+      Face.distraction_response = JSON.parse(data.responses).Q0
+      return {
+      distraction_response: Face.distraction_response, //save id as global variable
+      distraction_star_num: Face.NumStars
+    }}
   };
 
   var response = { //participants see a slider and asked to estimate the mean group emotion
@@ -199,7 +201,7 @@
       description: Face.description,
       face_1:(Face.emotionX + Face.singleFace),
       trial: trial,
-      distraction_response: Face.distraction_response, //save id as global variable
+      distraction_response: Face.distraction_response + 1, //save id as global variable
       distraction_star_num: Face.NumStars,
       trial_type: Face.TrialType[position_tracker],
     }}
@@ -239,43 +241,59 @@ var start = 0
     current_trial = Face.TrialType[start];
     if (current_trial == "Normal"){
       faceNumber =  getRandomInt(1,12);
+      collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
         collective_emotion_estimation.push(fixation,face);}
         collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
     }
     if (current_trial == "Distraction"){
-      faceNumber =  getRandomInt(1,12);;
+      faceNumber =  getRandomInt(1,12);
+      collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
         collective_emotion_estimation.push(fixation,face);}
-        collective_emotion_estimation.push(distraction_task,distraction_response, distraction_response_alternative,response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+        collective_emotion_estimation.push(distraction_task, distraction_response_alternative,response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
       }
       start += 1;
   }
-
   collective_emotion_estimation.push(instruction_seq_MainTaskTransition); //move on to real task
   for (var i = 0; i < taskNumber_sequential/attentionCheckInterval; i++) {
+    collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
+
     current_trial = Face.TrialType[start];
     if (current_trial == "Normal"){
       faceNumber =  getRandomInt(1,12);
+      collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
-        collective_emotion_estimation.push(fixation, attentionCheck,face);}
+        collective_emotion_estimation.push(fixation,face);}
         collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
     }
     if (current_trial == "Distraction"){
-      faceNumber =  getRandomInt(1,12);;
+      faceNumber =  getRandomInt(1,12);
+      collective_emotion_estimation.push(fixationGetFace);
       for (var t = 0; t < faceNumber; t++) {
-        collective_emotion_estimation.push(fixation, attentionCheck,face);}
-        collective_emotion_estimation.push(distraction_task,distraction_response, distraction_response_alternative,response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+        collective_emotion_estimation.push(fixation,face);}
+        collective_emotion_estimation.push(distraction_task, distraction_response_alternative,response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
       }
-    start += 1;
+      start += 1;
     var k = 0;
     while (k < (attentionCheckInterval-1)){
-      faceNumber = getRandomInt(1,12);;
-      collective_emotion_estimation.push(fixationGetFace);
-      for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
-      collective_emotion_estimation.push(fixation,face);}
-      collective_emotion_estimation.push(response);
-      k ++;
+      current_trial = Face.TrialType[start];
+      if (current_trial == "Normal"){
+        faceNumber =  getRandomInt(1,12);
+        collective_emotion_estimation.push(fixationGetFace);
+        for (var t = 0; t < faceNumber; t++) {
+          collective_emotion_estimation.push(fixation,face);}
+          collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+      }
+      if (current_trial == "Distraction"){
+        faceNumber =  getRandomInt(1,12);
+        collective_emotion_estimation.push(fixationGetFace);
+        for (var t = 0; t < faceNumber; t++) {
+          collective_emotion_estimation.push(fixation,face);}
+          collective_emotion_estimation.push(distraction_task, distraction_response_alternative,response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+        }
+        start += 1;
+        k ++;
     }
   }
 
