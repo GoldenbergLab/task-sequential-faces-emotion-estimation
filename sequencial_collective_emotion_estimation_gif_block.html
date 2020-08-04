@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>sequenccollective_emotion_estimation_task</title>
+    <script src="jspsych-6.0.5/jspsych.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-survey-likert.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-slider-response_noButton.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-external-html.js"></script>
+    <script src="sequential_task_gif_block_functions.js"></script>
+    <script src="sequential_task_gif_block_instructions.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-vsl-grid-scene1.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+  </head>
+  <body bgcolor="#AAAAAA"></body>
+  <script>
+
+  /* ************************************* */
+  /* Set up jsPsych blocks - static */
+  /* ************************************ */
+
+  var taskNumber_sequential = 30; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var taskNumber_memory = 20; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var attentionCheckInterval = 5; //there will be an attention check every this number of trials
+  var practiceNumber = 2;
+  var facesPool = loadFacePool(51,150); //preload faces
+  var NumSeqInstructionSlides = 6 //number of slides that explain the task
+  var NumMemInstructionSlides = 5 //number of slides that explain the task
+  var attentionStimulus = loadStimulus(2); //preload 2 images for attention check
+  var userList =jQuery.get('https://web.stanford.edu/~amitgold/categorization_task/previousUsersID.txt', function(data) {});
+  var Face = {}; //create Face dictionary to (1) record fixation time, (2)make face sample and scale have the same person and valence in every trial
+  Face.facePool = [ ]; //record face data
+  Face.wordList = ['but','rock','sky','our','course','we','table','house','here','mouth','tree', 'hello']; //word list for attention check
+  var imageTestDescription = attentionStimulus; //designed for the image test
+  var falseAnswer = 0; var falseAllowance = 4;  //attention check - the amount of time participants rate the same picture before they get an alert
+  var repeatAlert = 0; var repeatAllowance = 2; //how many times they can get alerts before they are cicked out
+  var facesPerSequence = 8;
+  var trial = 0; //Trial Counter
+  var trial_memory = 0; //Trial Counter
+  var trial_sequential = 0; //Trial Counter
+
+  /* ****************************************************/
+  /* Define local functions (other than functions file) */
+  /* ****************************************************/
+
+  function saveData(){ //save data function
+    $.ajax({
+      type: 'post',
+      cache: false,
+      url: 'https://web.stanford.edu/~amitgold/cgi-bin/save_data.php',
+      data: {filename: "sequencial/2020_sequencial_winter_continous_scale/" + Face.ID+ ".json",
+             filedata: jsPsych.data.get().json()}
+      //error: error_callback
+    });
+  }
+
+  /******************************************/
+  /* Start Experiment - trial by trial      */
+  /******************************************/
+
+  var consent = {
+    type:'external-html',
+    url: "external_page.html",
+    cont_btn: "start",
+    check_fn: check_consent
+  };
+
+  var phone = {
+    type: 'image-button-response',
+    stimulus: '',
+    choices: ['Phone','Computer'],
+    prompt: "Are you using a mobile phone or computer to conduct the experiment?",
+    data: {Name:'phone'}
+  };
+
+  var checkPhone = { //to check if participant is using phone. If it's 'No', the experiment will be terminated
+    timeline: [phone],
+    loop_function: checkPhone
+  };
+
+  var enter_id = {
+    type: 'survey-text',
+    questions: [{prompt: 'Please enter your prolific id (this is important for your validation)'}],
+    on_finish: function(data){
+      Face.ID = JSON.parse(data.responses).Q0; //save id as global variable
+      jsPsych.data.addProperties({participant_id: Face.ID});} //record participant id
+  };
+
+  var participant_id = { //to check if participants have entered ID (number/character, no punctuation allowed)
+    timeline: [enter_id],
+    loop_function: checkID,
+    loop_function: checkUser
+  };
+
+  var imageDescription = {
+    type: 'survey-text',
+    questions: [{prompt: "Please describe the picture in your own words"}],
+    preamble: function() {
+      var curr_stim = imageTestDescription.shift()
+      return '<img src='+curr_stim+'></img>';
+    },
+    on_finish: function(data){
+      Face.description = JSON.parse(data.responses).Q0; } //save description
+  };
+
+  var fixationGetFace = { //getting new fixation time and face
+    type: 'html-keyboard-response',
+    stimulus: '<p style="font-size: 48px;">+</p>',
+    trial_duration:  getTimeAndFace,  //random select fixation time
+    data: {Name:'fixation'}
+  };
+
+  var fixation = { //only get new fixation time without changing face - in one series of face, there're different fixation time
+    type: 'html-keyboard-response',
+    stimulus: '<p style="font-size: 48px;">+</p>',
+    trial_duration:  getFixationTime,  //random select fixation time
+    data: {Name:'fixation'}
+  };
+
+
+  var face = {                //there is an array of randomly selected pictures//
+    type: 'image-keyboard-response',
+    stimulus:  getFaceSample,
+    trial_duration: 1000,  //display faces for 0.5 second
+    choices: jsPsych.NO_KEYS,
+    data: function(){
+    //add data of the single face to face pool
+    if (Face.facePool.length == facesPerSequence){ //Controls that facepool only represents one trial, when the number of faces in the pool is already the number of expected trials it resets the list, because we are in a new trial
+      Face.facePool = [ ]
+      Face.facePool.push(Face.image)
+    } else {
+      Face.facePool.push(Face.image) //pushes the image that was just presented into a list so we can keep track of what people saw. This list is also important for the memory task. Because this facepool is the reference for which picture has been seen.
+    }}
+  };
+
+    var memory = {
+      type: 'html-button-response',
+      stimulus: memoryFace,
+      choices: ['left picture','right picture'],
+      prompt: "<p> Decide which of the following faces <strong> was presented in the sequence </strong></p>",
+      button_html: '<button class="jspsych-btn-jonas">%choice%</button>',
+      data: function(){ //we save all the data here to make it easy to analyze and process the data.
+        trial = trial + 1;
+        trial_memory = trial_memory + 1;
+      return {
+        Name: 'memory',
+        CorrectFaces: Face.facePool,
+        trial: trial,
+        trial_memory: trial_memory,
+        order: order,
+    }}
+  };
+
+  var scale_1 = [ // Scale for ERQ
+  "1 - Completely Uncertain",
+  "2 - Uncertain",
+  "3 - Neutral",
+  "4 - Certain",
+  "5 - Completely Certain",
+];
+
+var certainty = {
+  type: 'survey-likert',
+  questions: [
+    {prompt: "How certain are you that you chose the right face in the memory test you just did?", labels: scale_1, required:true}], //Q0
+  data: function(){ //we save all the data here to make it easy to analyze and process the data.
+  return {
+    Name: 'certainty',
+    trial: trial,
+    trial_memory: trial_memory,
+    order: order,
+  }}
+  };
+
+  var response = { //participants see a slider and asked to estimate the mean group emotion
+    type: 'image-slider-response_noButton',
+    stimulus: getScale,
+    prompt: "<p>Estimate the average emotion expressed by the sequence of faces you just saw</p>",
+    step:1,
+    max:50,
+    start: 0,
+    on_load: morphedScale,
+    data: function(){ //we save all the data here to make it easy to analyze and process the data.
+      trial = trial + 1;
+      trial_sequential = trial_sequential + 1;
+    return {
+      Name: 'response',
+      fixationTime: Face.fixationTime,
+      faceIdentity: Face.personX,
+      description: Face.description,
+      faceShown: Face.facePool,
+      face_1:(Face.emotionX + Face.singleFace),
+      trial: trial,
+      trial_sequential: trial_sequential,
+      }}
+  };
+
+  var askTypeWord = { //attention check - participants are asked to copy a word that appears on the screen
+    type: 'survey-text',
+    questions: function (){return [{prompt:'Please type the word: '+ getWord().bold() + '  (pay attention to capital letters)'}]},
+  };
+
+  var attentionCheck = { //function for the attention check
+    timeline: [askTypeWord],
+    loop_function: checkTyping,
+    on_finish: saveData
+  };
+
+  var connectSurvey = {
+    on_start: saveData,
+    type: 'html-button-response',
+    stimulus: "<p> You've completed the task. </p>" +
+     "<p>Thank you for your participation.</p>" +
+     "<p> The next section is a short survey (up to 5 min).</p>",
+    choices: ['Begin Survey']
+  };
+
+  /* create general instruction definition array */
+  var general_instruction_start = [];
+  //general_instruction_start.push(consent);
+  general_instruction_start.push(checkPhone, imageDescription, participant_id, instruction_welcome_page);
+
+  /* create face average task definition array */
+  var collective_emotion_estimation = instruction_sequence; //display instructions
+  collective_emotion_estimation.push(fixationGetFace,attentionCheck);//attention check before practice task
+  for (var i = 0; i < practiceNumber; i++) {   //practice trials
+    faceNumber =  facesPerSequence;
+    for (var t = 0; t < faceNumber; t++) {
+      collective_emotion_estimation.push(fixation,face);}
+    collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+  };
+  collective_emotion_estimation.push(instruction_seq_MainTaskTransition); //move on to real task
+  for (var i = 0; i < taskNumber_sequential/attentionCheckInterval; i++) {
+    collective_emotion_estimation.push(fixation,attentionCheck); //attention check before real task
+
+      faceNumber = facesPerSequence; //trial out of attention check loop
+      collective_emotion_estimation.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {
+      collective_emotion_estimation.push(fixation,face);}
+      collective_emotion_estimation.push(response);
+    var k = 0;
+    while (k < (attentionCheckInterval-1)){
+      faceNumber = facesPerSequence;
+      collective_emotion_estimation.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
+      collective_emotion_estimation.push(fixation,face);}
+      collective_emotion_estimation.push(response);
+      k ++;
+    }
+  }
+
+  /* create memory task definition array */
+  var memory_task = instruction_memory; //display instructions
+  //memory_task.push(consent);
+  memory_task.push(fixationGetFace,attentionCheck);//attention check before practice task
+  for (var i = 0; i < practiceNumber; i++) {   //practice trials
+    faceNumber =  facesPerSequence;
+    for (var t = 0; t < faceNumber; t++) {
+      memory_task.push(fixation,face);}
+    memory_task.push(memory, certainty); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+  };
+  memory_task.push(instruction_mem_MainTaskTransition); //move on to real task
+  for (var i = 0; i < taskNumber_memory/attentionCheckInterval; i++) {
+    memory_task.push(fixation,attentionCheck); //attention check before real task
+
+      faceNumber = facesPerSequence; //trial out of attention check loop
+      memory_task.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {
+      memory_task.push(fixation,face);}
+      memory_task.push(memory, certainty);
+    var k = 0;
+    while (k < (attentionCheckInterval-1)){
+      faceNumber = facesPerSequence;
+      memory_task.push(fixationGetFace);
+      for (var t = 0; t < faceNumber; t++) {//one trial (different numbers of faces with one reponse)
+      memory_task.push(fixation,face);}
+      memory_task.push(memory, certainty);
+      k ++;
+    }
+
+    /*Order of main task. In the commented part is the option to randomize */
+    var main_tasks = [];
+    var order = 1;                   //order = shuffle(); If we want to randomize
+    if (order == 1){
+      main_tasks = collective_emotion_estimation.concat(memory_task);
+    } else {
+      main_tasks = memory_task.concat(collective_emotion_estimation);
+    }
+
+
+      /* Create the full experiment definition array */
+      var experiment = general_instruction_start;
+      experiment = experiment.concat(main_tasks, imageDescription, connectSurvey);
+    }
+
+
+
+  /******************************************/
+  /*           run the study                */
+  /******************************************/
+  jsPsych.init({
+    preload_images: facesPool,attentionStimulus,
+    timeline: experiment,
+    on_finish: function(data){
+    //saveData
+    //var final_submit = function() {
+    //       jsPsych.turk.submitToTurk({"completion_time": (new Date().getTime())});
+    //};
+    //saveData("2019_categorization_task_pilot_negative_stanford_preload_pictures/" + Face.ID+ ".json",
+    //jsPsych.data.get().json(), final_submit, final_submit);
+    //jsPsych.data.get().localSave('csv',Face.ID+'.csv'); //save as csv file with id as file name
+    window.location = "https://oxfordxpsy.az1.qualtrics.com/jfe/form/SV_bwS3aYt02XSU2Wh" //redirect to Qualtrics survey
+    }
+  })
+
+
+  </script>
+  </html>
