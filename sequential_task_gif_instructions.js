@@ -16,7 +16,7 @@ var  instruction_thanks_page = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus: "<p> You've completed the task. </p>" +
-   "<p>Thank you for your participation.</p>" +
+   "<p> Thank you for your participation.</p>" +
    "<p> The next section is a short survey (up to 5 min).</p>",
    on_load: textbox
 };
@@ -27,17 +27,17 @@ instruction_general = instruction_general.concat(instruction_welcome_page, instr
 var  instruction_seq1 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus:  "<p align='left'> The goal of this study is to examine whether people can <span style='color: red;'>estimate</span> the <span style='color: red;'>average emotional expression of face sequences.</span>   </p>"+
-   "<p align='left'> In each trial, a series of faces expressing various degrees of emotions will appear on the screen. The face sequence may either be expressing positive or negative emotions. </p>"+
-   "<img src = img/A75.jpg></img>"+
-   "<p align='left'> The face sequence will be on the screen for a brief moment. In order to take all the ratings in, try to focus your attention on it as much as possible. </p>",
+  stimulus:  "<p align='left'> The goal of this study is to examine whether people can <span style='color: red;'>estimate</span> the <span style='color: red;'>average emotional expression of a face expressing multiple emotional expressions in a short clip.</span>   </p>"+
+   "<p align='left'> In each trial, a faces expressing various degrees of emotions in a short video clip will appear on the screen. The face may either be expressing positive or negative emotions. </p>"+
+   "<img src = gifs/gifs50MS/A_5000_127.gif></img>"+
+   "<p align='left'> The face will be on the screen for a brief moment. In order to take all the expressions in, try to focus your attention on it as much as possible. </p>",
    on_load: textbox
 };
 
 var  instruction_seq2 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus: "<p>Following the face sequence, you will be asked to move the mouse left of the line to begin the rating phase</p>",
+  stimulus: "<p>Following the face video clip, you will be asked to move the mouse left of the line to begin the rating phase</p>",
   on_load: line
 
 };
@@ -46,17 +46,17 @@ var  instruction_seq3 = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p align='left'> A face will then appear on the screen. When you move your mouse, the face will change from being neutral to expressing emotion </p>"+
-   "<p p align='left'> By adjusting your mouse, <strong> you are asked to estimate the </strong> <span style='color: red;'> average emotional response of the face sequence you just saw. </span></p>" +
-   "<img src = img/A75.jpg></img>",
+   "<p p align='left'> By adjusting your mouse, <strong> you are asked to estimate the </strong> <span style='color: red;'> average emotional response of the face from the video clip. </span></p>" +
+   "<img src = gifs/gifs50MS/A_5000_127.gif></img>",
    on_load: remover_textbox
 };
 
 var  instruction_seq4 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus: "<p> Remember, the goal here is to provide </p>" +
+  stimulus:  "<p> Once you make the choice, the page will switch to the next trial. </p>"+
   "<p> YOUR ESTIMATION OF THE <span style='color: red;'>AVERAGE EMOTIONAL RESPONSE </span> </p>"+
-   "<p> of the face sequence you just saw. </p>"
+   "<p> of the face video clip you just saw. </p>"
 };
 
 var  instruction_seq5 = {
@@ -84,9 +84,6 @@ var  instruction_seq_MainTaskTransition = {
 
 var instruction_sequence = [];
 instruction_sequence = instruction_sequence.concat(instruction_seq1, instruction_seq2, instruction_seq3, instruction_seq4, instruction_seq5, instruction_seq6);
-
-//////////////////////// FUNCTIONS FOR INSTRUCTIONS
-
 function line () {
   var vertLine = `<div style="border-left:black;border-style:solid;margin-left:${lineSlice}px; height:${vHeight}px;width:0px;position:absolute;" id="vertLine"></div>`;
   var linePrompt = `<div id="linePrompt"><div style="font-size:50px;position:absolute;margin-left:${lineSlice*1.3}px;margin-top:${vHeight/2}px"></div><div style="position:absolute;margin-left:${lineSlice*1.2}px;margin-top:${vHeight/2}px;z-index:5;">Move mouse left of the line to begin</div></div>`;
