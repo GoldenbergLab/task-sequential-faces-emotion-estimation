@@ -111,6 +111,5 @@ function textbox(){
 
 
 
-
 var vHeight = 960;
 var lineSlice = 940 / 10;
