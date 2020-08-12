@@ -47,7 +47,7 @@ var  instruction_seq3 = {
   choices: ['Continue'],
   stimulus:  "<p align='left'> A face will then appear on the screen. When you move your mouse, the face will change from being neutral to expressing emotion </p>"+
    "<p p align='left'> By adjusting your mouse, <strong> you are asked to estimate the </strong> <span style='color: red;'> average emotional response of the face from the video clip. </span></p>" +
-   "<img src = gifs/gifs50MS/A_5000_127.gif></img>",
+   "<img src = img/A51.jpg></img>",
    on_load: remover_textbox
 };
 
