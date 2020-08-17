@@ -10,9 +10,24 @@ function getRandomElement (list){
   return list[Math.floor(Math.random()*list.length)];
 }
 
-function loadFacePool() { // takes the list of gif names
-  var files = [];
-  return files;
+function loadFacePool(start,end) { //the start and ending index of the images
+  var pool = [];
+  for(i = start; i < (end+1); i++){
+     pool.push( 'img/A' + i + '.jpg'); pool.push( 'img/B' + i + '.jpg');
+     pool.push( 'img/C' + i + '.jpg'); pool.push( 'img/D' + i + '.jpg');}
+  return pool;
+}
+
+function createSlideList(start,end){
+  var list = [];
+  for (i = start; i < (end+1); i++){
+     list.push( 'img/ins/sequential_task/Slide ' + i + '.png');}
+  return list;
+}
+
+function getNextSlide () {  //use to shift instruction slides
+  var currentSlide = slideList.shift();
+  return currentSlide
 }
 
 function loadStimulus(end) { //the start and ending index of the images
@@ -94,27 +109,12 @@ function checkPhone (){
   }
 
   function getTimeAndFace (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
-    Face.image = getRandomElement(gif_stimuli)
-    Face.gifDuration = Face.image;
-    Face.gifDuration = Face.gifDuration.replace(/[^0-9,]/g, '');
-    Face.gifDuration = Face.gifDuration.substr(0,4);
-
     Face.fixationTime = getRandomElement([400, 500, 600]);
 
     //choose face_itive or negative valence before displaying faces
-    Face.emotionX = Face.image; //randomly choose from negative and face_tive emotion
-    Face.emotionX = Face.emotionX.replace(/[^0-9,]/g, '');
-    Face.emotionX = Face.emotionX.substr(6);
-    if (Face.emotionX > 50) { //  this variable keeps information about whether trial was pos or neg
-      Face.emotionX = 50
-    } else {
-      Face.emotionX = 100
-    }
-
+    Face.emotionX = getRandomElement([50, 100]); //randomly choose from negative and face_tive emotion
     //choose the identity of the face
-    Face.personX = Face.image; //randomly choose from negative and face_tive emotion
-    Face.personX = Face.personX.replace(/[^A-Z,]/g, '');
-    Face.personX = Face.personX.substr(2);
+    Face.personX = getRandomElement(['A','B','C','D']); //randomally choose from ['A','B','C','D'] -- select person
 
     return Face.fixationTime;
   }
@@ -124,26 +124,11 @@ function checkPhone (){
     return Face.fixationTime;
   }
 
-  function gifDuration (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
-    duration = Face.gifDuration
-    return duration;
+  function getFaceSample (){  //get the sample of faces in each trial
+    Face.singleFace = getRandomInt(1, 50);
+    return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
   }
 
-  function faceStimulus (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
-    image = Face.image
-    return image;
-  }
-
-function gifRemover (){
-  duration_of_gif = gifDuration()
-  setTimeout(function(){ $('img').remove(); }, duration_of_gif);
-}
-
-function pageDuration(){
-  duration_of_gif = gifDuration()
-  duration_of_page = parseInt(duration_of_gif) + 1500
-  return duration_of_page
-}
 
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in faceArray
     var scale = [];
@@ -151,105 +136,6 @@ function pageDuration(){
        scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')}
     return scale;
   }
-
-  function memoryFace(){ //Select face for memory task
-    var correctFace = getRandomElement(Face.facePool); //selects a random picture of the ones that have been shown in the trial
-    correctFace = correctFace.substr(4); // we need to remove the image/ directory prefix to get into another folder
-    correctFace = ('img/' + correctFace);
-    var wrongFace = ImageToNumber(Face.facePool); //Before we can get a false picture, we need to transform picture array into number array (which starts from lowest number)
-    wrongFace = falseFace(wrongFace); // getting a false picture. That is located between the real pictures that had the biggest distance to each other.
-    var leftPicture = []; //
-    var rightPicture = [];
-    order = shuffle();
-    if (order == 1){
-      leftPicture = correctFace;
-      rightPicture = wrongFace;
-    } else {
-      leftPicture = wrongFace;
-      rightPicture = correctFace;
-    }
-    var stimulus_iamages = "<div id='myDiv' style='height: 200px; width: 560px'>" + "<div style='float: left;'><img src=" + "'" + leftPicture + "'" +  "></img>" + "</div>" + "<div style='float: right;'><img src=" + "'" + rightPicture + "'" + "></img>" + "</div>"; //if you want to change the left pictures position go to jspsych css and change #myDiv to change right position picture change widht of first div
-    return stimulus_iamages;
-  }
-
-  function memoryFace1(){ //Select face for memory task
-    var correctFace = getRandomElement(Face.facePool); //selects a random picture of the ones that have been shown in the trial
-    correctFace = correctFace.substr(4); // we need to remove the image/ directory prefix to get into another folder
-    correctFace = ('img/' + correctFace);
-    var wrongFace = ImageToNumber(Face.facePool); //Before we can get a false picture, we need to transform picture array into number array (which starts from lowest number)
-    wrongFace = falseFace(wrongFace); // getting a false picture. That is located between the real pictures that had the biggest distance to each other.
-    var leftPicture = []; //
-    var rightPicture = [];
-    order = shuffle();
-    if (order == 1){
-      leftPicture = correctFace;
-      rightPicture = wrongFace;
-    } else {
-      leftPicture = wrongFace;
-      rightPicture = correctFace;
-    }
-    var stimulus_iamages = "<p> Decide which of the target faces had the <strong> same expression </strong> as one in the sequence </p>" + "<div style='height: 200px; width: 700px'>" + "<div style='float: left;'><img src=" + "'" + leftPicture + "'" +  "></img>" + "</div>" + "<div style='float: right;'><img src=" + "'" + rightPicture + "'" + "></img>" + "</div>"; //if you want to change the left pictures position go to jspsych css and change #myDiv to change right position picture change widht of first div
-    return stimulus_iamages;
-  }
-
-
-  function rectangle(){
-    var rect = '<style> img { display: block; margin-left: auto; margin-right: auto; border: 3px solid red;} </style>'
-    $(".jspsych-content").prepend(rect);
-  }
-
-
-  function ImageToNumber (facePool) { // This function transforms the image array into a number array that starts from the lowest number for further processing
-    var imageToNumb = facePool;
-    imageNumb = imageToNumb.toString().replace(/[^0-9,]/g, '');
-    imageNumb = imageNumb.split(',');
-    imageNumb = imageNumb.sort(function(a, b){return a-b});
-    return imageNumb;
-  }
-
-  function falseFace(imageNumb){ //This function returnes a fasle picture that is in the middle of 2 real images that have the biggest distance between them.
-    var imageDiff = diff(imageNumb); //this line returnes an array representing the distances between two real pictures
-    var middle = Math.round(imageDiff/2); // variable that will be used to construct the false picture. This is the distance to the middle between two real pictures, where we want to create the wrong picture.
-    var index = PicHighestIndex(imageNumb); // This function locates the position of the lower real face that has the highest distance to the next real face, which we will use to construct the wrong picture.
-    var PictureBase = imageNumb[index]; // Selects the value of  of the lower real face. By adding the middle variable we will have the correct valence for the wrong picture
-    var FalsePicture = ('img/' + Face.personX+ (+PictureBase + +middle)+'.jpg'); // creating the picture name with correct valence etc.
-    return FalsePicture;
-  }
-
-  function diff(ary) { //This function returns the biggest difference between neighboors of right (presented in sequence) pictures
-    var newA = []; // temp array
-    for (var i = 1; i < ary.length; i++) // calculates the difference between the neighbours and returns this into the temp variable
-        newA.push(ary[i] - ary[i - 1]);
-    newA = Math.max.apply(null, newA) // selects the biggest difference value
-    return newA;
-}
-
-function PicHighestIndex(ary) { //This function finds index of array that has the biggest distance to its neigbour
-  var newB = []; // the first 2 lines are identical to the diff(), and return an array of difference scores
-  for (var i = 1; i < ary.length; i++)
-      newB.push(ary[i] - ary[i - 1]);
-  var highestDiffIndex = indexOfMax(newB); // calls a function that finds the index biggest value in an arrays
-  return highestDiffIndex;
-
-}
-
-function indexOfMax(arr) { //This function finds the index of the value in an array that has the higest value
-    if (arr.length === 0) { // In case for some reason an array is 0, which shouldnt happen
-        return -1;
-    }
-
-    var max = arr[0]; // starts by selecting the first element in an array
-    var maxIndex = 0; // this variable will rememeber the index of the highest index
-
-    for (var i = 1; i < arr.length; i++) { // loops through the array and checks if the current highest value and its index is smaller than its neigbhour. If so the index and its value shifts to the next element in the array.
-        if (arr[i] > max) {
-            maxIndex = i;
-            max = arr[i];
-        }
-    }
-    return maxIndex;
-}
-
 
   function morphedScale (){ //generate the rating scale depending on the person and valence randomly chosen in faceArray
     // defining a few helper functions
@@ -375,11 +261,4 @@ function indexOfMax(arr) { //This function finds the index of the value in an ar
 
     // turn on the vertical line mouse move listener
     $(document).mousemove(verticalLineInit);
-  }
-  // For randomizing order //
-  function shuffle() {
-    var a = [];
-    var order = [];
-    order = getRandomElement([1, 2]);
-    return order;
   }
