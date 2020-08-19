@@ -105,10 +105,10 @@ function checkPhone (){
     Face.emotionX = Face.image; //randomly choose from negative and face_tive emotion
     Face.emotionX = Face.emotionX.replace(/[^0-9,]/g, '');
     Face.emotionX = Face.emotionX.substr(6);
-    if (Face.emotionX > 50) { //  this variable keeps information about whether trial was pos or neg
-      Face.emotionX = 50
-    } else {
+    if (Face.emotionX > 100) { //  this variable keeps information about whether trial was pos or neg
       Face.emotionX = 100
+    } else {
+      Face.emotionX = 50
     }
 
     //choose the identity of the face
@@ -148,7 +148,7 @@ function pageDuration(){
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in faceArray
     var scale = [];
     for(i = 1; i < (50+1); i++){
-       scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')}
+       scale.push('img/'+Face.personX + (Face.emotionX +i) + '.jpg')}
     return scale;
   }
 
