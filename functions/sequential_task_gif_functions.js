@@ -238,6 +238,7 @@ function indexOfMax(arr) { //This function finds the index of the value in an ar
         return -1;
     }
 
+
     var max = arr[0]; // starts by selecting the first element in an array
     var maxIndex = 0; // this variable will rememeber the index of the highest index
 
