@@ -27,7 +27,7 @@
   /* Set up jsPsych blocks - static */
   /* ************************************ */
 
-  var taskNumber_sequential = 50; //must be mutiples of 5. The real trial number will have one extra due to attention check trial
+  var taskNumber_sequential = 10; //must be mutiples of 10. The real trial number will have one extra due to attention check trial
   var attentionCheckInterval = 5; //there will be an attention check every this number of trials
   var practiceNumber = 2;
   var facesPool = loadFacePool(51,150); //preload faces
@@ -45,11 +45,18 @@
   var trial = 0; //Trial Counter
   var trial_memory = 0; //Trial Counter
   var trial_sequential = 0; //Trial Counter
-  var orderOfTrials = orderOfTrialsCreator(taskNumber_sequential);
+
+  // Order Specific Set Ups
   var orderOfFaces = orderOfFacesCreator(taskNumber_sequential);
+  var cloneOrderOfFaces = cloneAndAddReverse(orderOfFaces);
   var orderOfEmotion = orderOfEmotionCreator(taskNumber_sequential);
+  var cloneOrderOfEmotions = cloneAndAddReverse(orderOfEmotion);
   var orderOfPerson = orderOfPersonCreator(taskNumber_sequential);
-  var sequence_array = sequenceCreator(orderOfTrials,orderOfFaces,orderOfEmotion,orderOfPerson)
+  var cloneOrderOfPerson = cloneAndAddDublicate(orderOfPerson);
+  var orderOfTrials = orderOfTrialsCreator(taskNumber_sequential);
+  var cloneOrderOfTrials = cloneAndAddDublicate(orderOfTrials);
+  var firstHalfOfSequences = sequenceCreator2(orderOfTrials,orderOfFaces,orderOfPerson,orderOfEmotion);
+  var completeSequences = cloneAndAddReverse(firstHalfOfSequences);
 
   /* ****************************************************/
   /* Define local functions (other than functions file) */

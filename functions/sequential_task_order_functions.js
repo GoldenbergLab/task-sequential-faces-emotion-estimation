@@ -135,7 +135,7 @@ function orderOfTrialsCreator (taskNumber_sequential){
 
 function orderOfEmotionCreator (taskNumber_sequential){
   var orderOfEmotion = [];
-  for(i = 1; i <= (taskNumber_sequential/2); i++){
+  for(i = 1; i <= (taskNumber_sequential); i++){
     temp = getRandomElement([50, 100]),
     orderOfEmotion.push(temp)}
   return orderOfEmotion;
@@ -143,8 +143,8 @@ function orderOfEmotionCreator (taskNumber_sequential){
 
 function orderOfPersonCreator (taskNumber_sequential){
   var orderOfPerson = [];
-  for(i = 1; i <= (taskNumber_sequential/2); i++){
-    temp = getRandomElement([50, 100]),
+  for(i = 1; i <= (taskNumber_sequential); i++){
+    temp = getRandomElement(["A", "B", "C", "D"]),
     orderOfPerson.push(temp)}
   return orderOfPerson;
 }
@@ -155,9 +155,8 @@ function orderOfFacesCreator(taskNumber_sequential) {
   for(i = 1; i <= (taskNumber_sequential); i++){
     temp = getRandomElement([2,4,6,8,10,12]),
     orderOfFaces_sorted.push(temp)}
-
-  var orderOfFaces_random = shuffle(orderOfFaces_sorted);
-  return orderOfFaces_random;
+    var orderOfFaces_random = shuffle(orderOfFaces_sorted);
+    return orderOfFaces_random;
 }
 
 function shuffle(a) {
@@ -168,63 +167,80 @@ function shuffle(a) {
     return a;
 }
 
-function sequenceCreator(orderOfTrials,orderOfFaces,orderOfEmotion,orderOfPerson) {
-  trialNumber = orderOfTrials.lenght;
-  complete_face_arrays = [];
-  for(i = 1; i <= trialNumber; i++){ // trial by trial creation of stimuli depending on Trial Type and Face numbers
-    temp_order = orderOfTrials.shift();
-    temp_faces = orderOfFaces.shift();
-    temp_emotion = orderOfEmotion.shift();
-    temp_person = orderOfPerson.shift();
+function sequenceCreator2 (orderOfTrials,orderOfFaces,orderOfPerson,orderOfEmotion){  //get the sample of faces in each trial
+  var trialNumber = orderOfTrials.length;
+  var listOfStimuli = [];
+  var k = 0;
+  for(z = 1; z <= trialNumber; z++){ // trial by trial creation of stimuli depending on Trial Type and Face numbers
+    var temp_order = orderOfTrials.shift();
+    var temp_faces = orderOfFaces.shift();
+    var temp_person = orderOfPerson.shift();
+    var temp_emotion = orderOfEmotion.shift();
     if (temp_order == "High_First") {
-      var sequence = [];
-
-      for(i = 1; i <= (temp_faces/2); i++){
-        element = getSingleHighFace(temp_emotion, temp_person);
-        sequence.push(element);
+      for (i = 1; i <= (temp_faces/2); i++){
+        single_stimuli = getSingleHighFace(temp_person,temp_emotion)
+        listOfStimuli.push(single_stimuli);
       }
-
-      for(i = 1; i <= (temp_faces/2); i++){
-        element = getSingleLowFace(temp_emotion, temp_person);
-        sequence.push(element);
+      for (k = 1; k <= (temp_faces/2); k++){
+        single_stimuli = getSingleLowFace(temp_person,temp_emotion)
+        listOfStimuli.push(single_stimuli);
       }
-
     } else {
-        var sequence = [];
-
-        for(i = 1; i <= (temp_faces/2); i++){
-          element = getSingleLowFace(temp_emotion, temp_person);
-          sequence.push(element);
-        }
-
-        for(i = 1; i <= (temp_faces/2); i++){
-          element = getSingleHighFace(temp_emotion, temp_person);
-          sequence.push(element);
+      for (j = 1; j <= (temp_faces/2); j++){
+        single_stimuli = getSingleLowFace(temp_person,temp_emotion)
+        listOfStimuli.push(single_stimuli);
+      }
+      for (h = 1; h <= (temp_faces/2); h++){
+        single_stimuli = getSingleHighFace(temp_person,temp_emotion)
+        listOfStimuli.push(single_stimuli);
       }
     }
-      complete_face_arrays.push(sequence)
-    }
-    return element;
+  }
+  return listOfStimuli;
 }
 
-function getSingleHighFace (temp_emotion, temp_person){  //get the sample of faces in each trial
+function getSingleHighFace (temp_person,temp_emotion){  //get the sample of faces in each trial
   Face.singleFace = getRandomInt(26, 50);
-  Face.image = ('img/'+ temp_person +(temp_emotion + Face.singleFace)+'.jpg')
+  var valence = temp_emotion;
+  var person_ID = temp_person;
+  Face.image = ('img/'+ temp_person +(valence + Face.singleFace)+'.jpg')
   return Face.image;
 }
 
-function getSingleLowFace (temp_emotion, temp_person){  //get the sample of faces in each trial
+function getSingleLowFace (temp_person,temp_emotion){  //get the sample of faces in each trial
   Face.singleFace = getRandomInt(1, 25);
-  Face.image = ('img/'+ temp_person +(temp_emotion + Face.singleFace)+'.jpg')
+  var valence = temp_emotion;
+  var person_ID = temp_person;
+  Face.image = ('img/'+ temp_person +(valence + Face.singleFace)+'.jpg')
   return Face.image;
 }
 
+function cloneAndAddReverse (array){  //get the sample of faces in each trial
+  var clone = [...array];
+  var reverse = [...array];
+  reverse = reverse.reverse();
+  var full = clone.concat(reverse);
+  return full;
+}
 
+function cloneAndAddDublicate (array){  //get the sample of faces in each trial
+  var clone = [...array];
+  var reverse = [...array];
+  var full = clone.concat(reverse);
+  return full;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////                                                                                    //////////////////
+//////////////////                                      Morphscale Functions                          //////////////////
+//////////////////                                                                                   //////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in faceArray
     var scale = [];
     for(i = 1; i < (50+1); i++){
-       scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')}
+       scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')
+     }
     return scale;
   }
 
