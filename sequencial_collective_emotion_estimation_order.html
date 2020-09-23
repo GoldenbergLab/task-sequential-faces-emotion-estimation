@@ -42,21 +42,19 @@
   var falseAnswer = 0; var falseAllowance = 4;  //attention check - the amount of time participants rate the same picture before they get an alert
   var repeatAlert = 0; var repeatAllowance = 2; //how many times they can get alerts before they are cicked out
   //var facesPerSequence = 8;
-  var trial = 0; //Trial Counter
-  var trial_memory = 0; //Trial Counter
-  var trial_sequential = 0; //Trial Counter
+  var trial = 1 - practiceNumber; //Trial Counter so that first trial starts at 1
 
   // Order Specific Set Ups
   var orderOfFaces = orderOfFacesCreator(taskNumber_sequential);
-  var cloneOrderOfFaces = cloneAndAddReverse(orderOfFaces);
+  Face.cloneOrderOfFaces = cloneAndAddReverse(orderOfFaces);
   var orderOfEmotion = orderOfEmotionCreator(taskNumber_sequential);
-  var cloneOrderOfEmotions = cloneAndAddReverse(orderOfEmotion);
+  Face.cloneOrderOfEmotions = cloneAndAddReverse(orderOfEmotion);
   var orderOfPerson = orderOfPersonCreator(taskNumber_sequential);
-  var cloneOrderOfPerson = cloneAndAddDublicate(orderOfPerson);
+  Face.cloneOrderOfPerson = cloneAndAddDublicate(orderOfPerson);
   var orderOfTrials = orderOfTrialsCreator(taskNumber_sequential);
-  var cloneOrderOfTrials = cloneAndAddDublicate(orderOfTrials);
+  Face.cloneOrderOfTrials = cloneAndAddDublicate(orderOfTrials);
   var firstHalfOfSequences = sequenceCreator2(orderOfTrials,orderOfFaces,orderOfPerson,orderOfEmotion);
-  var completeSequences = cloneAndAddReverse(firstHalfOfSequences);
+  Face.completeSequences = cloneAndAddReverse(firstHalfOfSequences);
 
   /* ****************************************************/
   /* Define local functions (other than functions file) */
@@ -138,7 +136,7 @@
 
   var face = {                //there is an array of randomly selected pictures//
     type: 'image-keyboard-response',
-    stimulus:  getFaceSample,
+    stimulus:  stimulus_shifter,
     trial_duration: 1000,  //display faces for 0.5 second
     choices: jsPsych.NO_KEYS,
     data: function(){Name:'singleFace',
@@ -156,7 +154,6 @@
     on_load: morphedScale,
     data: function(){ //we save all the data here to make it easy to analyze and process the data.
       trial = trial + 1;
-      trial_sequential = trial_sequential + 1;
     return {
       Name: 'response',
       fixationTime: Face.fixationTime,
@@ -164,7 +161,36 @@
       description: Face.description,
       face_1:(Face.emotionX + Face.singleFace),
       trial: trial,
-      trial_sequential: trial_sequential
+      }}
+  };
+
+  var face_practise = {                //there is an array of randomly selected pictures//
+    type: 'image-keyboard-response',
+    stimulus:  getFaceSample,
+    trial_duration: 1000,  //display faces for 0.5 second
+    choices: jsPsych.NO_KEYS,
+    data: function(){Name:'singleFace',
+    //add data of the single face to face pool
+    Face.facePool.push(Face.singleFace)},
+  };
+
+  var response_practise = { //participants see a slider and asked to estimate the mean group emotion
+    type: 'image-slider-response_noButton',
+    stimulus: getScale,
+    prompt: "<p>Estimate the average emotion expressed by the sequence of faces you just saw</p>",
+    step:1,
+    max:50,
+    start: 0,
+    on_load: morphedScale,
+    data: function(){ //we save all the data here to make it easy to analyze and process the data.
+      trial = trial + 1;
+    return {
+      Name: 'response_practise',
+      fixationTime: Face.fixationTime,
+      faceIdentity: Face.personX,
+      description: Face.description,
+      face_1:(Face.emotionX + Face.singleFace),
+      trial: trial
       }}
   };
 
@@ -199,8 +225,8 @@
   for (var i = 0; i < practiceNumber; i++) {   //practice trials
     faceNumber =  getRandomInt(1,12);;
     for (var t = 0; t < faceNumber; t++) {
-      collective_emotion_estimation.push(fixation,face);}
-    collective_emotion_estimation.push(response); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
+      collective_emotion_estimation.push(fixation,face_practise);}
+    collective_emotion_estimation.push(response_practise); //response is main slide for amplification result, while memory is ending each trail and contains all information about memory task
   };
   collective_emotion_estimation.push(instruction_seq_MainTaskTransition); //move on to real task
   for (var i = 0; i < taskNumber_sequential/attentionCheckInterval; i++) {

@@ -230,6 +230,14 @@ function cloneAndAddDublicate (array){  //get the sample of faces in each trial
   return full;
 }
 
+function stimulus_shifter (){  //get the sample of faces in each trial
+  var currentValue = Face.completeSequences.shift();
+  Face.emotionY = Face.cloneOrderOfEmotions.shift();
+  Face.personY = Face.cloneOrderOfPerson.shift();
+  Face.trialX = Face.cloneOrderOfTrials.shift();
+  return currentValue;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////                                                                                    //////////////////
 //////////////////                                      Morphscale Functions                          //////////////////
