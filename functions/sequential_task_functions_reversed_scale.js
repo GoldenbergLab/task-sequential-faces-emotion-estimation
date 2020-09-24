@@ -18,6 +18,18 @@ function loadFacePool(start,end) { //the start and ending index of the images
   return pool;
 }
 
+function createSlideList(start,end){
+  var list = [];
+  for (i = start; i < (end+1); i++){
+     list.push( 'img/ins/sequential_task/Slide ' + i + '.png');}
+  return list;
+}
+
+function getNextSlide () {  //use to shift instruction slides
+  var currentSlide = slideList.shift();
+  return currentSlide
+}
+
 function loadStimulus(end) { //the start and ending index of the images
   var list = [];
   for(i = 1; i < (end+1); i++){
@@ -96,6 +108,17 @@ function checkPhone (){
     else {falseAnswer = 0; return false} //reset falseAnswer
   }
 
+  function getTimeAndFace (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
+    Face.fixationTime = getRandomElement([400, 500, 600]);
+
+    //choose face_itive or negative valence before displaying faces
+    Face.emotionX = getRandomElement([50, 100]); //randomly choose from negative and face_tive emotion
+    //choose the identity of the face
+    Face.personX = getRandomElement(['A','B','C','D']); //randomally choose from ['A','B','C','D'] -- select person
+
+    return Face.fixationTime;
+  }
+
   function getFixationTime (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
     Face.fixationTime = getRandomElement([400, 500, 600]);
     return Face.fixationTime;
@@ -103,172 +126,15 @@ function checkPhone (){
 
   function getFaceSample (){  //get the sample of faces in each trial
     Face.singleFace = getRandomInt(1, 50);
-    Face.image = ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg')
-    return Face.image;
+    return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
   }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////                                                                                    //////////////////
-//////////////////                            Order Study Specific Functions                          //////////////////
-//////////////////                                                                                   //////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Create an Array based on trial numbers that contains an equal amount of trial types (high first vs low first) so the trials can be balanced
-
-function orderOfTrialsCreator (taskNumber_sequential){
-  var orderOfTrials_sorted = [];
-  for(i = 1; i <= (taskNumber_sequential/2); i++){
-     orderOfTrials_sorted.push("High_First","Low_First")}
-  var orderOfTrials_random = shuffle(orderOfTrials_sorted);
-  return orderOfTrials_random;
-}
-
-function orderOfEmotionCreator (taskNumber_sequential){
-  var orderOfEmotion = [];
-  for(i = 1; i <= (taskNumber_sequential); i++){
-    temp = getRandomElement([50, 100]),
-    orderOfEmotion.push(temp)}
-  return orderOfEmotion;
-}
-
-function orderOfPersonCreator (taskNumber_sequential){
-  var orderOfPerson = [];
-  for(i = 1; i <= (taskNumber_sequential); i++){
-    temp = getRandomElement(["A", "B", "C", "D"]),
-    orderOfPerson.push(temp)}
-  return orderOfPerson;
-}
-
-function orderOfFacesCreator(taskNumber_sequential) {
-  var orderOfFaces_sorted = [];
-  temp = [];
-  for(i = 1; i <= (taskNumber_sequential); i++){
-    temp = getRandomElement([2,4,6,8,10,12]),
-    orderOfFaces_sorted.push(temp)}
-    var orderOfFaces_random = shuffle(orderOfFaces_sorted);
-    return orderOfFaces_random;
-}
-
-function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
-
-function sequenceCreator2 (orderOfTrials,orderOfFaces,orderOfPerson,orderOfEmotion){  //get the sample of faces in each trial
-  var trialNumber = orderOfTrials.length;
-  var listOfStimuli = [];
-  var k = 0;
-  for(z = 1; z <= trialNumber; z++){ // trial by trial creation of stimuli depending on Trial Type and Face numbers
-    var temp_order = orderOfTrials.shift();
-    var temp_faces = orderOfFaces.shift();
-    var temp_person = orderOfPerson.shift();
-    var temp_emotion = orderOfEmotion.shift();
-    if (temp_order == "High_First") {
-      for (i = 1; i <= (temp_faces/2); i++){
-        single_stimuli = getSingleHighFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
-      }
-      for (k = 1; k <= (temp_faces/2); k++){
-        single_stimuli = getSingleLowFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
-      }
-    } else {
-      for (j = 1; j <= (temp_faces/2); j++){
-        single_stimuli = getSingleLowFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
-      }
-      for (h = 1; h <= (temp_faces/2); h++){
-        single_stimuli = getSingleHighFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
-      }
-    }
-  }
-  return listOfStimuli;
-}
-
-function getSingleHighFace (temp_person,temp_emotion){  //get the sample of faces in each trial
-  Face.singleFace = getRandomInt(26, 50);
-  var valence = temp_emotion;
-  var person_ID = temp_person;
-  Face.image = ('img/'+ temp_person +(valence + Face.singleFace)+'.jpg')
-  return Face.image;
-}
-
-function getSingleLowFace (temp_person,temp_emotion){  //get the sample of faces in each trial
-  Face.singleFace = getRandomInt(1, 25);
-  var valence = temp_emotion;
-  var person_ID = temp_person;
-  Face.image = ('img/'+ temp_person +(valence + Face.singleFace)+'.jpg')
-  return Face.image;
-}
-
-function getPractiseFaceSample (){  //get the sample of faces in each trial
-  Face.emotionX = getRandomInt(1, 50);
-  var valence = getRandomElement([50, 100])
-  Face.personX = getRandomElement(["A", "B", "C", "D"])
-  var image = ('img/'+ Face.personX +(valence + Face.emotionX)+'.jpg')
-  return image;
-}
-
-function getTimeAndFace (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
-  Face.fixationTime = getRandomElement([400, 500, 600]);
-
-  //choose face_itive or negative valence before displaying faces
-  Face.emotionX = getRandomElement([50, 100]); //randomly choose from negative and face_tive emotion
-  //choose the identity of the face
-  Face.personX = getRandomElement(['A','B','C','D']); //randomally choose from ['A','B','C','D'] -- select person
-
-  return Face.fixationTime;
-}
-
-function getPractiseFaceSample (){  //get the sample of faces in each trial
-  var valence = getRandomInt(1, 50);
-  var image = ('img/'+ Face.personX +(valence + Face.emotionX)+'.jpg')
-  return image;
-}
-
-function cloneAndAddReverse (array){  //get the sample of faces in each trial
-  var clone = [...array];
-  var reverse = [...array];
-  reverse = reverse.reverse();
-  var full = clone.concat(reverse);
-  return full;
-}
-
-function cloneAndAddDublicate (array){  //get the sample of faces in each trial
-  var clone = [...array];
-  var reverse = [...array];
-  var full = clone.concat(reverse);
-  return full;
-}
-function trial_shifter (){  //get the sample of faces in each trial
-  Face.fixationTime = getRandomElement([400, 500, 600]);
-  Face.emotionX = Face.cloneOrderOfEmotions.shift();
-  Face.personX = Face.cloneOrderOfPerson.shift();
-  Face.trialX = Face.cloneOrderOfTrials.shift();
-  Face.facesX = Face.cloneOfCloneOrderOfTrials.shift();
-  return Face.fixationTime;
-}
-
-function stimulus_shifter (){  //get the sample of faces in each trial
-  var currentValue = Face.completeSequences.shift();
-  Face.Stimulus = currentValue;
-  return currentValue;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////                                                                                    //////////////////
-//////////////////                                      Morphscale Functions                          //////////////////
-//////////////////                                                                                   //////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in faceArray
     var scale = [];
     for(i = 1; i < (50+1); i++){
-       scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')
-     }
+       scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')}
+       scale.reverse();
     return scale;
   }
 
@@ -311,9 +177,9 @@ function stimulus_shifter (){  //get the sample of faces in each trial
 
     // setting up iniital vertical line to start the mousemove functionality
     var vHeight = $(document).height()-8;
-    var lineSlice = vWidth / 10;
+    var lineSlice = vWidth / 10*9;
     var vertLine = `<div style="border-left:black;border-style:solid;margin-left:${lineSlice}px; height:${vHeight}px;width:0px;position:absolute;" id="vertLine"></div>`;
-    var linePrompt = `<div id="linePrompt"><div style="font-size:50px;position:absolute;margin-left:${lineSlice*1.3}px;margin-top:${vHeight/2}px"></div><div style="position:absolute;margin-left:${lineSlice*1.2}px;margin-top:${vHeight/2}px;z-index:5;">Move mouse left of the line to begin</div></div>`
+    var linePrompt = `<div id="linePrompt"><div style="font-size:50px;position:absolute;margin-left:${lineSlice*1.3}px;margin-top:${vHeight/2}px"></div><div style="position:absolute;margin-left:${lineSlice*1.2}px;margin-top:${vHeight/2}px;z-index:5;">Move mouse right of the line to begin</div></div>`
     $(".jspsych-content-wrapper").prepend(vertLine);
     $(".jspsych-content-wrapper").prepend(linePrompt);
     // hide prompt until the trial is begun
@@ -376,7 +242,7 @@ function stimulus_shifter (){  //get the sample of faces in each trial
 
     function verticalLineInit(event){
       var mouseX = Math.floor(event.pageX);
-      if (mouseX <= __imageMouseOver.lineSlice) {
+      if (mouseX >= __imageMouseOver.lineSlice) {
         $("#vertLine").remove();
         $("#linePrompt").remove();
         $("#jspsych-image-slider-response_noButton-stimulus > img").css({
