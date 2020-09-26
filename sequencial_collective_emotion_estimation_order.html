@@ -46,16 +46,17 @@
 
   // Order Specific Set Ups
   var orderOfFaces = orderOfFacesCreator(taskNumber_sequential);
-  Face.cloneOrderOfFaces = cloneAndAddReverse(orderOfFaces);
-  Face.cloneOfCloneOrderOfTrials = [...Face.cloneOrderOfFaces];
+  Face.cloneOrderOfFaces = [];
   var orderOfEmotion = orderOfEmotionCreator(taskNumber_sequential);
-  Face.cloneOrderOfEmotions = cloneAndAddReverse(orderOfEmotion);
+  Face.cloneOrderOfEmotions = cloneAndAddDublicate(orderOfEmotion);
   var orderOfPerson = orderOfPersonCreator(taskNumber_sequential);
   Face.cloneOrderOfPerson = cloneAndAddDublicate(orderOfPerson);
   var orderOfTrials = orderOfTrialsCreator(taskNumber_sequential);
   Face.cloneOrderOfTrials = cloneAndAddDublicate(orderOfTrials);
   var firstHalfOfSequences = sequenceCreator2(orderOfTrials,orderOfFaces,orderOfPerson,orderOfEmotion);
-  Face.completeSequences = cloneAndAddReverse(firstHalfOfSequences);
+  var listOfStimuli = cloneAndAddReverse(firstHalfOfSequences);
+  shuffleMultipleArrays(listOfStimuli,Face.cloneOrderOfPerson,Face.cloneOrderOfEmotions);
+  Face.completeSequences = unpackArraysOfTrials(listOfStimuli)
 
   /* ****************************************************/
   /* Define local functions (other than functions file) */

@@ -156,6 +156,40 @@ function shuffle(a) {
     return a;
 }
 
+var isArray = Array.isArray || function(value) {
+  return {}.toString.call(value) !== "[object Array]"
+};
+
+function shuffleMultipleArrays() {
+  var arrLength = 0;
+  var argsLength = arguments.length;
+  var rnd, tmp;
+
+  for (var index = 0; index < argsLength; index += 1) {
+    if (!isArray(arguments[index])) {
+      throw new TypeError("Argument is not an array.");
+    }
+
+    if (index === 0) {
+      arrLength = arguments[0].length;
+    }
+
+    if (arrLength !== arguments[index].length) {
+      throw new RangeError("Array lengths do not match.");
+    }
+  }
+
+  while (arrLength) {
+    rnd = Math.floor(Math.random() * arrLength);
+    arrLength -= 1;
+    for (argsIndex = 0; argsIndex < argsLength; argsIndex += 1) {
+      tmp = arguments[argsIndex][arrLength];
+      arguments[argsIndex][arrLength] = arguments[argsIndex][rnd];
+      arguments[argsIndex][rnd] = tmp;
+    }
+  }
+}
+
 function sequenceCreator2 (orderOfTrials,orderOfFaces,orderOfPerson,orderOfEmotion){  //get the sample of faces in each trial
   var trialNumber = orderOfTrials.length;
   var listOfStimuli = [];
@@ -166,26 +200,45 @@ function sequenceCreator2 (orderOfTrials,orderOfFaces,orderOfPerson,orderOfEmoti
     var temp_person = orderOfPerson.shift();
     var temp_emotion = orderOfEmotion.shift();
     if (temp_order == "High_First") {
+      var single_trial = [];
       for (i = 1; i <= (temp_faces/2); i++){
         single_stimuli = getSingleHighFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
+        single_trial.push(single_stimuli);
       }
       for (k = 1; k <= (temp_faces/2); k++){
         single_stimuli = getSingleLowFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
+        single_trial.push(single_stimuli);
       }
     } else {
+      var single_trial = [];
       for (j = 1; j <= (temp_faces/2); j++){
         single_stimuli = getSingleLowFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
+        single_trial.push(single_stimuli);
       }
       for (h = 1; h <= (temp_faces/2); h++){
         single_stimuli = getSingleHighFace(temp_person,temp_emotion)
-        listOfStimuli.push(single_stimuli);
+        single_trial.push(single_stimuli);
       }
     }
+    listOfStimuli.push(single_trial)
   }
   return listOfStimuli;
+}
+
+function unpackArraysOfTrials (listOfStimuli){  //get the sample of faces in each trial
+  var temp_faces = [];
+  var completeTrials = [];
+  Face.cloneOrderOfFaces = [];
+  for (h = 0; h < listOfStimuli.length; h++){
+    var temp_stimuli = [];
+    temp_stimuli.push(listOfStimuli[h]) // gets first trial from element
+    var a = temp_stimuli[0] //lists elements of this trial
+    temp_faces = a.length // lists the number of faces in this trial
+    completeTrials = completeTrials.concat(a)
+    Face.cloneOrderOfFaces.push(temp_faces);
+    Face.cloneOfCloneOrderOfFaces = [...Face.cloneOrderOfFaces];
+  }
+  return completeTrials;
 }
 
 function getSingleHighFace (temp_person,temp_emotion){  //get the sample of faces in each trial
@@ -202,14 +255,6 @@ function getSingleLowFace (temp_person,temp_emotion){  //get the sample of faces
   var person_ID = temp_person;
   Face.image = ('img/'+ temp_person +(valence + Face.singleFace)+'.jpg')
   return Face.image;
-}
-
-function getPractiseFaceSample (){  //get the sample of faces in each trial
-  Face.emotionX = getRandomInt(1, 50);
-  var valence = getRandomElement([50, 100])
-  Face.personX = getRandomElement(["A", "B", "C", "D"])
-  var image = ('img/'+ Face.personX +(valence + Face.emotionX)+'.jpg')
-  return image;
 }
 
 function getTimeAndFace (){  //get randomized time of fixation by randomly choosing from 0.4, 0.5 and 0.6s
@@ -230,17 +275,21 @@ function getPractiseFaceSample (){  //get the sample of faces in each trial
 }
 
 function cloneAndAddReverse (array){  //get the sample of faces in each trial
-  var clone = [...array];
-  var reverse = [...array];
-  reverse = reverse.reverse();
-  var full = clone.concat(reverse);
-  return full;
+  var iterations = array.length;
+  var reversed = [...array];
+  for (j = 0; j < iterations; j++){
+    var test = reversed[j];
+    var clonetest = [...test];
+    clonetest = clonetest.reverse();
+    reversed.push(clonetest)
+  }
+  return reversed;
 }
 
 function cloneAndAddDublicate (array){  //get the sample of faces in each trial
   var clone = [...array];
-  var reverse = [...array];
-  var full = clone.concat(reverse);
+  var dublicate = [...array];
+  var full = clone.concat(dublicate);
   return full;
 }
 function trial_shifter (){  //get the sample of faces in each trial
@@ -248,7 +297,7 @@ function trial_shifter (){  //get the sample of faces in each trial
   Face.emotionX = Face.cloneOrderOfEmotions.shift();
   Face.personX = Face.cloneOrderOfPerson.shift();
   Face.trialX = Face.cloneOrderOfTrials.shift();
-  Face.facesX = Face.cloneOfCloneOrderOfTrials.shift();
+  Face.facesX = Face.cloneOfCloneOrderOfFaces.shift();
   return Face.fixationTime;
 }
 
