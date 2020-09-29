@@ -117,14 +117,14 @@ function checkPhone (){
 function orderOfTrialsCreator (taskNumber_sequential){
   var orderOfTrials_sorted = [];
   for(i = 1; i <= (taskNumber_sequential/2); i++){
-     orderOfTrials_sorted.push("High_First","Low_First")}
-  var orderOfTrials_random = shuffle(orderOfTrials_sorted);
-  return orderOfTrials_random;
+     temp = getRandomElement(["High_First","Low_First"]),
+     orderOfTrials_sorted.push(temp)}
+  return orderOfTrials_sorted;
 }
 
 function orderOfEmotionCreator (taskNumber_sequential){
   var orderOfEmotion = [];
-  for(i = 1; i <= (taskNumber_sequential); i++){
+  for(i = 1; i <= (taskNumber_sequential/2); i++){
     temp = getRandomElement([50, 100]),
     orderOfEmotion.push(temp)}
   return orderOfEmotion;
@@ -132,7 +132,7 @@ function orderOfEmotionCreator (taskNumber_sequential){
 
 function orderOfPersonCreator (taskNumber_sequential){
   var orderOfPerson = [];
-  for(i = 1; i <= (taskNumber_sequential); i++){
+  for(i = 1; i <= (taskNumber_sequential/2); i++){
     temp = getRandomElement(["A", "B", "C", "D"]),
     orderOfPerson.push(temp)}
   return orderOfPerson;
@@ -141,7 +141,7 @@ function orderOfPersonCreator (taskNumber_sequential){
 function orderOfFacesCreator(taskNumber_sequential) {
   var orderOfFaces_sorted = [];
   temp = [];
-  for(i = 1; i <= (taskNumber_sequential); i++){
+  for(i = 1; i <= (taskNumber_sequential/2); i++){
     temp = getRandomElement([2,4,6,8,10,12]),
     orderOfFaces_sorted.push(temp)}
     var orderOfFaces_random = shuffle(orderOfFaces_sorted);
@@ -274,7 +274,7 @@ function getPractiseFaceSample (){  //get the sample of faces in each trial
   return image;
 }
 
-function cloneAndAddReverse (array){  //get the sample of faces in each trial
+function cloneAndReverseArrays (array){  //get the sample of faces in each trial
   var iterations = array.length;
   var reversed = [...array];
   for (j = 0; j < iterations; j++){
@@ -292,6 +292,24 @@ function cloneAndAddDublicate (array){  //get the sample of faces in each trial
   var full = clone.concat(dublicate);
   return full;
 }
+
+function cloneAndAddReverse (array){  //get the sample of faces in each trial
+  var clone = [...array];
+  var secondHalf = [];
+  var iterations = array.length;
+  for (j = 0; j < iterations; j++){
+    var test = clone[j];
+    if (test == "High_First") {
+      var temp = "Low_First"
+    } else {
+      var temp = "High_First"
+    }
+    secondHalf.push(temp)
+  }
+  full = clone.concat(secondHalf)
+  return full;
+}
+
 function trial_shifter (){  //get the sample of faces in each trial
   Face.fixationTime = getRandomElement([400, 500, 600]);
   Face.emotionX = Face.cloneOrderOfEmotions.shift();
