@@ -18,18 +18,6 @@ function loadFacePool(start,end) { //the start and ending index of the images
   return pool;
 }
 
-function createSlideList(start,end){
-  var list = [];
-  for (i = start; i < (end+1); i++){
-     list.push( 'img/ins/sequential_task/Slide ' + i + '.png');}
-  return list;
-}
-
-function getNextSlide () {  //use to shift instruction slides
-  var currentSlide = slideList.shift();
-  return currentSlide
-}
-
 function loadStimulus(end) { //the start and ending index of the images
   var list = [];
   for(i = 1; i < (end+1); i++){
@@ -126,7 +114,8 @@ function checkPhone (){
 
   function getFaceSample (){  //get the sample of faces in each trial
     Face.singleFace = getRandomInt(1, 50);
-    return ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg');
+    Face.image = ('img/'+ Face.personX +(Face.emotionX + Face.singleFace)+'.jpg')
+    return Face.image;
   }
 
 
@@ -179,7 +168,7 @@ function checkPhone (){
     var vHeight = $(document).height()-8;
     var lineSlice = vWidth / 10*9;
     var vertLine = `<div style="border-left:black;border-style:solid;margin-left:${lineSlice}px; height:${vHeight}px;width:0px;position:absolute;" id="vertLine"></div>`;
-    var linePrompt = `<div id="linePrompt"><div style="font-size:50px;position:absolute;margin-left:${lineSlice*1.3}px;margin-top:${vHeight/2}px"></div><div style="position:absolute;margin-left:${lineSlice*1.2}px;margin-top:${vHeight/2}px;z-index:5;">Move mouse right of the line to begin</div></div>`
+    var linePrompt = `<div id="linePrompt"><div style="font-size:50px;position:absolute;margin-left:${lineSlice*0.6}px;margin-top:${vHeight/2}px"></div><div style="position:absolute;margin-left:${lineSlice*0.7}px;margin-top:${vHeight/2}px;z-index:5;">Move mouse right of the line to begin</div></div>`
     $(".jspsych-content-wrapper").prepend(vertLine);
     $(".jspsych-content-wrapper").prepend(linePrompt);
     // hide prompt until the trial is begun
