@@ -37,7 +37,7 @@ var  instruction_seq1 = {
 var  instruction_seq2 = {
   type: "html-button-response",
   choices: ['Continue'],
-  stimulus: "<p>Following the face sequence, you will be asked to move the mouse left of the line to begin the rating phase</p>",
+  stimulus: "<p>Following the face sequence, you will be asked to move the mouse right of the line to begin the rating phase</p>",
   on_load: line
 
 };
@@ -69,14 +69,14 @@ var  instruction_seq6 = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p> At the next stage, you will conduct a short practice run to make sure that the task is clear. </p>"+
-  "<p> Remember the goal is to <span style='color: red;'> ESTIMATE THE AVERAGE EMOTIONAL RESPONSE </span> of the of the face video clip you just saw.</p>"
+  "<p> Remember the goal is to <span style='color: red;'> ESTIMATE THE AVERAGE EMOTIONAL RESPONSE </span> of the face seqeunce you just saw.</p>"
 };
 
 var  instruction_seq_MainTaskTransition = {
   type: "html-button-response",
   choices: ['Continue'],
   stimulus:  "<p align='left'> Thank you for completing the practice stage. </p>"+
-  "<p align='left'> Remember, the goal was to ESTIMATE THE <span style='color: red;'> AVERAGE EMOTIONAL RESPONSE of the face video clip you just saw. </span></p>"+
+  "<p align='left'> Remember, the goal was to ESTIMATE THE <span style='color: red;'> AVERAGE EMOTIONAL RESPONSE of the face seqeunce you just saw. </span></p>"+
   "<p align='left'> In the following section you will complete the actual session, which consists of 50 trials. This part of the study should take 15 minutes, more or less. </p>" +
   "<p align='left'> Click <strong>Continue</strong> to begin the actual task. </p>",
   on_load: textbox
