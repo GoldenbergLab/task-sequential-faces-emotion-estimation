@@ -122,8 +122,7 @@ function checkPhone (){
   function getScale (){ //generate the rating scale depending on the person and valence randomly chosen in faceArray
     var scale = [];
     for(i = 1; i < (50+1); i++){
-       scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')}
-       scale.reverse();
+       scale.push('img/'+Face.personX+(Face.emotionX +i) + '.jpg')};
     return scale;
   }
 
