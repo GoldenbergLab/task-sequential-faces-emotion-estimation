@@ -182,3 +182,7 @@
 #myDiv {
   margin: auto;
 }
+
+.image-frame{
+  border: 5px solid #555;
+}
